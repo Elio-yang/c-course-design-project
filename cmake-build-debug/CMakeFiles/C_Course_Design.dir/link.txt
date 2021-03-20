@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/C_Course_Design.dir/main.c.o  -o C_Course_Design 

@@ -12,15 +12,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "print_color.h"
+#include "process_bar.h"
 
-
-#define __always_inline inline __attribute__((always_inline))
 #define __noinline __attribute__((noinline))
 #define __noreturn __attribute__((noreturn))
 #define INLINE __always_inline
 #define filename "hr.txt"
-#define infolen 58
-
+#define infolen 69
+#define get_head(List) (List->head->next)
+#define get_pid(staff) (staff->pid)
+#define get_wid(staff) (staff->wid)
+#define get_salary(staff) (staff->salary)
+#define get_name(staff) (staff->name)
 /*-----------------------------------basic defs---------------------------------------*/
 
 /*所有员工的职位*/
@@ -62,7 +66,6 @@ typedef struct staff {
         /* working id 工号 */
         char wid[7];
         char salary[15];
-
         struct staff *next;
         /* 投诉信息 */
         Complaint_record *recd_list;
@@ -159,7 +162,7 @@ INLINE Staff *staff_init(Staff *staff, char info[infolen])
         char *rank = strtok(NULL, " ");
         char *pid = strtok(NULL, " ");
         char *wid = strtok(NULL, " ");
-        char *salary = strtok(NULL, "\r\n");
+        char *salary = strtok(NULL, "\r");
 
         set_name(staff, name);
         set_hire_time(staff, hire_time);
@@ -173,24 +176,24 @@ INLINE Staff *staff_init(Staff *staff, char info[infolen])
 
 }
 
-char *get_time(Staff *staff)
+INLINE char *get_time(Staff *staff)
 {
         char *t = (char *) malloc(sizeof(char) * 32);
         int time = atoi(staff->hire_time);
         int year = time / 10000;
-        itoa(year, t, 10);
+        sprintf(t,"%d",year);
         t[4] = '-';
         t[7] = '-';
         int month = (time % 10000) / 100;
         if (month >= 10) {
-                itoa(month, t + 5, 10);
+                sprintf(t+5,"%d",month);
         } else {
                 t[5] = '0';
                 t[6] = month + '0';
         }
         int day = time % 100;
         if (day >= 0) {
-                itoa(day, t + 8, 10);
+                sprintf(t+8,"%d",day);
         } else {
                 t[8] = '0';
                 t[9] = day + '0';
@@ -200,7 +203,7 @@ char *get_time(Staff *staff)
 
 }
 
-char *get_gender(Staff *staff)
+INLINE char *get_gender(Staff *staff)
 {
         if (staff->gender == MALE) {
                 return "Male";
@@ -209,7 +212,7 @@ char *get_gender(Staff *staff)
         }
 }
 
-char *get_rank(Staff *staff)
+INLINE char *get_rank(Staff *staff)
 {
         switch (staff->rank) {
 
@@ -232,25 +235,13 @@ char *get_rank(Staff *staff)
         }
 }
 
-char *get_pid(Staff *staff)
-{
-        return staff->pid;
-}
 
-char *get_wid(Staff *staff)
-{
-        return staff->wid;
-}
 
-char *get_salary(Staff *staff)
-{
-        return staff->salary;
-}
 /*-----------------------------------APIs----------------------------------------------*/
 
-void load_hr_file()
+INLINE void load_hr_file()
 {
-        int fd = open(filename, O_RDWR | O_CREAT);
+        int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
         if (fd == -1) {
                 fprintf(stderr, "File %s open failed, human resource system init failed\n", filename);
                 exit(EXIT_FAILURE);
@@ -267,7 +258,6 @@ void load_hr_file()
         char info[infolen];
         // the last two ch is \0d \0a --->\r\n
         while (read(fd, info, infolen)) {
-                info[infolen - 2] = '\0';
                 info[infolen - 1] = '\0';
                 Staff *staff = (Staff *) malloc(sizeof(*staff));
                 staff = staff_init(staff, info);
@@ -281,17 +271,20 @@ void load_hr_file()
         }
 }
 
-void hr_sys_init()
+INLINE void hr_sys_init()
 {
+        process_bar("loading hr system.");
         load_hr_file();
-        printf("*----------------------------------------------------*\n"
-               "|  Human resource system successfully initialized.   |\n"
-               "*----------------------------------------------------*\n\n");
+        usleep(1000*1000);
+        printf(BOLD"*----------------------------------------------------*\n"NONE
+               BOLD"|  "BLINK UNDERLINE"Human resource system successfully initialized!"NONE"   |\n"NONE
+               BOLD"*----------------------------------------------------*\n\n"NONE );
 }
 
-void print_worker_info(Staff *staff)
+INLINE void print_worker_info(Staff *staff)
 {
-        printf("+----------------------------------------------------+\n"
+        printf(""
+               "+----------------------------------------------------+\n"
                "|  NAME      :\t%-20s                 |\n"
                "|  HIRE TIME :\t%-20s                 |\n"
                "|  GENDER    :\t%-20s                 |\n"
@@ -304,11 +297,10 @@ void print_worker_info(Staff *staff)
                get_wid(staff), get_salary(staff));
 }
 
-Staff *query_by_wid(uint32_t wid)
+Staff *query_by_wid(const char *id)
 {
-        char id[7];
-        itoa(wid, id, 10);
-        Staff *head = HR_LIST->head->next;
+
+        Staff *head = get_head(HR_LIST);
         while (head != NULL) {
                 if (strcmp(head->wid, id) == 0) {
                         printf("worker with id : %s found.\n", id);
@@ -323,7 +315,7 @@ Staff *query_by_wid(uint32_t wid)
 
 Staff *query_by_name(const char *name)
 {
-        Staff *head =HR_LIST->head->next;
+        Staff *head =get_head(HR_LIST);
         while (head!=NULL){
                 if(strcmp(name,head->name)==0){
                         printf("worker with name : %s found.\n",name);
@@ -336,9 +328,10 @@ Staff *query_by_name(const char *name)
 }
 
 
-void print_f_select(Staff *staff)
+INLINE void print_f_select(Staff *staff)
 {
-        printf("|  NAME      :\t%-20s                 |\n"
+        printf(""
+               "|  NAME      :\t%-20s                 |\n"
                "|  HIRE TIME :\t%-20s                 |\n"
                "|  GENDER    :\t%-20s                 |\n"
                "|  RANK      :\t%-20s                 |\n"
@@ -350,8 +343,9 @@ void print_f_select(Staff *staff)
                get_wid(staff), get_salary(staff));
 }
 
-void select_all()
+INLINE void select_all()
 {
+        usleep(1000*1000);
         Staff *head=HR_LIST->head->next;
         printf("+----------------------------------------------------+\n");
         while (head!=NULL){
@@ -366,14 +360,105 @@ void sort_by_pid(const char *pid);
 void sort_by_salary(const char *salary);
 
 
-void insert_worker();
+void _insert_worker(Staff *staff)
+{
+        Staff *head=get_head(HR_LIST);
+        staff->next=head->next;
+        head->next=staff;
+        ++HR_LIST->cnt;
+        HR_LIST->dirty=1;
+}
+
+void insert_worker()
+{
+        char name[32];
+        char hire_time[32];
+        char gen[10];
+        char ran[5];
+        Gender gender;
+        Position rank;
+        char pid[15];
+        char wid[15];
+        char salary[15];
+
+        printf("Please enter new worker infomation:\n");
+        printf("Name      > ");
+        scanf("%s",name);
+
+        printf("Hire time > ");
+        scanf("%s",hire_time);
+
+        printf("Gender    > ");
+        scanf("%s",gen);
+
+        printf("Rank      > ");
+        scanf("%s",ran);
+
+        printf("Pid       > ");
+        scanf("%s",pid);
+
+        printf("Wid       > ");
+        scanf("%s",wid);
+
+        printf("Salary    > ");
+        scanf("%s",salary);
+
+        Staff *staff=(Staff*)malloc(sizeof(*staff));
+        strcpy(staff->name,name);
+        strcpy(staff->hire_time,hire_time);
+        staff->gender=gender;
+        staff->rank=rank;
+        strcpy(staff->pid,pid);
+        strcpy(staff->wid,wid);
+        strcpy(staff->salary,salary);
+        _insert_worker(staff);
+}
+
 void remove_worker();
 
 
-void flush_disk();
-
-
-
+void flush_disk()
+{
+        // not modified
+        if(HR_LIST->dirty==0){
+                return;
+        }
+        int fd = HR_LIST->fd;
+        lseek(fd,0,SEEK_SET);
+        Staff *staff =get_head(HR_LIST);
+        while (staff!=NULL){
+                int len=0;
+                char info[infolen];
+                char *name=get_name(staff);
+                char *hire_time=get_time(staff);
+                char *gender = get_gender(staff);
+                int rank =staff->rank;
+                char *pid=get_pid(staff);
+                char *wid=get_wid(staff);
+                char *salary=get_salary(staff);
+                len+=sprintf(info+len,"%s ",name);
+                len+=sprintf(info+len,"%s ",hire_time);
+                len+=sprintf(info+len,"%s ",gender);
+                len+=sprintf(info+len,"%d ",rank);
+                len+=sprintf(info+len,"%s ",pid);
+                len+=sprintf(info+len,"%s ",wid);
+                len+=sprintf(info+len,"%s ",salary);
+                if(strlen(info)< (infolen -1)){
+                        int diff = infolen -1 - strlen(info);
+                        char buf[diff+1];
+                        for(int i=0;i<diff+1;i++){
+                                buf[i]=' ';
+                        }
+                        buf[diff+1]='\0';
+                        len+=sprintf(info+len,"%s",buf);
+                        len+sprintf(info+len,"\r");
+                }
+                write(fd,info,infolen);
+                staff=staff->next;
+        }
+        HR_LIST->fd = -1;
+        close(fd);
+}
 void add_complaint(Complaint_record *recd);
 
 #endif
