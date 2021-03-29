@@ -4,6 +4,8 @@
  * @date 2021/3/19
  */
 
+// testing part
+
 #include <stdio.h>
 #include "menu.h"
 #include "hr_sys.h"
