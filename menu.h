@@ -1,5 +1,6 @@
 /*
  * @author Wang Jie
+ * @author Yang Yang
  */
 
 #ifndef CDESIGN_MENU_H

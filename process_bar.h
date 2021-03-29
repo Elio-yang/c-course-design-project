@@ -1,3 +1,8 @@
+/*
+ * @author Yang Yang
+ * @email  jluelioyang2001@gamil.com
+ * @date 2021/3/19
+ */
 
 #ifndef PROCESS_BAR_H
 #define PROCESS_BAR_H
