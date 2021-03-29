@@ -15,8 +15,6 @@
 #include "print_color.h"
 #include "process_bar.h"
 
-#define __noinline __attribute__((noinline))
-#define __noreturn __attribute__((noreturn))
 #define INLINE __always_inline
 #define filename "hr.txt"
 #define infolen 69
@@ -556,7 +554,6 @@ void exit_hr_sys()
 {
         flush_disk();
         free_hr_list();
-        return;
 }
 
 void sync_hr_sys()
