@@ -1,0 +1,45 @@
+// delete this 2 lines when doing file operation
+//name     cup_price   bot_allowed   bot_price    ice_all   t_all  sugar_all  cup_size
+Cointreau    25.                320.                        0        0           0
+Martini      20.                260.                        0        0           0
+Baileys      25.                320.                        0        0           0
+Malibu
+JackDaniel
+Bacardi
+Gordon
+BlackLabel
+AbsoluteVodka
+Erdinger
+Corona
+Heineken
+Carlsberg
+Qingdao
+Bols
+LongIslandIcedTea
+GinTonic
+PinkLady
+BlackRussian
+BlueHawaii
+Roastchicken
+Mincedgarlic
+Cheeseballs
+Popcorn
+Fruitpizza
+SusagePizza
+Potatofillet
+Coffeeicecream
+Liptonblacktea
+RoseMilkTea
+Icedlemontea
+XihuLongjing
+Biluochun
+TieGuanYin
+Freshmilk
+Driedgingerwater
+Pineapplejuice
+Grapefruitjuice
+Orangejuice
+Mineralwater
+Coke
+Sprite
+Mineralwater
