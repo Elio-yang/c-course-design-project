@@ -5,7 +5,7 @@
  *
  * 酒吧人力资源信息模块
  */
-
+/*confict*/
 #ifndef HR_SYS_H
 #define HR_SYS_H
 
