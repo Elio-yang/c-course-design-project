@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/elio/CLionProjects/C-Course-Design/Test/test_time_related_main.c
+../tools/time_related.h
+/home/elio/CLionProjects/C-Course-Design/tools/time_related.h
+stdio.h
+-
+
+/home/elio/CLionProjects/C-Course-Design/tools/time_related.h
+stdlib.h
+-
+time.h
+-
+string.h
+-
+

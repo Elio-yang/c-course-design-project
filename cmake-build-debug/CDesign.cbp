@@ -37,8 +37,8 @@
 					<DistClean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="CDesign">
-				<Option output="/home/elio/CLionProjects/C-Course-Design/bin/CDesign" prefix_auto="0" extension_auto="0"/>
+			<Target title="test_time">
+				<Option output="/home/elio/CLionProjects/C-Course-Design/bin/test_time" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/elio/CLionProjects/C-Course-Design/bin"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -50,14 +50,14 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 CDesign"/>
+					<Build command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 test_time"/>
 					<CompileFile command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="CDesign/fast">
-				<Option output="/home/elio/CLionProjects/C-Course-Design/bin/CDesign" prefix_auto="0" extension_auto="0"/>
+			<Target title="test_time/fast">
+				<Option output="/home/elio/CLionProjects/C-Course-Design/bin/test_time" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/elio/CLionProjects/C-Course-Design/bin"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -69,27 +69,71 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 CDesign/fast"/>
+					<Build command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 test_time/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_hr">
+				<Option output="/home/elio/CLionProjects/C-Course-Design/bin/test_hr" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/elio/CLionProjects/C-Course-Design/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 test_hr"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test_hr/fast">
+				<Option output="/home/elio/CLionProjects/C-Course-Design/bin/test_hr" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/elio/CLionProjects/C-Course-Design/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 test_hr/fast"/>
 					<CompileFile command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -f &quot;/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/Test/test_hr_sys_main.c">
+			<Option target="test_hr"/>
+		</Unit>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/Test/test_time_related_main.c">
+			<Option target="test_time"/>
+		</Unit>
 		<Unit filename="/home/elio/CLionProjects/C-Course-Design/hr_sys.h">
-			<Option target="CDesign"/>
+			<Option target="test_hr"/>
 		</Unit>
-		<Unit filename="/home/elio/CLionProjects/C-Course-Design/menu.h">
-			<Option target="CDesign"/>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/menu.h">
+			<Option target="test_hr"/>
 		</Unit>
-		<Unit filename="/home/elio/CLionProjects/C-Course-Design/print_color.h">
-			<Option target="CDesign"/>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/print_color.h">
+			<Option target="test_hr"/>
 		</Unit>
-		<Unit filename="/home/elio/CLionProjects/C-Course-Design/process_bar.h">
-			<Option target="CDesign"/>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/process_bar.h">
+			<Option target="test_hr"/>
 		</Unit>
-		<Unit filename="/home/elio/CLionProjects/C-Course-Design/test_main.c">
-			<Option target="CDesign"/>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/time_related.h">
+			<Option target="test_hr"/>
 		</Unit>
 		<Unit filename="/home/elio/CLionProjects/C-Course-Design/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

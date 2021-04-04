@@ -11,39 +11,38 @@
 
 #include <stdint.h>
 #include <features.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "print_color.h"
-#include "process_bar.h"
+#include "tools/print_color.h"
+#include "tools/process_bar.h"
+#include "tools/time_related.h"
+
 
 #define INLINE __always_inline
 #define filename "hr.txt"
 #define infolen 69
-#define get_head(List) (List->head->next)
-#define get_pid(staff) (staff->pid)
-#define get_wid(staff) (staff->wid)
-#define get_salary(staff) (staff->salary)
-#define get_name(staff) (staff->name)
+#define get_head(List) ((List)->head->next)
+#define get_pid(staff) ((staff)->pid)
+#define get_wid(staff) ((staff)->wid)
+#define get_salary(staff) ((staff)->salary)
+#define get_name(staff) ((staff)->name)
+#define get_mpl(staff) ((staff)->mpl)
 /*-----------------------------------basic defs---------------------------------------*/
 
 /*所有员工的职位*/
 typedef enum {
         BOSS = 0,
         MANAGER,
-        /*调酒师*/
-        BARTENDER,
+        BARTENDER,/*调酒师*/
         COOK,
-        /*保洁*/
-        CLEANER,
-        /*收银*/
-        CASHIER,
-        /*仓库管理员*/
-        WAREHOUSEMAN,
-        /*财务*/
-        FINANCE
+        CLEANER,/*保洁*/
+        CASHIER,/*收银*/
+        WAREHOUSEMAN,/*仓库管理员*/
+        FINANCE/*财务*/
 } Position;
 /* 性别*/
 typedef enum {
@@ -52,10 +51,25 @@ typedef enum {
 } Gender;
 /*投诉记录*/
 typedef struct complain {
-        char time[32];
+        char name[32];
+        FormatTime time;
         char info[255];
         struct complain *next;
 } Complaint_record;
+
+typedef struct COMP_INFO{
+        int fd;
+        uint32_t cnt;
+        int dirty;
+        Complaint_record *head;
+
+}comp_list;
+/* privilege level*/
+typedef enum {
+        SU_ADMIN=0,
+        ADMIN=2,
+        USERS=3
+}PL;
 /*一个员工的信息*/
 typedef struct staff {
         char name[32];
@@ -63,26 +77,28 @@ typedef struct staff {
         Gender gender;
         /* 职位 */
         Position rank;
+        /* manage privilege level*/
+        PL MPL;
         /* personal id 身份证 */
         char pid[15];
         /* working id 工号 */
         char wid[7];
         char salary[15];
         struct staff *next;
-        /* 投诉信息 */
-        Complaint_record *recd_list;
 } Staff;
 
 typedef struct HR_INFO {
         /* file descriptor of hr.txt */
         int fd;
         Staff *head;
-        uint8_t cnt;
+        uint32_t cnt;
         /* dirty bit */
         int dirty;
 } hr_list;
 //all human resource information
 hr_list *HR_LIST;
+comp_list *COMP_LIST;
+
 /*-----------------------------------setter & getter---------------------------------------*/
 INLINE void set_name(Staff *staff, const char *name)
 {
@@ -96,7 +112,7 @@ INLINE void set_hire_time(Staff *staff, const char *time)
         strcpy(staff->hire_time, time);
 }
 
-INLINE void set_gendef(Staff *staff, const char *gender)
+INLINE void set_gender(Staff *staff, const char *gender)
 {
         if (strcmp(gender, "MALE") == 0) {
                 staff->gender = MALE;
@@ -151,9 +167,39 @@ INLINE void set_salary(Staff *staff, const char *salary)
         strcpy(staff->salary, salary);
 }
 
-INLINE Complaint_record *build_recd(const char *time, const char *info);
+/* 0 for success &-1 for failure */
+INLINE int set_mpl(Staff *staff, const char *mpl)
+{
+        uint pl= atoi(mpl);
+        switch (pl){
+                case 0: {
+                        staff->MPL = SU_ADMIN;
+                        break;
+                }
+                case 2:{
+                        staff->MPL = ADMIN;
+                        break;
+                }
+                case 3:{
+                        staff->MPL = USERS;
+                        break;
+                }
+                default:{
+                        fprintf(stderr,"Wrong privilege code.");
+                        return -1;
+                }
+        }
+        return 0;
+}
+INLINE Complaint_record *build_recd(FormatTime *ft, const char *info)
+{
+        Complaint_record *recd =(Complaint_record*)malloc(sizeof(*recd));
+        memcpy(&recd->time,ft, sizeof(*ft));
+        strcpy(recd->info,info);
+        recd->next=NULL;
+}
 
-INLINE void add_complaint_recd(Staff *staff, Complaint_record *recd);
+INLINE void _add_complaint_recd(Staff *staff, Complaint_record *recd);
 
 INLINE Staff *staff_init(Staff *staff, char info[infolen])
 {
@@ -168,7 +214,7 @@ INLINE Staff *staff_init(Staff *staff, char info[infolen])
 
         set_name(staff, name);
         set_hire_time(staff, hire_time);
-        set_gendef(staff, gender);
+        set_gender(staff, gender);
         set_rank(staff, rank);
         set_pid(staff, pid);
         set_wid(staff, wid);
@@ -177,6 +223,7 @@ INLINE Staff *staff_init(Staff *staff, char info[infolen])
         return staff;
 
 }
+
 
 INLINE char *get_time(Staff *staff)
 {
@@ -264,7 +311,6 @@ INLINE void load_hr_file()
                 Staff *staff = (Staff *) malloc(sizeof(*staff));
                 staff = staff_init(staff, info);
                 staff->next = NULL;
-                staff->recd_list=NULL;
                 Staff *next = ptr->next;
                 ptr->next = staff;
                 staff->next = next;
@@ -475,10 +521,6 @@ void _remove_worker(Staff *staff)
         }
         prev->next=staff->next;
         staff->next=NULL;
-        if(staff->recd_list!=NULL){
-                //TODO recdlist free
-                free(staff->recd_list);
-        }
         free(staff);
         --HR_LIST->cnt;
 }

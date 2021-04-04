@@ -77,27 +77,27 @@ include CMakeFiles/CDesign.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/CDesign.dir/flags.make
 
-CMakeFiles/CDesign.dir/test_main.c.o: CMakeFiles/CDesign.dir/flags.make
-CMakeFiles/CDesign.dir/test_main.c.o: ../test_main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/CDesign.dir/test_main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CDesign.dir/test_main.c.o   -c /home/elio/CLionProjects/C-Course-Design/test_main.c
+CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o: CMakeFiles/CDesign.dir/flags.make
+CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o: ../Test/test_hr_sys_main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o   -c /home/elio/CLionProjects/C-Course-Design/Test/test_hr_sys_main.c
 
-CMakeFiles/CDesign.dir/test_main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CDesign.dir/test_main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/elio/CLionProjects/C-Course-Design/test_main.c > CMakeFiles/CDesign.dir/test_main.c.i
+CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/elio/CLionProjects/C-Course-Design/Test/test_hr_sys_main.c > CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.i
 
-CMakeFiles/CDesign.dir/test_main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CDesign.dir/test_main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/elio/CLionProjects/C-Course-Design/test_main.c -o CMakeFiles/CDesign.dir/test_main.c.s
+CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/elio/CLionProjects/C-Course-Design/Test/test_hr_sys_main.c -o CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.s
 
 # Object files for target CDesign
 CDesign_OBJECTS = \
-"CMakeFiles/CDesign.dir/test_main.c.o"
+"CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o"
 
 # External object files for target CDesign
 CDesign_EXTERNAL_OBJECTS =
 
-../bin/CDesign: CMakeFiles/CDesign.dir/test_main.c.o
+../bin/CDesign: CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o
 ../bin/CDesign: CMakeFiles/CDesign.dir/build.make
 ../bin/CDesign: CMakeFiles/CDesign.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable ../bin/CDesign"
