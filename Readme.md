@@ -21,7 +21,7 @@ anywhere.
 
     ``time_related.h`` used for time-related work
    
-    ``tools`` are welcomed to get contributed ,if you want to add 
+    ``tools`` are welcomed to get contributed and adjusted,if you want to add 
    some small tools which are not system(the system you are developed) specified,just 
    add them into this file but make sure that the api is well designed and
    related usage are well written :)!
