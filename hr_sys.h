@@ -17,8 +17,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "print_color.h"
-#include "process_bar.h"
+#include "tools/print_color.h"
+#include "tools/process_bar.h"
+
 
 #define INLINE __always_inline
 #define filename "hr.txt"
