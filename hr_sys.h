@@ -5,7 +5,11 @@
  *
  * 酒吧人力资源信息模块
  */
+<<<<<<< HEAD
 /*confict*/
+=======
+/*confict test*/
+>>>>>>> master
 #ifndef HR_SYS_H
 #define HR_SYS_H
 
