@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "../bin/CDesign"
   "../bin/CDesign.pdb"
-  "CMakeFiles/CDesign.dir/test_main.c.o"
+  "CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o"
 )
 
 # Per-language clean rules from dependency scanning.

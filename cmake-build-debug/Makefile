@@ -131,44 +131,84 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named CDesign
+# Target rules for targets named test_time
 
 # Build rule for target.
-CDesign: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CDesign
-.PHONY : CDesign
+test_time: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_time
+.PHONY : test_time
 
 # fast build rule for target.
-CDesign/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CDesign.dir/build.make CMakeFiles/CDesign.dir/build
-.PHONY : CDesign/fast
+test_time/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_time.dir/build.make CMakeFiles/test_time.dir/build
+.PHONY : test_time/fast
 
-test_main.o: test_main.c.o
+#=============================================================================
+# Target rules for targets named test_hr
 
-.PHONY : test_main.o
+# Build rule for target.
+test_hr: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_hr
+.PHONY : test_hr
+
+# fast build rule for target.
+test_hr/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_hr.dir/build.make CMakeFiles/test_hr.dir/build
+.PHONY : test_hr/fast
+
+Test/test_hr_sys_main.o: Test/test_hr_sys_main.c.o
+
+.PHONY : Test/test_hr_sys_main.o
 
 # target to build an object file
-test_main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CDesign.dir/build.make CMakeFiles/CDesign.dir/test_main.c.o
-.PHONY : test_main.c.o
+Test/test_hr_sys_main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_hr.dir/build.make CMakeFiles/test_hr.dir/Test/test_hr_sys_main.c.o
+.PHONY : Test/test_hr_sys_main.c.o
 
-test_main.i: test_main.c.i
+Test/test_hr_sys_main.i: Test/test_hr_sys_main.c.i
 
-.PHONY : test_main.i
+.PHONY : Test/test_hr_sys_main.i
 
 # target to preprocess a source file
-test_main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CDesign.dir/build.make CMakeFiles/CDesign.dir/test_main.c.i
-.PHONY : test_main.c.i
+Test/test_hr_sys_main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_hr.dir/build.make CMakeFiles/test_hr.dir/Test/test_hr_sys_main.c.i
+.PHONY : Test/test_hr_sys_main.c.i
 
-test_main.s: test_main.c.s
+Test/test_hr_sys_main.s: Test/test_hr_sys_main.c.s
 
-.PHONY : test_main.s
+.PHONY : Test/test_hr_sys_main.s
 
 # target to generate assembly for a file
-test_main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CDesign.dir/build.make CMakeFiles/CDesign.dir/test_main.c.s
-.PHONY : test_main.c.s
+Test/test_hr_sys_main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_hr.dir/build.make CMakeFiles/test_hr.dir/Test/test_hr_sys_main.c.s
+.PHONY : Test/test_hr_sys_main.c.s
+
+Test/test_time_related_main.o: Test/test_time_related_main.c.o
+
+.PHONY : Test/test_time_related_main.o
+
+# target to build an object file
+Test/test_time_related_main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_time.dir/build.make CMakeFiles/test_time.dir/Test/test_time_related_main.c.o
+.PHONY : Test/test_time_related_main.c.o
+
+Test/test_time_related_main.i: Test/test_time_related_main.c.i
+
+.PHONY : Test/test_time_related_main.i
+
+# target to preprocess a source file
+Test/test_time_related_main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_time.dir/build.make CMakeFiles/test_time.dir/Test/test_time_related_main.c.i
+.PHONY : Test/test_time_related_main.c.i
+
+Test/test_time_related_main.s: Test/test_time_related_main.c.s
+
+.PHONY : Test/test_time_related_main.s
+
+# target to generate assembly for a file
+Test/test_time_related_main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_time.dir/build.make CMakeFiles/test_time.dir/Test/test_time_related_main.c.s
+.PHONY : Test/test_time_related_main.c.s
 
 # Help Target
 help:
@@ -178,10 +218,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... CDesign"
-	@echo "... test_main.o"
-	@echo "... test_main.i"
-	@echo "... test_main.s"
+	@echo "... test_hr"
+	@echo "... test_time"
+	@echo "... Test/test_hr_sys_main.o"
+	@echo "... Test/test_hr_sys_main.i"
+	@echo "... Test/test_hr_sys_main.s"
+	@echo "... Test/test_time_related_main.o"
+	@echo "... Test/test_time_related_main.i"
+	@echo "... Test/test_time_related_main.s"
 .PHONY : help
 
 

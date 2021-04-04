@@ -6,13 +6,24 @@ set(CMAKE_C_STANDARD 99)
 #可执行文件放在目录 bin下
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
+
+SET (TOOL_HEADER
+        tools/print_color.h
+        tools/process_bar.h
+        tools/time_related.h
+        tools/menu.h
+        )
+
+
 SET(HEADER
         hr_sys.h
-        menu.h
-        process_bar.h
-        print_color.h
+        ${TOOL_HEADER}
         )
-add_executable(CDesign
+add_executable(test_hr
 
         ${HEADER}
-        test_main.c)
+        Test/test_hr_sys_main.c)
+
+add_executable(test_time
+        Test/test_time_related_main.c
+        )

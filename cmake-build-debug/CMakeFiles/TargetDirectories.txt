@@ -1,3 +1,4 @@
 /home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles/rebuild_cache.dir
 /home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles/CDesign.dir
+/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles/test_time.dir
+/home/elio/CLionProjects/C-Course-Design/cmake-build-debug/CMakeFiles/test_hr.dir
