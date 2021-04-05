@@ -23,13 +23,12 @@
 
 #define INLINE __always_inline
 #define filename "hr.txt"
-#define infolen 69
+#define infolen 71
 #define get_head(List) ((List)->head->next)
 #define get_pid(staff) ((staff)->pid)
 #define get_wid(staff) ((staff)->wid)
 #define get_salary(staff) ((staff)->salary)
 #define get_name(staff) ((staff)->name)
-#define get_mpl(staff) ((staff)->mpl)
 /*-----------------------------------basic defs---------------------------------------*/
 
 /*所有员工的职位*/
@@ -65,7 +64,7 @@ typedef struct COMP_INFO{
 }comp_list;
 /* privilege level*/
 typedef enum {
-        SU_ADMIN=0,
+        SUPERUSER=0,
         ADMIN=2,
         USERS=3
 }PL;
@@ -123,7 +122,6 @@ INLINE void set_gender(Staff *staff, const char *gender)
         }
 
 }
-
 INLINE void set_rank(Staff *staff, const char *rank)
 {
         if (strcmp(rank, "0") == 0) {
@@ -172,7 +170,7 @@ INLINE int set_mpl(Staff *staff, const char *mpl)
         uint pl= atoi(mpl);
         switch (pl){
                 case 0: {
-                        staff->MPL = SU_ADMIN;
+                        staff->MPL = SUPERUSER;
                         break;
                 }
                 case 2:{
@@ -207,6 +205,7 @@ INLINE Staff *staff_init(Staff *staff, char info[infolen])
         char *hire_time = strtok(NULL, " ");
         char *gender = strtok(NULL, " ");
         char *rank = strtok(NULL, " ");
+        char *mpl = strtok(NULL," ");
         char *pid = strtok(NULL, " ");
         char *wid = strtok(NULL, " ");
         char *salary = strtok(NULL, "\r");
@@ -215,6 +214,7 @@ INLINE Staff *staff_init(Staff *staff, char info[infolen])
         set_hire_time(staff, hire_time);
         set_gender(staff, gender);
         set_rank(staff, rank);
+        set_mpl(staff,mpl);
         set_pid(staff, pid);
         set_wid(staff, wid);
         set_salary(staff, salary);
@@ -283,7 +283,20 @@ INLINE char *get_rank(Staff *staff)
         }
 }
 
-
+INLINE char *get_mpl(Staff *staff)
+{
+        switch (staff->MPL) {
+                case SUPERUSER:{
+                        return "SUPERUSER";
+                }
+                case ADMIN:{
+                        return "ADMIN";
+                }
+                case USERS:{
+                        return "USERS";
+                }
+        }
+}
 
 /*-----------------------------------APIs----------------------------------------------*/
 
@@ -336,11 +349,12 @@ INLINE void print_worker_info(Staff *staff)
                "|  HIRE TIME :\t%-20s                 |\n"
                "|  GENDER    :\t%-20s                 |\n"
                "|  RANK      :\t%-20s                 |\n"
+               "|  MPL       :\t%-20s                 |\n"
                "|  PID       :\t%-20s                 |\n"
                "|  WID       :\t%-20s                 |\n"
                "|  SALARY    :\t%-20s                 |\n"
                "+----------------------------------------------------+\n",
-               staff->name, get_time(staff), get_gender(staff), get_rank(staff), get_pid(staff),
+               staff->name, get_time(staff), get_gender(staff), get_rank(staff),get_mpl(staff),get_pid(staff),
                get_wid(staff), get_salary(staff));
 }
 
@@ -375,7 +389,7 @@ Staff *query_by_name(const char *name)
 }
 
 
-INLINE void print_f_select(Staff *staff)
+INLINE void print_f_select_all(Staff *staff)
 {
         printf(""
                "|  NAME      :\t%-20s                 |\n"
@@ -390,16 +404,57 @@ INLINE void print_f_select(Staff *staff)
                get_wid(staff), get_salary(staff));
 }
 
-INLINE void select_all()
+INLINE void print_f_select_gender(Staff *staff)
 {
-        usleep(1000*1000);
-        Staff *head=HR_LIST->head->next;
+        printf(""
+               "|  NAME      :\t%-20s                 |\n"
+               "|  GENDER    :\t%-20s                 |\n"
+               "+----------------------------------------------------+\n",
+               staff->name, get_gender(staff));
+}
+INLINE void print_f_select_rank(Staff *staff)
+{
+        printf(""
+               "|  NAME      :\t%-20s                 |\n"
+               "|  RANK      :\t%-20s                 |\n"
+               "+----------------------------------------------------+\n",
+               staff->name,get_rank(staff));
+}
+INLINE void select_by_gender(Gender gender)
+{
+        Staff *head = HR_LIST->head->next;
         printf("+----------------------------------------------------+\n");
         while (head!=NULL){
-                print_f_select(head);
+                if(head->gender==gender){
+                        print_f_select_gender(head);
+                }
+                head=head->next;
+        }
+}
+INLINE void select_by_rank(Position rank)
+{
+        Staff *head = HR_LIST->head->next;
+        printf("+----------------------------------------------------+\n");
+        while (head!=NULL){
+                if(head->rank==rank){
+                        print_f_select_rank(head);
+                }
                 head=head->next;
         }
 
+}
+INLINE void select_name()
+{
+
+}
+INLINE void select_all()
+{
+        Staff *head=HR_LIST->head->next;
+        printf("+----------------------------------------------------+\n");
+        while (head!=NULL){
+                print_f_select_all(head);
+                head=head->next;
+        }
 }
 
 void sort_by_name(const char *name);
@@ -424,6 +479,7 @@ void insert_worker()
         char hire_time[32];
         char gen[10];
         char ran[5];
+        char mpl[5];
         Gender gender;
         Position rank;
         char pid[15];
@@ -434,12 +490,17 @@ void insert_worker()
         printf("Please enter new worker information:\n");
         printf("Name      > ");
         scanf("%s",name);
+        fflush(stdin);
 
         printf("Hire time > ");
         scanf("%s",hire_time);
-        GENDER:
+        fflush(stdin);
+
+GENDER:
         printf("Gender    > ");
         scanf("%s",gen);
+        fflush(stdin);
+
 
         if(strcmp(gen,"MALE")==0){
                 gender=MALE;
@@ -451,11 +512,10 @@ void insert_worker()
                 fprintf(stderr,"Gender error please re-input.\n");
                 goto GENDER;
         }
-
-        RANK:
+RANK:
         printf("Rank      > ");
         scanf("%s",ran);
-
+        fflush(stdin);
         if (strcmp(ran, "BOSS") == 0) {
                 staff->rank = BOSS;
         } else if (strcmp(ran, "MANAGER") == 0) {
@@ -476,20 +536,44 @@ void insert_worker()
                 fprintf(stderr, "rank error please re-input.\n");
                 goto RANK;
         }
-        PID:
+MPL:
+        printf("MPL     > ");
+        scanf("%s",mpl);
+        fflush(stdin);
+        int pl = atoi(mpl);
+        switch (pl) {
+                case SUPERUSER:{
+                        staff->MPL=SUPERUSER;
+                        break;
+                }
+                case ADMIN:{
+                        staff->MPL=ADMIN;
+                        break;
+                }
+                case USERS:{
+                        staff->MPL=USERS;
+                        break;
+                }
+                default:{
+                        fprintf(stderr,"mpl error please re-input\n");
+                        goto MPL;
+                }
+        }
+PID:
         printf("Pid       > ");
         scanf("%s",pid);
+        fflush(stdin);
         if(strlen(pid)!=14 || strncmp(pid,"4023",4)!=0){
                 fprintf(stderr,"pid error please re-input.\n");
                 goto PID;
         }
-
-
+WID:
         printf("Wid       > ");
         scanf("%s",wid);
+        fflush(stdin);
         if(strlen(wid)!= 6 || atoi(wid)<=0){
                 fprintf(stderr,"pid error please re-input.\n");
-                goto PID;
+                goto WID;
         }
 
         //TODO CHECK
