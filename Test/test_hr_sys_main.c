@@ -7,7 +7,7 @@
 // testing part
 
 #include <stdio.h>
-#include "../tools/menu.h"
+#include "../menu.h"
 #include "../hr_sys.h"
 
 int main()
