@@ -1,1 +1,1 @@
-/usr/bin/cc -g   CMakeFiles/CDesign.dir/test_main.c.o  -o ../bin/CDesign 
+/usr/bin/cc -g CMakeFiles/CDesign.dir/test_main.c.o -o ../bin/CDesign 
