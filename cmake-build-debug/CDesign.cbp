@@ -82,13 +82,13 @@
 		<Unit filename="/home/elio/CLionProjects/C-Course-Design/menu.h">
 			<Option target="CDesign"/>
 		</Unit>
-		<Unit filename="/home/elio/CLionProjects/C-Course-Design/print_color.h">
-			<Option target="CDesign"/>
-		</Unit>
-		<Unit filename="/home/elio/CLionProjects/C-Course-Design/process_bar.h">
-			<Option target="CDesign"/>
-		</Unit>
 		<Unit filename="/home/elio/CLionProjects/C-Course-Design/test_main.c">
+			<Option target="CDesign"/>
+		</Unit>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/print_color.h">
+			<Option target="CDesign"/>
+		</Unit>
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/process_bar.h">
 			<Option target="CDesign"/>
 		</Unit>
 		<Unit filename="/home/elio/CLionProjects/C-Course-Design/CMakeLists.txt">

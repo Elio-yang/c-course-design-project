@@ -9,8 +9,8 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(HEADER
         hr_sys.h
         menu.h
-        process_bar.h
-        print_color.h
+        tools/process_bar.h
+        tools/print_color.h
         )
 add_executable(CDesign
 
