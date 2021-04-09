@@ -11,22 +11,24 @@
 
 #include <stdint.h>
 #include <features.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "print_color.h"
-#include "process_bar.h"
+#include "tools/print_color.h"
+#include "tools/process_bar.h"
+
 
 #define INLINE __always_inline
 #define filename "hr.txt"
 #define infolen 69
-#define get_head(List) (List->head->next)
-#define get_pid(staff) (staff->pid)
-#define get_wid(staff) (staff->wid)
-#define get_salary(staff) (staff->salary)
-#define get_name(staff) (staff->name)
+#define get_head(List) ((List)->head->next)
+#define get_pid(staff) ((staff)->pid)
+#define get_wid(staff) ((staff)->wid)
+#define get_salary(staff) ((staff)->salary)
+#define get_name(staff) ((staff)->name)
 /*-----------------------------------basic defs---------------------------------------*/
 
 /*所有员工的职位*/
@@ -56,6 +58,14 @@ typedef struct complain {
         char info[255];
         struct complain *next;
 } Complaint_record;
+
+/* privilege level*/
+typedef enum {
+        SU_ADMIN=0,
+        ADMIN=2,
+        USERS=3
+
+}PL;
 /*一个员工的信息*/
 typedef struct staff {
         char name[32];
@@ -63,6 +73,8 @@ typedef struct staff {
         Gender gender;
         /* 职位 */
         Position rank;
+        /* manage privilege level*/
+        PL MPL;
         /* personal id 身份证 */
         char pid[15];
         /* working id 工号 */
@@ -151,6 +163,30 @@ INLINE void set_salary(Staff *staff, const char *salary)
         strcpy(staff->salary, salary);
 }
 
+/* 0 for success &-1 for failure */
+INLINE int set_mpl(Staff *staff, const char *mpl)
+{
+        uint pl= atoi(mpl);
+        switch (pl){
+                case 0: {
+                        staff->MPL = SU_ADMIN;
+                        break;
+                }
+                case 2:{
+                        staff->MPL = ADMIN;
+                        break;
+                }
+                case 3:{
+                        staff->MPL = USERS;
+                        break;
+                }
+                default:{
+                        fprintf(stderr,"Wrong privilege code.");
+                        return -1;
+                }
+        }
+        return 0;
+}
 INLINE Complaint_record *build_recd(const char *time, const char *info);
 
 INLINE void add_complaint_recd(Staff *staff, Complaint_record *recd);
