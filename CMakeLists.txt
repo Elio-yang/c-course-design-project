@@ -11,7 +11,7 @@ SET (TOOL_HEADER
         tools/print_color.h
         tools/process_bar.h
         tools/time_related.h
-        tools/menu.h
+        menu.h
         )
 
 

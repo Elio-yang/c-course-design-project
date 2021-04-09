@@ -123,7 +123,7 @@
 		<Unit filename="/home/elio/CLionProjects/C-Course-Design/hr_sys.h">
 			<Option target="test_hr"/>
 		</Unit>
-		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/menu.h">
+		<Unit filename="/home/elio/CLionProjects/C-Course-Design/menu.h">
 			<Option target="test_hr"/>
 		</Unit>
 		<Unit filename="/home/elio/CLionProjects/C-Course-Design/tools/print_color.h">

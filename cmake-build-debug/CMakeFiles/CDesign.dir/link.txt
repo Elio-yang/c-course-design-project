@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 /usr/bin/cc -g   CMakeFiles/CDesign.dir/Test/test_hr_sys_main.c.o  -o ../bin/CDesign 
+=======
+/usr/bin/cc -g CMakeFiles/CDesign.dir/test_main.c.o -o ../bin/CDesign 
+>>>>>>> WangJ
