@@ -27,3 +27,7 @@ add_executable(test_hr
 add_executable(test_time
         Test/test_time_related_main.c
         )
+
+add_executable(test_menu
+        Test/test_menu.c
+)

@@ -20,7 +20,7 @@
 #include "tools/process_bar.h"
 #include "tools/time_related.h"
 
-
+#define UNIX
 #define INLINE __always_inline
 #define filename "hr.txt"
 #define infolen 71
@@ -302,7 +302,12 @@ INLINE char *get_mpl(Staff *staff)
 
 INLINE void load_hr_file()
 {
+#ifdef UNIX
         int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
+#endif
+#ifdef MINGW
+        int fd = open(filename, O_RDWR | O_CREAT);
+#endif
         if (fd == -1) {
                 fprintf(stderr, "File %s open failed, human resource system init failed\n", filename);
                 exit(EXIT_FAILURE);
