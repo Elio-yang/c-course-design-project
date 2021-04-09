@@ -1,4 +1,10 @@
-/snap/clion/145/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/elio/CLionProjects/C-Course-Design
+/snap/clion/149/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/elio/CLionProjects/C-Course-Design
+-- The C compiler identification is GNU 9.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/elio/CLionProjects/C-Course-Design/cmake-build-debug
