@@ -20,7 +20,7 @@
 #include "tools/process_bar.h"
 #include "tools/time_related.h"
 
-#define UNIX
+#define _UNIX
 #define INLINE __always_inline
 #define filename "hr.txt"
 #define infolen 71
@@ -302,7 +302,7 @@ INLINE char *get_mpl(Staff *staff)
 
 INLINE void load_hr_file()
 {
-#ifdef UNIX
+#ifdef _UNIX
         int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
 #endif
 #ifdef MINGW
@@ -338,7 +338,7 @@ INLINE void load_hr_file()
 
 INLINE void hr_sys_init()
 {
-        process_bar("loading hr system.");
+        //process_bar("loading hr system.");
         load_hr_file();
         usleep(1000*1000);
         printf(BOLD"*----------------------------------------------------*\n"NONE

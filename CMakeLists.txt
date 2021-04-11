@@ -19,6 +19,7 @@ SET(HEADER
         hr_sys.h
         ${TOOL_HEADER}
         )
+add_definitions(-std=gnu99)
 add_executable(test_hr
 
         ${HEADER}
