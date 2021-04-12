@@ -11,6 +11,7 @@ SET (TOOL_HEADER
         tools/print_color.h
         tools/process_bar.h
         tools/time_related.h
+        tools/quick_sort.h
         menu.h
         )
 
@@ -23,7 +24,10 @@ add_definitions(-std=gnu99)
 add_executable(test_hr
 
         ${HEADER}
-        Test/test_hr_sys_main.c)
+        hr_sys.c
+        tools/quick_sort.c
+        Test/test_hr_sys_main.c
+        )
 
 add_executable(test_time
         Test/test_time_related_main.c
