@@ -21,6 +21,9 @@ anywhere.
 
     ``time_related.h`` used for time-related work
    
+    ``quick_sort.h`` used for a generic sort algorithm
+
+   
     ``tools`` are welcomed to get contributed and adjusted,if you want to add 
    some small tools which are not system(the system you are developed) specified,just 
    add them into this file but make sure that the api is well designed and
