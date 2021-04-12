@@ -2,8 +2,18 @@
  * @author Yang Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/3/19
- *
  * 酒吧人力资源信息模块
+  1. 【增加】增加一条员工信息，可以从文件读入职员表，也可以终端输入一条员工信息。
+  2. 【修改】更改一条员工信息（即更改各个字段）。
+  3. 【删除】删除一条员工信息。
+  4. 【查询】能根据员工信息表的各个字段，检索查询并以适当的格式打印出该员工的信息。并对于异常能够给予处理（如员工不存在等）。也能查询某员工的其他信息字段。
+  5. 【排序】能够按照各个字段进行排序输出。
+  6. 【投诉】增加某员工的一条投诉信息。
+  7. 【打印】能打印所有的人员信息。
+  8. 【永久化】能把最新的员工信息，从内存输出存储到磁盘文件上。
+ *
+ *
+ *
  */
 #ifndef HR_SYS_H
 #define HR_SYS_H
@@ -23,6 +33,7 @@
 #define _UNIX
 #define INLINE __always_inline
 #define filename "hr.txt"
+// recd lenth in hr.txt
 #define infolen 71
 #define get_head(List) ((List)->head->next)
 #define get_pid(staff) ((staff)->pid)
@@ -597,16 +608,21 @@ WID:
 
 void _remove_worker(Staff *staff)
 {
+        if(staff==NULL){
+                return;
+        }
         //TODO change to double link list
-        Staff *head = get_head(HR_LIST);
-
-        Staff *prev=NULL;
-        while(head->next!=NULL){
-                if(strcmp(head->next->wid,staff->wid)==0) {
-                        prev=head;
+        Staff *head = HR_LIST->head;
+        Staff *prev=head;
+        Staff *pfirst=head->next;
+        while(pfirst!=NULL){
+                if(strcmp(pfirst->wid,staff->wid)==0) {
                         break;
                 }
+                prev=pfirst;
+                pfirst=pfirst->next;
         }
+        //head is this element
         prev->next=staff->next;
         staff->next=NULL;
         free(staff);
@@ -664,7 +680,7 @@ void flush_disk()
                         }
                         buf[diff+1]='\0';
                         len+=sprintf(info+len,"%s",buf);
-                        len+sprintf(info+len,"\r");
+                        len+=sprintf(info+len,"\r");
                 }
                 write(fd,info,infolen);
                 staff=staff->next;
@@ -675,19 +691,21 @@ void flush_disk()
 
 void free_hr_list()
 {
-        Staff *ptr =HR_LIST->head;
-
-        while(ptr->next!=NULL){
+        Staff *ptr = HR_LIST->head;
+        while (ptr->next != NULL) {
                 Staff *staff = ptr->next;
                 _remove_worker(staff);
         }
 }
 
-// called when exit the whole sys
+// called when exit the hr sys
 void exit_hr_sys()
 {
         flush_disk();
         free_hr_list();
+        printf(BOLD"*----------------------------------------------------*\n"NONE
+               BOLD"|  "BLINK UNDERLINE"Human resource system successfully exited!       "NONE"   |\n"NONE
+               BOLD"*----------------------------------------------------*\n\n"NONE );
 }
 
 void sync_hr_sys()

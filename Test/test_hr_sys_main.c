@@ -15,5 +15,6 @@ int main()
         print_menu();
         hr_sys_init();
         select_all();
+        exit_hr_sys();
         return 0;
 }
