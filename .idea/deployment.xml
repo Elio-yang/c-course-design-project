@@ -5,9 +5,10 @@
       <paths name="Remote Host (8a260a8e-2391-4340-b4dc-77cdded6caa5)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.D8rDhWUIdg" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/tmp.pIdETgMIBR" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-host" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-remote-host" />
           </excludedPaths>
         </serverdata>
@@ -15,7 +16,7 @@
       <paths name="remote_ubuntu">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/elio/Desktop/clion-compile" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/tmp/tmp.pIdETgMIBR" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
