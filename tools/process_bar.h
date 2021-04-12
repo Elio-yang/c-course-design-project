@@ -1,4 +1,5 @@
-/*
+/* Creating a dynamic loading process bar.
+ * tools/process_bar.h
  * @author Yang Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/3/19
@@ -16,9 +17,9 @@
 #define BLUE "\e[0;34m"
 #define RED "\e[0;31m"
 #define NONE "\e[0m"
-void process_bar();
+static void process_bar();
 
-void process_bar(char *loding_info)
+static void process_bar(char *loding_info)
 {
         printf(BLINK"\t\t%s\n"NONE,loding_info);
         char string[4]={'-','/','|','\\'};

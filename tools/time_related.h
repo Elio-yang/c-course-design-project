@@ -1,4 +1,4 @@
-/*
+/* System time related functions
  * tools/time_related.h
  * mainly used for system time related work
  * @author Elio Yang
@@ -45,7 +45,7 @@ typedef union{
  * like this format 202104042208
  * Usage : FormatTime *ft = current_sys_time();
  * */
-FormatTime *current_sys_time()
+static FormatTime *current_sys_time()
 {
         Time * sys_time =(Time *)malloc(sizeof(*sys_time));
         char buf[32];
@@ -71,7 +71,7 @@ FormatTime *current_sys_time()
 
 /* return the formatted time from a FormatTime var pointer
  * like this format : 2021-04-04 22:08 */
-char * format_time(FormatTime *ft)
+static char * format_time(FormatTime *ft)
 {
         char *format=(char*)malloc(sizeof(char)*format_time_len);
         char *sys_time=ft->whole_time;

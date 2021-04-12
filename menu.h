@@ -7,16 +7,16 @@
 #define CDESIGN_MENU_H
 #include <stdbool.h>
 #include<stdio.h>
-
+#define UNIX
 //if you want to compile under WIN10
-#ifdef _UNIX
+#ifdef UNIX
 #include "tools/print_color.h"
 #endif
 
 void print_menu();
 void print_menu()
 {
-#ifdef _UNIX
+#ifdef UNIX
         printf( REVERSE L_BLUE  "***************************************************************************************\n"NONE
                 REVERSE L_BLUE  "*                                      MENU                                           *\n"NONE
                 REVERSE L_BLUE  "***************************************************************************************\n"NONE
@@ -62,7 +62,7 @@ void print_menu()
                 "         4. West Lake Longjing              20.00 Yuan/cup, 65.00 Yuan/pot             \n"
                 "         5. Biluochun                       25.00 Yuan/cup, 75.00 Yuan/pot             \n"
                 "         6. Tie Guan Yin                    25.00 Yuan/cup, 75.00 Yuan/pot             \n"
-                "VI. Drinks.                                                                            \n"
+                "IV. Drinks.                                                                            \n"
                 "         1. Fresh milk                      25.00 Yuan                                 \n"
                 "         2. Dried ginger water              16.00 Yuan                                 \n"
                 "         3. pineapple juice                 27.00 Yuan                                 \n"
@@ -121,7 +121,7 @@ void print_menu()
                 "         4. West Lake Longjing              20.00 Yuan/cup, 65.00 Yuan/pot             \n"
                 "         5. Biluochun                       25.00 Yuan/cup, 75.00 Yuan/pot             \n"
                 "         6. Tie Guan Yin                    25.00 Yuan/cup, 75.00 Yuan/pot             \n"
-                "VI. Drinks.                                                                            \n"
+                "IV. Drinks.                                                                            \n"
                 "         1. Fresh milk                      25.00 Yuan                                 \n"
                 "         2. Dried ginger water              16.00 Yuan                                 \n"
                 "         3. pineapple juice                 27.00 Yuan                                 \n"
