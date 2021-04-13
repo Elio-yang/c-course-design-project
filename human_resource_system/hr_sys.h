@@ -27,10 +27,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "tools/print_color.h"
-#include "tools/process_bar.h"
-#include "tools/time_related.h"
-#include "tools/quick_sort.h"
+#include "../tools/print_color.h"
+#include "../tools/process_bar.h"
+#include "../tools/time_related.h"
+#include "../tools/quick_sort.h"
 
 #define UNIX
 #define INLINE inline
@@ -185,7 +185,7 @@ extern INLINE void select_gender();
 
 extern INLINE void select_all();
 
-void sort_by(Field field,int direction);
+extern void sort_by(Field field,int direction);
 
 extern void _insert_worker(Staff *staff);
 

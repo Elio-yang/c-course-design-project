@@ -5,10 +5,15 @@
  */
 
 // testing part
-#include "../hr_sys.h"
+#include "../human_resource_system/hr_sys.h"
+#include "../human_resource_system/hr_repl.h"
+#include <stdlib.h>
+#include <sys/wait.h>
 
 int main()
 {
+        int status;
+        int pid;
         hr_sys_init();
         Staff *staff = query_by_name("YANGYANG");
         switch_to_hr_sys(staff);
@@ -22,17 +27,31 @@ int main()
         select_by_gender(MALE);
         printf("***\n");
         select_by_rank(BOSS);
-        printf("***\n");
+        printf("***fork_test\n");
 
-        sort_by(NAME,0);
-        printf("***\n");
-        sort_by(PID,0);
-        printf("***\n");
-        sort_by(WID,0);
-        printf("***\n");
-        sort_by(DATE,0);
-        printf("***\n");
-        sort_by(SALARY,0);
+        char *argv[]={
+                "test_menu",
+                NULL
+        };
+        if(!fork()){
+                execve("test_menu",argv,NULL);
+                exit(2);
+        }
+        if((pid=wait(&status))>0){
+                printf("process %d exited\n",pid);
+                sort_by(NAME,0);
+                printf("***\n");
+                sort_by(PID,0);
+                printf("***\n");
+                sort_by(WID,0);
+                printf("***\n");
+                sort_by(DATE,0);
+                printf("***\n");
+                sort_by(SALARY,0);
+        }
+
+
+
 
 
 

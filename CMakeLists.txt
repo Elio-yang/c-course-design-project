@@ -17,14 +17,15 @@ SET (TOOL_HEADER
 
 
 SET(HEADER
-        hr_sys.h
+        human_resource_system/hr_sys.h
         ${TOOL_HEADER}
         )
 add_definitions(-std=gnu99)
 add_executable(test_hr
 
         ${HEADER}
-        hr_sys.c
+        human_resource_system/hr_sys.c
+        human_resource_system/hr_repl.c
         tools/quick_sort.c
         Test/test_hr_sys_main.c
         )
