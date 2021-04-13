@@ -164,6 +164,8 @@ extern Staff *query_by_wid(const char *id);
 
 extern Staff *query_by_name(const char *name);
 
+extern Staff *query_by_pid (const char *pid);
+
 extern INLINE void select_header_all();
 
 extern INLINE void print_f_select_all(Staff *staff);
@@ -183,6 +185,13 @@ extern INLINE void select_by_rank(Position rank);
 extern INLINE void select_name();
 
 extern INLINE void select_gender();
+
+extern INLINE void select_pid();
+
+extern INLINE void select_wid();
+
+extern INLINE void select_date();
+
 
 extern INLINE void select_all();
 

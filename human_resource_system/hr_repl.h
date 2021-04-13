@@ -19,7 +19,6 @@ typedef struct {
 
 
 extern InputBuffer *new_input_buffer(void);
-extern void delete_input_buffer(InputBuffer *inputBuffer);
 extern void read_input(InputBuffer *input_buffer);
 extern void print_help(void);
 extern void print_sign(void);

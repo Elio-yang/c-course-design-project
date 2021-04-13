@@ -34,12 +34,6 @@ void read_input(InputBuffer *input_buffer)
         input_buffer->buf[bytes_read - 1] = '\0';
 }
 
-void delete_input_buffer(InputBuffer *inputBuffer)
-{
-        free(inputBuffer->buf);
-        free(inputBuffer);
-}
-
 void print_hrsys_info(void)
 {
         char *buf = ordinary_time();
@@ -56,12 +50,35 @@ void print_hrsys_info(void)
 void print_help(void)
 {
         printf("Options:\n"
-               "  .open <filename>                     : open & load a .db file\n"
-               "  .exit                                : exits SQLdb\n"
-               "  .const                               : show related constants\n"
-               "  .tree                                : tree visualization\n"
-               "  select                               : show all rows\n"
-               "  insert <id> <username> <email>       : insert a row record\n"
+               "  .load <filename>                     : open & load a .txt file                \n"
+               "  .exit                                : exits hr_sys                           \n"
+               "  .sync                                : synchronize with disk file             \n"
+               "  select *                             : show all information                   \n"
+               "  select <field>                       : show field specified information       \n"
+               "                                         [available fields]: Name               \n"
+               "                                                             Pid                \n"
+               "                                                             Wid                \n"
+               "                                                             Gender MALE/FEMALE/*\n"
+               "                                                             RANK   BOSS/MANAGER/BARTENDER/COOK/CLEANER/CASHIER/WAREHOUSEMAN/FINANCE/*\n"
+               "                                                             Date               \n"
+               "  query  <index>                       : query by index                         \n"
+               "                                         [available index]: <Name>              \n"
+               "                                                            <Pid>               \n"
+               "                                                            <Wid>               \n"
+               "  sort by <field> <-d>                 : sort information by field              \n"
+               "                                         [available field]: <Name>              \n"
+               "                                                            <Pid>               \n"
+               "                                                            <Wid>               \n"
+               "                                                            <Date>              \n"
+               "                                                            <Salary>            \n"
+               "                                         [available direction]: -i   increasing order\n"
+               "                                                                -d   decreasing order\n"
+               "  delete <index>                       : delete a staff with index              \n"
+               "                                         [available index]: <Name>              \n"
+               "                                                            <Pid>               \n"
+               "                                                            <Wid>               \n"
+               "  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>     \n"
+               "  insert comp Name <Name> [Wid <Wid>]  <complaint message>                      \n"
         );
 }
 void print_init(void)

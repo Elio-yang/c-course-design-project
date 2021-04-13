@@ -48,14 +48,14 @@ static void process_bar(char *loding_info)
                         printf(RED"[%c]",string[i%4]);
                         printf(RED"[%s]\r",buf);
                         if(i==100){
-                                printf("\033[K");
+                                printf(CLEARLINE);
                         }
                 }
                 fflush(stdout);
                 usleep(50*1000);
         }
         printf(BLACK"\n"NONE);
-        printf("\033[1A");
+        printf(BACKLINE);
         printf(BOLD"loading done!\n"NONE);
 
         usleep(2000000);

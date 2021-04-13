@@ -14,21 +14,33 @@ SET (TOOL_HEADER
         tools/quick_sort.h
         menu.h
         )
-
-
-SET(HEADER
+SET(HR_HEADER
         human_resource_system/hr_repl.h
         human_resource_system/hr_sys.h
+        human_resource_system/hr_run.h
         ${TOOL_HEADER}
-        )
-add_definitions(-std=gnu99)
-add_executable(test_hr
 
-        ${HEADER}
+        )
+
+SET(HR_SRC
         human_resource_system/hr_sys.c
         human_resource_system/hr_repl.c
-        tools/quick_sort.c
+        human_resource_system/hr_run.c
         Test/test_hr_sys_main.c
+)
+
+SET(TOOL_SRC
+        tools/quick_sort.c
+
+)
+add_definitions(-std=gnu99)
+
+add_executable(test_hr
+
+        ${HR_HEADER}
+        ${HR_SRC}
+        ${TOOL_SRC}
+
         )
 
 add_executable(test_time
