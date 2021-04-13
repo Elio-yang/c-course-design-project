@@ -17,6 +17,7 @@ SET (TOOL_HEADER
 
 
 SET(HEADER
+        human_resource_system/hr_repl.h
         human_resource_system/hr_sys.h
         ${TOOL_HEADER}
         )

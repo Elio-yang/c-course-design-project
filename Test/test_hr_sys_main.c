@@ -7,13 +7,18 @@
 // testing part
 #include "../human_resource_system/hr_sys.h"
 #include "../human_resource_system/hr_repl.h"
-#include <stdlib.h>
 #include <sys/wait.h>
 
 int main()
 {
+        print_hrsys_info();
+
+
+
+
         int status;
         int pid;
+        process_bar("loading hr system");
         hr_sys_init();
         Staff *staff = query_by_name("YANGYANG");
         switch_to_hr_sys(staff);
@@ -33,11 +38,13 @@ int main()
                 "test_menu",
                 NULL
         };
+
         if(!fork()){
                 execve("test_menu",argv,NULL);
                 exit(2);
         }
         if((pid=wait(&status))>0){
+
                 printf("process %d exited\n",pid);
                 sort_by(NAME,0);
                 printf("***\n");
@@ -49,6 +56,7 @@ int main()
                 printf("***\n");
                 sort_by(SALARY,0);
         }
+
 
 
 

@@ -1,8 +1,9 @@
-/*
+/* declarations of hr system related
  * @author Yang Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/3/19
- * 酒吧人力资源信息模块
+
+  酒吧人力资源信息模块
   1. 【增加】增加一条员工信息，可以从文件读入职员表，也可以终端输入一条员工信息。
   2. 【修改】更改一条员工信息（即更改各个字段）。
   3. 【删除】删除一条员工信息。
@@ -35,7 +36,7 @@
 #define UNIX
 #define INLINE inline
 #define filename "hr.txt"
-// recd lenth in hr.txt
+// recd length in hr.txt
 #define infolen 71
 #define maxcomlen 255
 #define get_head(List) ((List)->head->next)

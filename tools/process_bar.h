@@ -47,6 +47,9 @@ static void process_bar(char *loding_info)
                 else{
                         printf(RED"[%c]",string[i%4]);
                         printf(RED"[%s]\r",buf);
+                        if(i==100){
+                                printf("\r                                                                                                                                                           \n");
+                        }
                 }
                 fflush(stdout);
                 usleep(50*1000);
@@ -54,6 +57,7 @@ static void process_bar(char *loding_info)
         printf(BLACK"\n"NONE);
         printf("\t\tloading done!\n");
         usleep(2000000);
+        memset(buf,0, sizeof(buf));
         //system("clear");
         fflush(stdout);
 }
