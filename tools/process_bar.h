@@ -21,7 +21,7 @@ static void process_bar();
 
 static void process_bar(char *loding_info)
 {
-        printf(BLINK"\t\t%s\n"NONE,loding_info);
+        printf(BOLD"%s ...\n"NONE,loding_info);
         char string[4]={'-','/','|','\\'};
         char buf[101]={0};
         int i=0;
@@ -48,14 +48,16 @@ static void process_bar(char *loding_info)
                         printf(RED"[%c]",string[i%4]);
                         printf(RED"[%s]\r",buf);
                         if(i==100){
-                                printf("\r                                                                                                                                                           \n");
+                                printf("\033[K");
                         }
                 }
                 fflush(stdout);
                 usleep(50*1000);
         }
         printf(BLACK"\n"NONE);
-        printf("\t\tloading done!\n");
+        printf("\033[1A");
+        printf(BOLD"loading done!\n"NONE);
+
         usleep(2000000);
         memset(buf,0, sizeof(buf));
         //system("clear");
