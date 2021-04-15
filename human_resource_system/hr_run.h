@@ -15,7 +15,7 @@
 typedef enum {
         META_COMMAND_SUCCESS,
         META_COMMAND_UNRECOGNIZED_COMMAND,
-        META_OPEN_SUCCESS
+        META_COMMAND_FAIL,
 } Meta_command_result;
 
 typedef enum {
@@ -32,6 +32,7 @@ typedef enum {
 
 
 extern void logic_repl();
+extern Meta_command_result do_meta_command(InputBuffer*inputBuffer);
 
 
 

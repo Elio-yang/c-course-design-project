@@ -749,6 +749,7 @@ void exit_hr_sys()
         printf(BOLD"*----------------------------------------------------*\n"NONE
                BOLD"|  "BLINK UNDERLINE"Human resource system successfully exited!       "NONE" |\n"NONE
                BOLD"*----------------------------------------------------*\n\n"NONE);
+        exit(0);
 }
 
 void sync_hr_sys()

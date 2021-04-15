@@ -56,7 +56,8 @@ static void process_bar(char *loding_info)
         }
         printf(BLACK"\n"NONE);
         printf(BACKLINE);
-        printf(BOLD"loading done!\n"NONE);
+        printf(BACKLINE);
+        printf(BOLD"Loading done! Welcome using human resource system !\n"NONE);
 
         usleep(2000000);
         memset(buf,0, sizeof(buf));

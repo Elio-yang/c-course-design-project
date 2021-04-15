@@ -155,7 +155,7 @@ extern INLINE char *get_mpl(Staff *staff);
 /*-----------------------------------APIs----------------------------------------------*/
 extern INLINE bool switch_to_hr_sys(Staff *staff);
 
-extern INLINE void load_hr_file();
+extern INLINE void load_hr_file(const char*filename);
 
 extern INLINE void hr_sys_init();
 

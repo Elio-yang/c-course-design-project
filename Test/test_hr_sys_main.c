@@ -7,6 +7,7 @@
 // testing part
 #include "../human_resource_system/hr_sys.h"
 #include "../human_resource_system/hr_repl.h"
+#include "../human_resource_system/hr_run.h"
 #include <sys/wait.h>
 
 int main()
@@ -14,14 +15,13 @@ int main()
         print_hrsys_info();
         print_init();
         hr_sys_init();
-
-        print_help();
-
+       // print_help();
+        logic_repl();
 
 
         int status;
         int pid;
-        process_bar("loading hr system");
+        process_bar("Loading hr system");
         Staff *staff = query_by_name("YANGYANG");
         switch_to_hr_sys(staff);
 
