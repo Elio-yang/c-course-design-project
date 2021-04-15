@@ -17,8 +17,6 @@
 #define BLUE "\e[0;34m"
 #define RED "\e[0;31m"
 #define NONE "\e[0m"
-static void process_bar();
-
 static void process_bar(char *loding_info)
 {
         printf(BOLD"%s ...\n"NONE,loding_info);
