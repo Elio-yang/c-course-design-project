@@ -6,6 +6,8 @@
 
 #include "hr_sys.h"
 #include "hr_run.h"
+#include "../tools/regex_match.h"
+
 
 Meta_command_result do_meta_command(InputBuffer *inputBuffer)
 {
@@ -32,16 +34,15 @@ Meta_command_result do_meta_command(InputBuffer *inputBuffer)
                         fprintf(stderr,"Must supply a .txt filename.\n");
                         return META_COMMAND_FAIL;
                 }
-                char cps[255];
-                strcpy(cps, filename);
-                char *pre= strtok(NULL,".");
-                char *bac= strtok(NULL,".");
-                if(strcmp(bac,"txt")!=0){
-                        fprintf(stderr,"Must be a .txt file.\n");
+
+                int status = match_pattern(filename,txt_file_reg);
+                if(status==-1){
+                        fprintf(stderr,"Must supply a .txt filename.\n");
                         return META_COMMAND_FAIL;
                 }
+
                 sync_hr_sys();
-                load_hr_file(cps);
+                load_hr_file(filename);
                 return META_COMMAND_SUCCESS;
         }
 
