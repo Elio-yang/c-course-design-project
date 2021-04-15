@@ -330,9 +330,9 @@ INLINE void hr_sys_init()
         label:
         printf("filename > :");
         read_input(file_input);
-        int flag = match_pattern(file_input->buf,txt_file_reg);
+        int flag = match_pattern(file_input->buf, TXT_FILE_REG);
         if(flag==-1){
-                fprintf(stderr,"Please input a xxx.txt file.\n");
+                fprintf(stderr,"Please input a correct xxx.txt file without any special characters.\n");
                 goto label;
 
         }

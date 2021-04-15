@@ -27,8 +27,15 @@ typedef enum {
 } Prepare_result;
 
 typedef enum {
+        STATEMENT_INSERT,
+        STATEMENT_SELECT
+} Statement_type;
+
+
+typedef enum {
         EXECUTE_SUCCESS,EXECUTE_TABLE_FULL,UNKOWN
 }Execute_result;
+
 
 
 extern void logic_repl();

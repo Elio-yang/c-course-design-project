@@ -35,7 +35,7 @@ Meta_command_result do_meta_command(InputBuffer *inputBuffer)
                         return META_COMMAND_FAIL;
                 }
 
-                int status = match_pattern(filename,txt_file_reg);
+                int status = match_pattern(filename, TXT_FILE_REG);
                 if(status==-1){
                         fprintf(stderr,"Must supply a .txt filename.\n");
                         return META_COMMAND_FAIL;
@@ -58,9 +58,10 @@ void logic_repl()
                 print_sign();
                 read_input(input);
                 //meta command
-                if (input->buf[0]=='.'){
-                        switch (do_meta_command(input)) {
+                char *real_cmd= strtok(input->buf," ");
 
+                if (real_cmd[0]=='.'){
+                        switch (do_meta_command(input)) {
                                 case META_COMMAND_FAIL:
                                 case META_COMMAND_SUCCESS:
                                         continue;
@@ -71,6 +72,7 @@ void logic_repl()
                                         continue;
                         }
                 }
+
         }
 }
 

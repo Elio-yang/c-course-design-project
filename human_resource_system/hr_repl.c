@@ -87,7 +87,7 @@ void print_help(void)
                "                                                            <Wid>                               \n"
                "                                         [sample]: delete YangYang                              \n"
                "  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>                     \n"
-               "  insert comp Name <Name> [Wid <Wid>]  <complaint message>                                      \n"
+               "  insert comp <Wid>  <complaint message>                                                        \n"
                "  ps: All inputs are not case-sensitive                                                         \n"
                NONE
         );
