@@ -7,6 +7,9 @@
 
 #ifndef CDESIGN_HR_REPL_H
 #define CDESIGN_HR_REPL_H
+#include "../tools/print_color.h"
+#include <stddef.h>
+#include <stdio.h>
 
 #define nullptr NULL
 

@@ -12,14 +12,16 @@
 int main()
 {
         print_hrsys_info();
+        print_init();
+        hr_sys_init();
 
+        print_help();
 
 
 
         int status;
         int pid;
         process_bar("loading hr system");
-        hr_sys_init();
         Staff *staff = query_by_name("YANGYANG");
         switch_to_hr_sys(staff);
 

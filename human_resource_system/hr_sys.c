@@ -286,7 +286,7 @@ INLINE bool switch_to_hr_sys(Staff *staff)
 
 }
 
-INLINE void load_hr_file()
+INLINE void load_hr_file(const char *filename)
 {
 #ifdef UNIX
         int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
@@ -325,7 +325,9 @@ INLINE void load_hr_file()
 INLINE void hr_sys_init()
 {
         //process_bar("loading hr system.");
-        load_hr_file();
+        InputBuffer *file_input = new_input_buffer();
+        read_input(file_input);
+        load_hr_file(file_input->buf);
         usleep(1000 * 1000);
         printf(BOLD"*----------------------------------------------------*\n"NONE
                BOLD"|  "BLINK UNDERLINE"Human resource system successfully initialized!"NONE"   |\n"NONE

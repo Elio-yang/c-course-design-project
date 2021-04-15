@@ -8,6 +8,10 @@
 #define CDESIGN_HR_RUN_H
 
 
+#include "hr_run.h"
+#include "hr_repl.h"
+#include "hr_sys.h"
+
 typedef enum {
         META_COMMAND_SUCCESS,
         META_COMMAND_UNRECOGNIZED_COMMAND,
@@ -27,7 +31,7 @@ typedef enum {
 }Execute_result;
 
 
-
+extern void logic_repl();
 
 
 

@@ -32,10 +32,11 @@
 #include "../tools/process_bar.h"
 #include "../tools/time_related.h"
 #include "../tools/quick_sort.h"
+#include "hr_repl.h"
 
 #define UNIX
 #define INLINE inline
-#define filename "hr.txt"
+//#define filename "hr.txt"
 // recd length in hr.txt
 #define infolen 71
 #define maxcomlen 255
