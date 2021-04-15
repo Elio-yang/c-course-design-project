@@ -6,7 +6,7 @@
  */
 
 #include "hr_sys.h"
-
+#include "../tools/regex_match.h"
 hr_list *HR_LIST;
 comp_list *COMP_LIST;
 
@@ -322,11 +322,21 @@ INLINE void load_hr_file(const char *filename)
         }
 }
 
+
 INLINE void hr_sys_init()
 {
         //process_bar("loading hr system.");
         InputBuffer *file_input = new_input_buffer();
+        label:
+        printf("filename > :");
         read_input(file_input);
+        int flag = match_pattern(file_input->buf,txt_file_reg);
+        if(flag==-1){
+                fprintf(stderr,"Please input a xxx.txt file.\n");
+                goto label;
+
+        }
+        char *relname = strtok(file_input->buf," ");
         load_hr_file(file_input->buf);
         usleep(1000 * 1000);
         printf(BOLD"*----------------------------------------------------*\n"NONE

@@ -95,5 +95,4 @@ void print_help(void)
 void print_init(void)
 {
         printf("Must input a human resource filename(ended with .txt) first.\n");
-        printf("filename > :");
 }

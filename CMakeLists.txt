@@ -12,6 +12,7 @@ SET (TOOL_HEADER
         tools/process_bar.h
         tools/time_related.h
         tools/quick_sort.h
+        tools/regex_match.h
         menu.h
         )
 SET(HR_HEADER
