@@ -31,13 +31,13 @@ Meta_command_result do_meta_command(InputBuffer *inputBuffer)
         if(!strcmp(meta,".load")){
                 char *filename= strtok(NULL," ");
                 if(filename==nullptr){
-                        fprintf(stderr,"Must supply a .txt filename.\n");
+                        fprintf(stderr,"Must supply a "BOLD".txt"NONE" filename.\n");
                         return META_COMMAND_FAIL;
                 }
 
                 int status = match_pattern(filename, TXT_FILE_REG);
                 if(status==-1){
-                        fprintf(stderr,"Must supply a .txt filename.\n");
+                        fprintf(stderr,"Must supply a correct "BOLD".txt"NONE" filename(a-zA-Z0-9_.) without any special characters.\n");
                         return META_COMMAND_FAIL;
                 }
 
@@ -58,8 +58,16 @@ void logic_repl()
                 print_sign();
                 read_input(input);
                 //meta command
-                char *real_cmd= strtok(input->buf," ");
+                char *real_cmd=nullptr;
+                if(input->buf[0]==' '){
+                        real_cmd= strtok(input->buf," ");
+                }else{
+                        real_cmd=input->buf;
+                }
 
+                if(*real_cmd==0){
+                        continue;
+                }
                 if (real_cmd[0]=='.'){
                         switch (do_meta_command(input)) {
                                 case META_COMMAND_FAIL:
@@ -72,6 +80,43 @@ void logic_repl()
                                         continue;
                         }
                 }
+//
+//select *                             : show all information
+//select <field>                       : show field specified information
+//                                        [available fields]:   NAME
+//                                                              PID
+//                                                              WID
+//                                                              GENDER MALE/FEMALE/*
+//                                                              RANK   BOSS/MANAGER/BARTENDER
+//                                                                    COOK/CLEANER/CASHIER
+//                                                                    WAREHOUSEMAN/FINANCE/*
+//                                                              DATE
+//                                         [sample]: select NAME
+//                                                   select GENDER MALE
+//  query  <index>                       : query by index
+//                                         [available index]: <Name>
+//                                                            <Pid>
+//                                                            <Wid>
+//                                         [sample]: query YangYang
+//  sort by <field> <-d>                 : sort information by field
+//                                         [available field]:  NAME
+//                                                             PID
+//                                                             WID
+//                                                             DATE
+//                                                             SALARY
+//                                         [available direction]: -i   increasing order
+//                                                                -d   decreasing order
+//                                         [sample]: sort by NAME -i
+//                                         [default]: -i specified
+//  delete <index>                       : delete a staff with index
+//                                         [available index]: <Name>
+//                                                            <Pid>
+//                                                            <Wid>
+//                                         [sample]: delete YangYang
+//  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
+//  insert comp <Wid>  <complaint message>
+
+
 
         }
 }

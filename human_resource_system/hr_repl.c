@@ -19,7 +19,7 @@ InputBuffer *new_input_buffer()
 
 void print_sign(void)
 {
-        printf("hr > ");
+        printf(GREEN BOLD"wyz-bar@hr "NONE"$ ");
 }
 
 void read_input(InputBuffer *input_buffer)
