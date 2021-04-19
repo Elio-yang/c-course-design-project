@@ -10,9 +10,19 @@
 
 int main()
 {
-        struct public_key_class pub[1];
-        struct private_key_class priv[1];
-        rsa_gen_keys(pub,priv,PRIME_SOURCE_FILE);
+        struct public_key_class pub[1]={
+                {
+                        .modulus=1302169711,
+                        .exponent=131073
+                }
+        };
+        struct private_key_class priv[1]={
+                {
+                        .modulus=1302169711,
+                        .exponent=533053217
+                }
+        };
+//        rsa_gen_keys(pub,priv,PRIME_SOURCE_FILE);
         char message[]="882323";
         int i;
         printf("Original:\n");

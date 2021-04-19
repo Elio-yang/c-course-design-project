@@ -13,6 +13,7 @@ SET (TOOL_HEADER
         tools/time_related.h
         tools/quick_sort.h
         tools/regex_match.h
+        tools/rsa.h
         menu.h
         )
 SET(HR_HEADER
@@ -32,9 +33,11 @@ SET(HR_SRC
 
 SET(TOOL_SRC
         tools/quick_sort.c
+        tools/rsa.c
 
 )
 add_definitions(-std=gnu99)
+link_libraries(pthread)
 
 add_executable(test_hr
 
@@ -44,6 +47,7 @@ add_executable(test_hr
 
         )
 
+
 add_executable(test_time
         Test/test_time_related_main.c
         )
@@ -51,3 +55,12 @@ add_executable(test_time
 add_executable(test_menu
         Test/test_menu.c
 )
+
+set(RSA_HEADER
+        RSA-Library/rsa.c
+        RSA-Library/rsa.h
+)
+add_executable(test_rsa
+        ${RSA_HEADER}
+        Test/test_sra.c
+        )
