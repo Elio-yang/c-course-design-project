@@ -323,9 +323,8 @@ INLINE void load_hr_file(const char *filename)
 }
 
 
-INLINE void hr_sys_init()
+INLINE void _init()
 {
-        //process_bar("loading hr system.");
         InputBuffer *file_input = new_input_buffer();
         label:
         printf("filename > :");
@@ -337,13 +336,65 @@ INLINE void hr_sys_init()
 
         }
         char *relname = strtok(file_input->buf," ");
-        load_hr_file(file_input->buf);
+        load_hr_file(relname);
         usleep(1000 * 1000);
         printf(BOLD"*----------------------------------------------------*\n"NONE
                BOLD"|  "BLINK UNDERLINE"Human resource system successfully initialized!"NONE"   |\n"NONE
                BOLD"*----------------------------------------------------*\n\n"NONE);
 }
 
+unsigned int bkdr_hash(const char* key)
+{
+        char passwd[25];
+        strcpy(passwd,key);
+        char *str = passwd;
+        register unsigned int seed = 31;
+        register unsigned int hash = 0;
+        while (*str) {
+                hash = hash * seed + (*str++);
+        }
+        return hash;
+}
+
+
+
+
+
+INLINE bool passwd_check(const char *passwd)
+{
+
+
+
+}
+
+
+pthread_mutex_t REPL_LOCK = PTHREAD_MUTEX_INITIALIZER;
+static int getpswd_t =0;
+extern INLINE void get_authority()
+{
+        _init();
+        pthread_mutex_lock(&REPL_LOCK);
+        get_passwd:
+        printf("Please enter your password :");
+        set_tty_mode(SAVE);
+        set_no_echo();
+        InputBuffer *input = new_input_buffer();
+        read_input(input);
+        set_tty_mode(RECOVERY);
+
+        bool authority = passwd_check(input->buf);
+        getpswd_t++;
+        //5 times permit
+        if(getpswd_t > 5){
+                _exit(EXIT_FAILURE);
+        }
+        if(authority){
+                return;
+        }else{
+                goto get_passwd;
+        }
+
+}
 INLINE void print_worker_info(Staff *staff)
 {
         printf(""

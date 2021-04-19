@@ -33,6 +33,7 @@
 #include "../tools/time_related.h"
 #include "../tools/quick_sort.h"
 #include "hr_repl.h"
+#include <pthread.h>
 
 #define UNIX
 #define INLINE inline
@@ -157,9 +158,13 @@ extern INLINE bool switch_to_hr_sys(Staff *staff);
 
 extern INLINE void load_hr_file(const char*filename);
 
-extern INLINE void hr_sys_init();
+extern INLINE void _init();
+
+extern INLINE void get_authority();
 
 extern INLINE void print_worker_info(Staff *staff);
+
+extern INLINE bool passwd_check(const char *passwd);
 
 extern Staff *query_by_wid(const char *id);
 
