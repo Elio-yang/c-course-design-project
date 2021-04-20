@@ -35,6 +35,7 @@ SET(TOOL_SRC
 
 )
 add_definitions(-std=gnu99)
+link_libraries(pthread)
 
 add_executable(test_hr
 
@@ -44,6 +45,7 @@ add_executable(test_hr
 
         )
 
+
 add_executable(test_time
         Test/test_time_related_main.c
         )
@@ -51,3 +53,14 @@ add_executable(test_time
 add_executable(test_menu
         Test/test_menu.c
 )
+
+set(RSA_HEADER
+        tools/rsa.c
+        tools/rsa.h
+)
+add_executable(test_rsa
+        human_resource_system/hr_repl.h
+        ${RSA_HEADER}
+        Test/encryption.c
+        human_resource_system/hr_repl.c
+        )

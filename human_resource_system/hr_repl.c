@@ -5,8 +5,10 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include "hr_repl.h"
 #include "../tools/time_related.h"
+
 
 InputBuffer *new_input_buffer()
 {
@@ -19,7 +21,7 @@ InputBuffer *new_input_buffer()
 
 void print_sign(void)
 {
-        printf("hr > ");
+        printf(GREEN BOLD"wyz-bar@hr "NONE"$ ");
 }
 
 void read_input(InputBuffer *input_buffer)
@@ -45,6 +47,7 @@ void print_hrsys_info(void)
                "| Copyright (c) 2021 Elio-yang  alone-yue jakiejoe       |\n"
                "*--------------------------------------------------------*\n"
                "Enter \".help\" for usage hints.\n", buf);
+        print_init();
 }
 
 void print_help(void)
@@ -92,7 +95,68 @@ void print_help(void)
                NONE
         );
 }
+
 void print_init(void)
 {
         printf("Must input a human resource filename(ended with .txt) first.\n");
+}
+
+
+void set_tty_mode(HOW how)
+{
+        static struct termios ori_mode;
+        static int ori_flag;
+        if (how == SAVE) {
+                tcgetattr(0, &ori_mode);
+                ori_flag = fcntl(0, F_GETFL);
+        } else if (how == RECOVERY) {
+                tcsetattr(0, TCSANOW, &ori_mode);
+                fcntl(0, F_SETFL, ori_flag);
+        }
+}
+
+void set_no_echo()
+{
+        struct termios tty_state;
+        tcgetattr(0, &tty_state);
+        tty_state.c_cflag &= ~ECHO;
+        tcsetattr(0, TCSANOW, &tty_state);
+}
+
+int get_response(const char *tips)
+{
+        int input;
+        printf("%s(y/n)\n", tips);
+        fflush(stdout);
+        while (1) {
+
+                int c;
+                while ((c = getchar()) != EOF && strchr("nNyY", c) == NULL) { ;
+                }
+                input = tolower(c);
+                if (input == 'y') {
+                        _exit(0);
+                }
+                if (input == 'n') {
+                        return -1;
+                }
+        }
+}
+
+//set char-by-char &
+void set_cr_nbuf()
+{
+        struct termios tty_state;
+        tcgetattr(0, &tty_state);
+        tty_state.c_cflag &= ~ICANON;
+        tty_state.c_cc[VMIN] = 1;
+        tcsetattr(0, TCSANOW, &tty_state);
+}
+
+void set_nodelay()
+{
+        int flags;
+        flags= fcntl(0,F_GETFL);
+        flags|=O_NDELAY;
+        fcntl(0,F_SETFL,flags);
 }
