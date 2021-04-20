@@ -158,7 +158,7 @@ extern INLINE bool switch_to_hr_sys(Staff *staff);
 
 extern INLINE void load_hr_file(const char*filename);
 
-extern INLINE void _init();
+extern INLINE void sys_init();
 
 extern INLINE void get_authority();
 

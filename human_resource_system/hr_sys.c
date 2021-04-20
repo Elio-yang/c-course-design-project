@@ -323,7 +323,7 @@ INLINE void load_hr_file(const char *filename)
 }
 
 
-INLINE void _init()
+INLINE void sys_init()
 {
         InputBuffer *file_input = new_input_buffer();
         label:
@@ -372,7 +372,7 @@ pthread_mutex_t REPL_LOCK = PTHREAD_MUTEX_INITIALIZER;
 static int getpswd_t =0;
 extern INLINE void get_authority()
 {
-        _init();
+        sys_init();
         pthread_mutex_lock(&REPL_LOCK);
         get_passwd:
         printf("Please enter your password :");

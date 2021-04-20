@@ -119,7 +119,7 @@ void set_no_echo()
 {
         struct termios tty_state;
         tcgetattr(0, &tty_state);
-        tty_state.c_cflag &= ~ECHO;
+        tty_state.c_cflag &= ~(ECHO | ECHOE | ECHOK);
         tcsetattr(0, TCSANOW, &tty_state);
 }
 
@@ -143,7 +143,7 @@ int get_response(const char *tips)
         }
 }
 
-//set char-by-char &
+//set char-by-char & nobuf
 void set_cr_nbuf()
 {
         struct termios tty_state;
@@ -152,7 +152,7 @@ void set_cr_nbuf()
         tty_state.c_cc[VMIN] = 1;
         tcsetattr(0, TCSANOW, &tty_state);
 }
-
+// set no delay
 void set_nodelay()
 {
         int flags;
