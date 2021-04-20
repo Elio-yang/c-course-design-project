@@ -11,7 +11,7 @@
 #include <regex.h>
 
 
-#define TXT_FILE_REG      "^[\\w.]+\\.txt[ ]*$"
+#define TXT_FILE_REG      "^[a-zA-Z0-9_\\.]+\\.txt[ ]*$"
 #define SELECT_All_REG    "^[ ]*select[ ]+\\*[ ]*$"
 #define SELECT_NAME_REG   "^[ ]*select[ ]+NAME[ ]*$"
 #define SELECT_PID_REG    "^[ ]*select[ ]+PID[ ]*$"
