@@ -58,7 +58,7 @@ set(RSA_HEADER
         tools/rsa.c
         tools/rsa.h
 )
-add_executable(test_rsa
+add_executable(login
         human_resource_system/hr_repl.h
         ${RSA_HEADER}
         Test/encryption.c

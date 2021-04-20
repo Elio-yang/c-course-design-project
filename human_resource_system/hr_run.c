@@ -68,6 +68,7 @@ void logic_repl()
                 if(*real_cmd==0){
                         continue;
                 }
+                // throw the first blank
                 if (real_cmd[0]=='.'){
                         switch (do_meta_command(input)) {
                                 case META_COMMAND_FAIL:
@@ -80,7 +81,6 @@ void logic_repl()
                                         continue;
                         }
                 }
-//
 //select *                             : show all information
 //select <field>                       : show field specified information
 //                                        [available fields]:   NAME

@@ -343,57 +343,26 @@ INLINE void sys_init()
                BOLD"*----------------------------------------------------*\n\n"NONE);
 }
 
-unsigned int bkdr_hash(const char* key)
-{
-        char passwd[25];
-        strcpy(passwd,key);
-        char *str = passwd;
-        register unsigned int seed = 31;
-        register unsigned int hash = 0;
-        while (*str) {
-                hash = hash * seed + (*str++);
-        }
-        return hash;
-}
-
-
-
-
-
-INLINE bool passwd_check(const char *passwd)
-{
-
-
-
-}
-
 
 pthread_mutex_t REPL_LOCK = PTHREAD_MUTEX_INITIALIZER;
-static int getpswd_t =0;
 extern INLINE void get_authority()
 {
         sys_init();
+        int status;
         pthread_mutex_lock(&REPL_LOCK);
-        get_passwd:
-        printf("Please enter your password :");
-        set_tty_mode(SAVE);
-        set_no_echo();
-        InputBuffer *input = new_input_buffer();
-        read_input(input);
-        set_tty_mode(RECOVERY);
-
-        bool authority = passwd_check(input->buf);
-        getpswd_t++;
-        //5 times permit
-        if(getpswd_t > 5){
-                _exit(EXIT_FAILURE);
+        if(!fork()){
+                 char * const argv[]={
+                        "login",
+                        NULL
+                };
+                execv("/tmp/tmp.pIdETgMIBR/cmake-build-debug-remote-host/../bin/login",argv);
         }
-        if(authority){
-                return;
-        }else{
-                goto get_passwd;
+        wait(&status);
+        if(status==2){
+                exit_hr_sys();
+        }else {
+                pthread_mutex_unlock(&REPL_LOCK);
         }
-
 }
 INLINE void print_worker_info(Staff *staff)
 {

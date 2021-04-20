@@ -23,7 +23,6 @@ int main()
         if(cnt>=5){
 
                 get_response("Please give another try after 5 minutes or EXIT system?");
-
                 sleep(60*5);
         }
         printf("Please enter a 8-bit passwd : \n");
@@ -59,5 +58,5 @@ int main()
                 }
         }
         free(encrypted);
-        return 0;
+        _exit(0);
 }

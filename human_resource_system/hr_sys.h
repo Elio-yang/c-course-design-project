@@ -34,6 +34,7 @@
 #include "../tools/quick_sort.h"
 #include "hr_repl.h"
 #include <pthread.h>
+#include <sys/wait.h>
 
 #define UNIX
 #define INLINE inline
