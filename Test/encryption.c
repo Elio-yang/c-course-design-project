@@ -22,28 +22,41 @@ int main()
         cnt++;
         if(cnt>=5){
                 set_tty_mode(SAVE);
-                set_cr_nbuf();
-                set_no_echo();
+                set_mode();
                 set_nodelay();
-                int res=get_response("Please give another try after 5 minutes or EXIT system?");
+                get_response("Please give another try after 5 minutes or EXIT system?");
                 set_tty_mode(RECOVERY);
                 sleep(60*5);
         }
         printf("Please enter your passwd : ");
         set_tty_mode(SAVE);
-        set_no_echo();
-        InputBuffer *input = new_input_buffer();
-        read_input(input);
+        char passwd[255];
+        set_mode();
+        int c,idx=0;
+        do{
+                c=getchar();
+                if(c!='\r' && c!='\n' &&c!=127){
+                        passwd[idx++]=c;
+                }
+                else if((c!='\r' | c!='\n') && c==127){
+                        if(idx>0){
+                                idx--;
+                                printf("\b \b");
+                        }
+                }
+        }while(c!='\n' && c!='\r' && idx <244);
+        passwd[idx]='\0';
         set_tty_mode(RECOVERY);
-        if(input->input_len >25){
+
+        if(idx-1 >25){
                 fprintf(stderr,"Password must be no more than 6 bits.\n");
                 goto passwd;
         }
-        if(input->input_len <8){
+        if(idx-1 <8){
                 printf(RED"Wrong password.\n"NONE);
                 goto passwd;
         }
-        char *message= input->buf;
+        char *message= passwd;
         int i;
         long long *encrypted = rsa_encrypt(message, sizeof(message), pub);
         if (!encrypted){
