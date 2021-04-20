@@ -163,7 +163,7 @@ void set_mode()
 
 }
 
-int mygetch()
+int tty_getc()
 {
         struct termios oldt, newt;
         int ch;
@@ -176,27 +176,26 @@ int mygetch()
         return ch;
 }
 
-int getpasswd(char *passwd, int size)
+int get_passwd(char *passwd, int size)
 {
         int c, n = 0;
         do
         {
-                c = mygetch();
+                c = tty_getc();
                 if (c != '\n' && c != 'r' && c != 127)
                 {
                         passwd[n] = c;
-                        printf("*");
                         n++;
                 }
-                else if ((c != '\n' | c != '\r') && c == 127)//判断是否是回车或则退格
+                else if ((c != '\n' | c != '\r') && c == 127)
                 {
                         if (n > 0)
                         {
                                 n--;
-                                printf("\b \b");//输出退格
+                                printf("\b \b");
                         }
                 }
         }while (c != '\n' && c != '\r' && n < (size - 1));
-        passwd[n] = '\0';//消除一个多余的回车
+        passwd[n] = '\0';
         return n;
 }
