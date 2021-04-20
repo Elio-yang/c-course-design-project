@@ -12,6 +12,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <ctype.h>
 #include <termios.h>
 
 #define nullptr NULL
@@ -36,6 +37,9 @@ extern void print_init(void);
 
 extern void set_tty_mode(HOW how);
 extern void set_no_echo();
+extern int get_response(const char *tips);
+extern void set_cr_nbuf();
+extern void set_nodelay();
 
 
 
