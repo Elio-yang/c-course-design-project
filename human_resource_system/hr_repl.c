@@ -117,15 +117,15 @@ void set_tty_mode(HOW how)
 
 int get_response(const char *tips) {
         int input;
-        printf("%s(y/n)\n", tips);
-        fflush(stdout);
+        printf("%s(y/n):", tips);
         while (1) {
 
                 int c;
-                while ((c = getchar()) != EOF && strchr("nNyY", c) == NULL) { ;
+                while ((c = tty_getc(1)) != EOF && strchr("nNyY", c) == NULL) { ;
                 }
                 input = tolower(c);
                 if (input == 'y') {
+                        printf("\n");
                         _exit(0);
                 }
                 if (input == 'n') {
@@ -134,32 +134,19 @@ int get_response(const char *tips) {
         }
 }
 
-void set_nodelay()
-{
-        int flags;
-        flags= fcntl(STDIN_FILENO,F_GETFL);
-        flags|=O_NDELAY;
-        fcntl(STDIN_FILENO,F_SETFL,flags);
-}
-
-//noecho && chr-by-chr && nodelay
-void set_mode()
-{
-        struct termios tty_state;
-        tcgetattr(STDIN_FILENO, &tty_state);
-        tty_state.c_cflag &= ~ECHO;
-        tty_state.c_cflag &= ~ICANON;
-        tcsetattr(STDIN_FILENO, TCSANOW, &tty_state);
-
-
-}
-
-int tty_getc()
+int tty_getc(int single)
 {
         struct termios oldt, newt;
         int ch;
         tcgetattr(STDIN_FILENO, &oldt);
         newt = oldt;
+        if(single==1){
+                int flags;
+                flags= fcntl(STDIN_FILENO,F_GETFL);
+                newt.c_cc[VMIN]=1;
+                flags|=O_NDELAY;
+                fcntl(STDIN_FILENO,F_SETFL,flags);
+        }
         newt.c_lflag &= ~(ICANON | ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
         ch = getchar();
@@ -172,7 +159,7 @@ int get_passwd(char *passwd, int size)
         int c, n = 0;
         do
         {
-                c = tty_getc();
+                c = tty_getc(0);
                 if (c != '\n' && c != 'r' && c != 127)
                 {
                         passwd[n] = c;

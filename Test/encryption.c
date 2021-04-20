@@ -21,25 +21,20 @@ int main()
         passwd:
         cnt++;
         if(cnt>=5){
-                set_tty_mode(SAVE);
-                set_mode();
-                set_nodelay();
+
                 get_response("Please give another try after 5 minutes or EXIT system?");
-                set_tty_mode(RECOVERY);
+
                 sleep(60*5);
         }
-        printf("Please enter your passwd : ");
+        printf("Please enter a 8-bit passwd : \n");
         char passwd[255];
         get_passwd(passwd,255);
         size_t idx= strlen(passwd);
-        if(idx >25){
-                fprintf(stderr,"Password must be no more than 6 bits.\n");
-                goto passwd;
-        }
-        if(idx <8){
+        if(idx !=8){
                 printf(RED"Wrong password.\n"NONE);
                 goto passwd;
         }
+
         char *message= passwd;
         int i;
         long long *encrypted = rsa_encrypt(message, sizeof(message), pub);
@@ -47,11 +42,6 @@ int main()
                 fprintf(stderr, "Error in encryption!\n");
                 _exit(EXIT_FAILURE);
         }
-        printf("Your keys :\n");
-        for(i=0; i < strlen(message); i++){
-                printf("%lld\n", (long long)encrypted[i]);
-        }
-
         long long keys[]={
                 (long long)1483281149,
                 (long long)1483281149,
@@ -62,8 +52,7 @@ int main()
                 (long long)542371566,
                 (long long)5245340233
         };
-
-        for(i=0;i< strlen(message);i++){
+        for(i=0;i< strlen(message) && i<8;i++){
                 if(keys[i]!=encrypted[i]){
                         printf(RED"Wrong password.\n"NONE);
                         goto passwd;

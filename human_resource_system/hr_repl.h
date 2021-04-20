@@ -40,7 +40,7 @@ extern void set_no_echo();
 extern int get_response(const char *tips);
 extern void set_nodelay();
 extern void set_mode();
-extern int tty_getc();
+extern int tty_getc(int single);
 extern int get_passwd(char *passwd, int size);
 
 
