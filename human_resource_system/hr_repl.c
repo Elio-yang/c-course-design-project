@@ -107,20 +107,20 @@ void set_tty_mode(HOW how)
         static struct termios ori_mode;
         static int ori_flag;
         if (how == SAVE) {
-                tcgetattr(0, &ori_mode);
-                ori_flag = fcntl(0, F_GETFL);
+                tcgetattr(STDIN_FILENO, &ori_mode);
+                ori_flag = fcntl(STDIN_FILENO, F_GETFL);
         } else if (how == RECOVERY) {
-                tcsetattr(0, TCSANOW, &ori_mode);
-                fcntl(0, F_SETFL, ori_flag);
+                tcsetattr(STDIN_FILENO, TCSANOW, &ori_mode);
+                fcntl(STDIN_FILENO, F_SETFL, ori_flag);
         }
 }
 
 void set_no_echo()
 {
         struct termios tty_state;
-        tcgetattr(0, &tty_state);
+        tcgetattr(STDIN_FILENO, &tty_state);
         tty_state.c_cflag &= ~ECHO;
-        tcsetattr(0, TCSANOW, &tty_state);
+        tcsetattr(STDIN_FILENO, TCSANOW, &tty_state);
 }
 
 int get_response(const char *tips)
@@ -143,20 +143,60 @@ int get_response(const char *tips)
         }
 }
 
-//set char-by-char &
-void set_cr_nbuf()
-{
-        struct termios tty_state;
-        tcgetattr(0, &tty_state);
-        tty_state.c_cflag &= ~ICANON;
-        tty_state.c_cc[VMIN] = 1;
-        tcsetattr(0, TCSANOW, &tty_state);
-}
-
 void set_nodelay()
 {
         int flags;
-        flags= fcntl(0,F_GETFL);
+        flags= fcntl(STDIN_FILENO,F_GETFL);
         flags|=O_NDELAY;
-        fcntl(0,F_SETFL,flags);
+        fcntl(STDIN_FILENO,F_SETFL,flags);
+}
+
+//noecho && chr-by-chr && nodelay
+void set_mode()
+{
+        struct termios tty_state;
+        tcgetattr(STDIN_FILENO, &tty_state);
+        tty_state.c_cflag &= ~ECHO;
+        tty_state.c_cflag &= ~ICANON;
+        tcsetattr(STDIN_FILENO, TCSANOW, &tty_state);
+
+
+}
+
+int mygetch()
+{
+        struct termios oldt, newt;
+        int ch;
+        tcgetattr(STDIN_FILENO, &oldt);
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+        ch = getchar();
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+        return ch;
+}
+
+int getpasswd(char *passwd, int size)
+{
+        int c, n = 0;
+        do
+        {
+                c = mygetch();
+                if (c != '\n' && c != 'r' && c != 127)
+                {
+                        passwd[n] = c;
+                        printf("*");
+                        n++;
+                }
+                else if ((c != '\n' | c != '\r') && c == 127)//判断是否是回车或则退格
+                {
+                        if (n > 0)
+                        {
+                                n--;
+                                printf("\b \b");//输出退格
+                        }
+                }
+        }while (c != '\n' && c != '\r' && n < (size - 1));
+        passwd[n] = '\0';//消除一个多余的回车
+        return n;
 }

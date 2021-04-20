@@ -40,7 +40,7 @@ extern void set_no_echo();
 extern int get_response(const char *tips);
 extern void set_cr_nbuf();
 extern void set_nodelay();
-
+extern void set_mode();
 
 
 
