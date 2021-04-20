@@ -38,9 +38,11 @@ extern void print_init(void);
 extern void set_tty_mode(HOW how);
 extern void set_no_echo();
 extern int get_response(const char *tips);
-extern void set_cr_nbuf();
 extern void set_nodelay();
 extern void set_mode();
+extern int tty_getc();
+extern int get_passwd(char *passwd, int size);
+
 
 
 

@@ -29,30 +29,14 @@ int main()
                 sleep(60*5);
         }
         printf("Please enter your passwd : ");
-        set_tty_mode(SAVE);
         char passwd[255];
-        set_mode();
-        int c,idx=0;
-        do{
-                c=getchar();
-                if(c!='\r' && c!='\n' &&c!=127){
-                        passwd[idx++]=c;
-                }
-                else if((c!='\r' | c!='\n') && c==127){
-                        if(idx>0){
-                                idx--;
-                                printf("\b \b");
-                        }
-                }
-        }while(c!='\n' && c!='\r' && idx <244);
-        passwd[idx]='\0';
-        set_tty_mode(RECOVERY);
-
-        if(idx-1 >25){
+        get_passwd(passwd,255);
+        size_t idx= strlen(passwd);
+        if(idx >25){
                 fprintf(stderr,"Password must be no more than 6 bits.\n");
                 goto passwd;
         }
-        if(idx-1 <8){
+        if(idx <8){
                 printf(RED"Wrong password.\n"NONE);
                 goto passwd;
         }
