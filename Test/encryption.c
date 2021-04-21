@@ -22,7 +22,10 @@ int main()
         cnt++;
         if(cnt>=5){
 
-                get_response("Please give another try after 5 minutes or EXIT system?");
+               int status= get_response("Please give another try after 5 minutes or EXIT system?");
+               if(status==-2){
+                       exit(2);
+               }
                 sleep(60*5);
         }
         printf("Please enter a 8-bit passwd : \n");

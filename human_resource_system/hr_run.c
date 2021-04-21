@@ -50,7 +50,6 @@ Meta_command_result do_meta_command(InputBuffer *inputBuffer)
 }
 
 
-
 void logic_repl()
 {
         InputBuffer * input = new_input_buffer();

@@ -18,7 +18,8 @@ int main()
         print_hrsys_info();
         sys_init();
         int status;
-        if(!fork()){
+        int pid;
+        if((pid=fork())==0){
                 char * const argv[]={
                         "login",
                         NULL
@@ -26,7 +27,8 @@ int main()
                 execv("/tmp/tmp.pIdETgMIBR/cmake-build-debug-remote-host/../bin/login",argv);
         }
         wait(&status);
-        if(status==2){
+        //be careful of the usage of status
+        if(WIFEXITED(status)){
                 exit_hr_sys();
         }else {
                 logic_repl();

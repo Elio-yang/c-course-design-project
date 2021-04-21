@@ -126,7 +126,7 @@ int get_response(const char *tips) {
                 input = tolower(c);
                 if (input == 'y') {
                         printf("\n");
-                        _exit(2);
+                        return -2;
                 }
                 if (input == 'n') {
                         return -1;
