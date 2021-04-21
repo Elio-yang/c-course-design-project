@@ -162,16 +162,16 @@ INLINE int set_mpl(Staff *staff, const char *mpl)
         }
         return 0;
 }
-
-INLINE Complaint_record *build_recd(FormatTime *ft, const char *info)
-{
-        Complaint_record *recd = (Complaint_record *) malloc(sizeof(*recd));
-        memcpy(&recd->time, ft, sizeof(*ft));
-        strcpy(recd->info, info);
-        recd->next = NULL;
-}
-
-INLINE void _add_complaint_recd(Staff *staff, Complaint_record *recd);
+//
+//INLINE Complaint_record *build_recd(FormatTime *ft, const char *info)
+//{
+//        Complaint_record *recd = (Complaint_record *) malloc(sizeof(*recd));
+//        memcpy(&recd->time, ft, sizeof(*ft));
+//        strcpy(recd->info, info);
+//        recd->next = NULL;
+//}
+//
+//INLINE void _add_complaint_recd(Staff *staff, Complaint_record *recd);
 
 INLINE Staff *staff_init(Staff *staff, char info[infolen])
 {
@@ -345,7 +345,7 @@ INLINE void sys_init()
 
 
 pthread_mutex_t REPL_LOCK = PTHREAD_MUTEX_INITIALIZER;
-extern INLINE void get_authority()
+__attribute__((unused)) extern INLINE void get_authority()
 {
         sys_init();
         int status;
@@ -610,7 +610,7 @@ INLINE void select_all()
 
 /*
  * sort the information by field and print them
- * direction: 0 for an upper order
+ * direction: 0 for an increase order (-i)
  * */
 void sort_by(Field field, int direction)
 {
@@ -757,7 +757,15 @@ void insert_worker()
         strcpy(staff->pid, pid);
         strcpy(staff->wid, wid);
         strcpy(staff->salary, salary);
-        _insert_worker(staff);
+        printf("inserted Staff information:");
+        show_a_query_info(staff);
+        int res=get_response("Sure to insert?");
+        if(res==-2){
+                _insert_worker(staff);
+        }
+        else if(res==-1){
+                return;
+        }
 }
 
 void _remove_worker(Staff *staff)
@@ -783,7 +791,7 @@ void _remove_worker(Staff *staff)
         --HR_LIST->cnt;
 }
 
-bool remove_worker(const char *wid)
+__attribute__((unused)) bool remove_worker(const char *wid)
 {
         if (HR_LIST->cnt == 0 ||
             (HR_LIST->cnt == 1 && strcmp(wid, HR_LIST->head->next->wid) != 0)) {

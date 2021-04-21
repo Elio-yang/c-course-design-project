@@ -22,6 +22,7 @@
 #define SELECT_DATE_REG   "^[ ]*select[ ]+DATE[ ]*$"
 #define QUERY_REG         "^[ ]*query[ ]+(\\d{6}|\\d{14}|[a-zA-Z]+)[ ]*$"
 #define SORT_REG          "^[ ]*sort[ ]+by[ ]+(NAME|PID|WID|DATE|SALARY)[ ]+(-d|-i)[ ]*$"
+#define SORT_DEFAULT_REG  "^[ ]*sort[ ]+by[ ]+(NAME|PID|WID|DATE|SALARY)[ ]*$"
 #define DELETE_REG        "^[ ]*delete[ ]+(\\d{6}|\\d{14}|[a-zA-Z]+)[ ]*$"
 #define INSERT_INFO_REG
 #define INSERT_COM_REG

@@ -161,7 +161,7 @@ extern INLINE void load_hr_file(const char*filename);
 
 extern INLINE void sys_init();
 
-extern INLINE void get_authority();
+__attribute__((unused)) extern INLINE void get_authority();
 
 extern INLINE void print_worker_info(Staff *staff);
 
@@ -214,7 +214,7 @@ extern void insert_worker();
 
 extern void _remove_worker(Staff *staff);
 
-extern bool remove_worker(const char *wid);
+__attribute__((unused)) extern bool remove_worker(const char *wid);
 
 extern void flush_disk();
 
