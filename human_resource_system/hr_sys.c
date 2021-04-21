@@ -387,15 +387,35 @@ Staff *query_by_wid(const char *id)
         Staff *head = get_head(HR_LIST);
         while (head != NULL) {
                 if (strcmp(head->wid, id) == 0) {
-                        printf("worker with id : %s found.\n", id);
+                        printf("Staff with id : "BOLD"%s"NONE" found.\n", id);
                         return head;
                 }
                 head = head->next;
         }
-        printf("worker with id : %s not found\n", id);
+        printf("Staff with id : "BOLD"%s"NONE" not found\n", id);
         return NULL;
 
 }
+Staff *query_by_pid (const char *pid)
+{
+        Staff *head = get_head(HR_LIST);
+        while (head != NULL) {
+                if (strcmp(head->pid, pid) == 0) {
+                        printf("Staff with pid : "BOLD"%s"NONE" found.\n", pid);
+                        return head;
+                }
+                head = head->next;
+        }
+        printf("Staff with pid : "BOLD"%s"NONE" not found\n", pid);
+        return NULL;
+}
+void show_a_query_info(Staff *staff)
+{
+        select_header_all();
+        print_f_select_all(staff);
+        printf("+----------+----------------+---------+--------------+-----------------+----------+--------------+\n");
+}
+
 
 Staff *query_by_name(const char *name)
 {
@@ -410,6 +430,8 @@ Staff *query_by_name(const char *name)
         printf("Staff with name : " BOLD "%s" NONE " not found.\n", name);
         return NULL;
 }
+
+
 
 INLINE void select_header_all()
 {
@@ -513,6 +535,66 @@ INLINE void select_gender()
                 head = head->next;
         }
         printf("+----------+---------+\n");
+}
+
+INLINE void select_pid()
+{
+        printf(""
+               "+----------+-----------------+\n"
+               "| Name     | Pid             |\n"
+               "+----------+-----------------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-16s|\n", head->name, get_pid(head));
+                head = head->next;
+        }
+        printf("+----------+-----------------+\n");
+}
+
+INLINE void select_wid()
+{
+        printf(""
+               "+----------+----------+\n"
+               "| Name     | Wid      |\n"
+               "+----------+----------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-9s|\n", head->name, get_wid(head));
+                head = head->next;
+        }
+        printf("+----------+----------+\n");
+}
+
+INLINE void select_date()
+{
+        printf(""
+               "+----------+----------------+\n"
+               "| Name     | Hire time      |\n"
+               "+----------+----------------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-15s|\n", head->name, get_time(head));
+                head = head->next;
+        }
+        printf("+----------+----------------+\n");
+}
+
+INLINE void select_rank()
+{
+        printf(""
+               "+----------+--------------+\n"
+               "| Name     | Rank         |\n"
+               "+----------+--------------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-13s|\n", head->name, get_rank(head));
+                head = head->next;
+        }
+        printf("+----------+--------------+\n");
 }
 
 INLINE void select_all()

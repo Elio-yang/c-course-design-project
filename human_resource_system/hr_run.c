@@ -98,6 +98,41 @@ Cmd_type regex_match_cmd(const char *cmd)
 
 }
 
+Position char_rank(const char * rank)
+{
+        Position p = -1;
+        if (strcmp(rank, "BOSS") == 0) {
+                p = BOSS;
+        } else if (strcmp(rank, "MANAGER") == 0) {
+                p = MANAGER;
+        } else if (strcmp(rank, "BARTENDER") == 0) {
+                p = BARTENDER;
+        } else if (strcmp(rank, "COOK") == 0) {
+                p = COOK;
+        } else if (strcmp(rank, "CLEANER") == 0) {
+                p = CLEANER;
+        } else if (strcmp(rank, "CASHIER") == 0) {
+                p = CASHIER;
+        } else if (strcmp(rank, "WAREHOUSEMAN") == 0) {
+                p = WAREHOUSEMAN;
+        } else if (strcmp(rank, "FINANCE") == 0) {
+                p = FINANCE;
+        }
+
+        return p;
+}
+
+Gender char_gender(const char *gender)
+{
+        Gender g =-1;
+        if (strcmp(gender, "MALE") == 0) {
+                g = MALE;
+        } else if (strcmp(gender, "FEMALE") == 0) {
+                g = FEMALE;
+        }
+        return g;
+}
+
 Execute_result do_command(InputBuffer *inputBuffer)
 {
         char *cp_in=(char*) malloc(sizeof(char)*(inputBuffer->input_len+1));
@@ -112,13 +147,11 @@ void logic_repl()
                 print_sign();
                 read_input(input);
                 //meta command
-                char *real_cmd=nullptr;
+                char real_cmd[input->input_len+1];
+                strcpy(real_cmd,input->buf);
                 //if the first blank exists throw it
                 if(input->buf[0]==' '){
-                        real_cmd= strtok(input->buf," ");
-                }else{
-                        //blank spaces are delivered
-                        real_cmd=input->buf;
+                        strtok(real_cmd," ");
                 }
 
                 if(*real_cmd==0){
@@ -138,23 +171,93 @@ void logic_repl()
                                         continue;
                         }
                 }
-//select *                             : show all information
-//select <field>                       : show field specified information
-//                                        [available fields]:   NAME
-//                                                              PID
-//                                                              WID
-//                                                              GENDER MALE/FEMALE/*
-//                                                              RANK   BOSS/MANAGER/BARTENDER
-//                                                                    COOK/CLEANER/CASHIER
-//                                                                    WAREHOUSEMAN/FINANCE/*
-//                                                              DATE
-//                                         [sample]: select NAME
-//                                                   select GENDER MALE
+
+//                                         [sample]: query YangYang
+//  delete <index>                       : delete a staff with index
+//                                         [available index]: <Name>
+//                                                            <Pid>
+//                                                            <Wid>
+//                                         [sample]: delete YangYang
+//  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
+//  insert comp <Wid>  <complaint message>
+
+                // real_cmd is like [xxx xxx xxx ...]
+                switch (regex_match_cmd(input->buf)) {
+
+                        case SELECT_NAME:
+                                select_name();
+                                continue;
+                        case SELECT_PID:
+                                select_pid();
+                                continue;
+                        case SELECT_WID:
+                                select_wid();
+                                continue;
+                        case SELECT_GENDER:{
+                                char *first = strtok(input->buf," ");
+                                char *secd = strtok(NULL," ");
+                                char *gend = strtok(NULL," ");
+                                Gender g= char_gender(gend);
+                                // select GENDER *
+                                if(g==-1){
+                                        select_gender();
+                                        continue;
+                                }
+                                select_by_gender(g);
+                                continue;
+                        }
+                        case SELECT_RANK:{
+                                char *first = strtok(input->buf," ");
+                                char *secd = strtok(NULL," ");
+                                char *rank = strtok(NULL," ");
+                                Position r= char_rank(rank);
+                                //select RANK *
+                                if(r==-1){
+                                        select_rank();
+                                        continue;
+                                }
+                                select_by_rank(r);
+                                continue;
+                        }
+                        case SELECT_DATE:
+                                select_date();
+                                continue;
+                        case SELECT_ALL:
+                                select_all();
+                                continue;
 //  query  <index>                       : query by index
 //                                         [available index]: <Name>
 //                                                            <Pid>
 //                                                            <Wid>
-//                                         [sample]: query YangYang
+                        case QUERY:{
+                                char *first = strtok(input->buf," ");
+                                char *index = strtok(NULL," ");
+                                Staff *target;
+                                if(isdigit(index[0])){
+                                        size_t len = strlen(index);
+                                        if(len==6){
+                                                target = query_by_wid(index);
+                                                if(!target){
+                                                        show_a_query_info(target);
+                                                }
+
+                                        }
+                                        else if(len == 14){
+                                                target = query_by_pid(index);
+                                                if(!target){
+                                                        show_a_query_info(target);
+                                                }
+                                        }
+                                }
+                                else{
+                                        target= query_by_name(index);
+                                        if(!target){
+                                                show_a_query_info(target);
+                                        }
+                                }
+                                continue;
+
+                        }
 //  sort by <field> <-d>                 : sort information by field
 //                                         [available field]:  NAME
 //                                                             PID
@@ -165,47 +268,9 @@ void logic_repl()
 //                                                                -d   decreasing order
 //                                         [sample]: sort by NAME -i
 //                                         [default]: -i specified
-//  delete <index>                       : delete a staff with index
-//                                         [available index]: <Name>
-//                                                            <Pid>
-//                                                            <Wid>
-//                                         [sample]: delete YangYang
-//  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
-//  insert comp <Wid>  <complaint message>
+                        case SORT:{
 
-                // real_cmd is like [xxx xxx xxx ...]
-                switch (regex_match_cmd(real_cmd)) {
-
-                        case SELECT_NAME:
-                                select_name();
-                                continue;
-//                        case SELECT_PID:
-//                                select_pid();
-//                                continue;
-//                        case SELECT_WID:
-//                                select_wid();
-//                                continue;
-                        case SELECT_GENDER:
-                                select_gender();
-                                continue;
-                        case SELECT_RANK:{
-                                char *first = strtok(input->buf," ");
-                                char *secd = strtok(NULL," ");
-                                char *rank = strtok(NULL," ");
-                                char *four = strtok(NULL," ");
-                                Position r;
-                                continue;
                         }
-//                        case SELECT_DATE:
-//                                select_date();
-//                                continue;
-                        case SELECT_ALL:
-                                select_all();
-                                continue;
-                        case QUERY:
-                                break;
-                        case SORT:
-                                break;
                         case DELETE:
                                 break;
                         case INSERT_INFO:

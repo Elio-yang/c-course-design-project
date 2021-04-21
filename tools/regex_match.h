@@ -17,7 +17,7 @@
 #define SELECT_NAME_REG   "^[ ]*select[ ]+NAME[ ]*$"
 #define SELECT_PID_REG    "^[ ]*select[ ]+PID[ ]*$"
 #define SELECT_WID_REG    "^[ ]*select[ ]+WID[ ]*$"
-#define SELECT_GENDER_REG "^[ ]*select[ ]+GENDER[ ]+(MALE|FEMALE)[ ]*$"
+#define SELECT_GENDER_REG "^[ ]*select[ ]+GENDER[ ]+(MALE|FEMALE|\\*)[ ]*$"
 #define SELECT_RANK_REG   "^[ ]*select[ ]+RANK[ ]+(BOSS|MANAGER|BARTENDER|COOK|CLEANER|CASHIER|WAREHOUSEMAN|FINANCE|\\*)[ ]*$"
 #define SELECT_DATE_REG   "^[ ]*select[ ]+DATE[ ]*$"
 #define QUERY_REG         "^[ ]*query[ ]+(\\d{6}|\\d{14}|[a-zA-Z]+)[ ]*$"

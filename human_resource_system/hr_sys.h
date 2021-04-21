@@ -169,6 +169,9 @@ extern INLINE bool passwd_check(const char *passwd);
 
 extern Staff *query_by_wid(const char *id);
 
+extern void show_a_query_info(Staff *staff);
+
+
 extern Staff *query_by_name(const char *name);
 
 extern Staff *query_by_pid (const char *pid);
@@ -199,6 +202,7 @@ extern INLINE void select_wid();
 
 extern INLINE void select_date();
 
+extern INLINE void select_rank();
 
 extern INLINE void select_all();
 
