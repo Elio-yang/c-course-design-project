@@ -28,7 +28,7 @@ int main()
         }
         wait(&status);
         //be careful of the usage of status
-        if(WIFEXITED(status)){
+        if(WIFEXITED(status)&&((status & 0x000000ff) != 0)){
                 exit_hr_sys();
         }else {
                 logic_repl();

@@ -35,7 +35,7 @@ Meta_command_result do_meta_command(InputBuffer *inputBuffer)
                         return META_COMMAND_FAIL;
                 }
 
-                int status = match_pattern(filename, TXT_FILE_REG);
+                int status = regex_match_with(filename, TXT_FILE_REG);
                 if(status==-1){
                         fprintf(stderr,"Must supply a correct "BOLD".txt"NONE" filename(a-zA-Z0-9_.) without any special characters.\n");
                         return META_COMMAND_FAIL;
@@ -49,7 +49,62 @@ Meta_command_result do_meta_command(InputBuffer *inputBuffer)
         return META_COMMAND_UNRECOGNIZED_COMMAND;
 }
 
+Cmd_type regex_match_cmd(const char *cmd)
+{
+        //select *
+        if(!regex_match_with(cmd,SELECT_All_REG)){
+                return SELECT_ALL;
+        }
+        //select NAME
+        if(!regex_match_with(cmd,SELECT_NAME_REG)){
+                return SELECT_NAME;
+        }
+        //select PID
+        if(!regex_match_with(cmd,SELECT_PID_REG)){
+                return SELECT_PID;
+        }
+        //select WID
+        if(!regex_match_with(cmd,SELECT_WID_REG)){
+                return SELECT_WID;
+        }
+        //select GENDER (MALE/FEMALE)
+        if(!regex_match_with(cmd,SELECT_GENDER_REG)){
+                return SELECT_GENDER;
+        }
+        //select RANK (BOSS|MANAGER|BARTENDER|COOK|CLEANER|CASHIER|WAREHOUSEMAN|FINANCE|*)
+        if(!regex_match_with(cmd,SELECT_RANK_REG)){
+                return SELECT_RANK;
+        }
+        //select DATE
+        if(!regex_match_with(cmd,SELECT_DATE_REG)){
+                return SELECT_DATE;
+        }
+        //query <wid/pid/name>
+        if(!regex_match_with(cmd, QUERY_REG)){
+                return QUERY;
+        }
+        //sort by (NAME|PID|WID|DATE|SALARY) (-d|-i)
+        if(!regex_match_with(cmd,SORT_REG)){
+                return SELECT_PID;
+        }
+        //delete <wid/pid/name>
+        if(!regex_match_with(cmd,DELETE_REG)){
+                return DELETE;
+        }
 
+        return UNKOWN;
+
+
+
+}
+
+Execute_result do_command(InputBuffer *inputBuffer)
+{
+        char *cp_in=(char*) malloc(sizeof(char)*(inputBuffer->input_len+1));
+        strcpy(cp_in,inputBuffer->buf);
+
+
+}
 void logic_repl()
 {
         InputBuffer * input = new_input_buffer();
@@ -117,8 +172,50 @@ void logic_repl()
 //                                         [sample]: delete YangYang
 //  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
 //  insert comp <Wid>  <complaint message>
-        // real_cmd is like [xxx xxx xxx ...]
 
+                // real_cmd is like [xxx xxx xxx ...]
+                switch (regex_match_cmd(real_cmd)) {
+
+                        case SELECT_NAME:
+                                select_name();
+                                continue;
+//                        case SELECT_PID:
+//                                select_pid();
+//                                continue;
+//                        case SELECT_WID:
+//                                select_wid();
+//                                continue;
+                        case SELECT_GENDER:
+                                select_gender();
+                                continue;
+                        case SELECT_RANK:{
+                                char *first = strtok(input->buf," ");
+                                char *secd = strtok(NULL," ");
+                                char *rank = strtok(NULL," ");
+                                char *four = strtok(NULL," ");
+                                Position r;
+                                continue;
+                        }
+//                        case SELECT_DATE:
+//                                select_date();
+//                                continue;
+                        case SELECT_ALL:
+                                select_all();
+                                continue;
+                        case QUERY:
+                                break;
+                        case SORT:
+                                break;
+                        case DELETE:
+                                break;
+                        case INSERT_INFO:
+                                break;
+                        case INSERT_COMP:
+                                break;
+                        case UNKOWN:
+                                printf("Unrecognized command '%s'\n", input->buf);
+                                continue;
+                }
 
         }
 }

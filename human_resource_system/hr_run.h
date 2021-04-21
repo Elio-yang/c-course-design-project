@@ -13,29 +13,31 @@ typedef enum {
         META_COMMAND_FAIL,
 } Meta_command_result;
 
-typedef enum {
-        PREPARE_SUCCESS,
-        PREPARE_UNRECOGNIZED_STATEMENT,
-        PREPARE_SYNTAX_ERROR,
-        PREPARE_STRING_TOO_LONG,
-        PREPARE_NEGATIVE_ID
-} Prepare_result;
 
 typedef enum {
-        STATEMENT_INSERT,
-        STATEMENT_SELECT
-} Statement_type;
-
+        EXECUTE_SUCCESS, EXECUTE_TABLE_FULL, UNKOWN_STATEMENT
+} Execute_result;
 
 typedef enum {
-        EXECUTE_SUCCESS,EXECUTE_TABLE_FULL,UNKOWN
-}Execute_result;
+        SELECT_NAME,
+        SELECT_PID,
+        SELECT_WID,
+        SELECT_GENDER,
+        SELECT_RANK,
+        SELECT_DATE,
+        SELECT_ALL,
 
-
+        QUERY,
+        SORT,
+        DELETE,
+        INSERT_INFO,
+        INSERT_COMP,
+        UNKOWN
+} Cmd_type;
 
 extern void logic_repl();
-extern Meta_command_result do_meta_command(InputBuffer*inputBuffer);
 
+extern Meta_command_result do_meta_command(InputBuffer *inputBuffer);
 
 
 #endif //CDESIGN_HR_RUN_H
