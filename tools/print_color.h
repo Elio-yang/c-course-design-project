@@ -46,4 +46,10 @@
 /* 清空屏幕*/
 #define CLEAR                "\e[2J"
 
+/* back to upper line */
+#define BACKLINE             "\033[1A"
+/* clear this line */
+#define CLEARLINE            "\033[K"
+
+
 #endif //CDESIGN_PRINT_COLOR_H

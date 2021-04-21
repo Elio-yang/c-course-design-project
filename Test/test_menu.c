@@ -4,10 +4,9 @@
  * @date 2021/4/9
  */
 
-#define WIN
 #include "../menu.h"
 
-int main()
+int main(int argc,char *argv[])
 {
         print_menu();
         return 0;

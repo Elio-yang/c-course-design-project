@@ -89,8 +89,17 @@ static char * format_time(FormatTime *ft)
 //        (format[8]!='0')?:(format[8]=' ');
         return format;
 }
-
-
-
+/*
+ * when you simply want to get time now and print it
+ * use this.
+ * */
+static char *ordinary_time(void)
+{
+        char *buf = (char *) malloc(sizeof(*buf * 32));
+        time_t Time = time(NULL);
+        struct tm *t = localtime(&Time);
+        strftime(buf,32, "%Y-%m-%d %H:%M:%S", t);
+        return buf;
+}
 
 #endif //CDESIGN_TIME_RELATED_H

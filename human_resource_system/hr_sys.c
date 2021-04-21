@@ -1,11 +1,12 @@
 /*
+ * implementation of hr system
  * @author Elio Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/4/12
  */
 
 #include "hr_sys.h"
-
+#include "../tools/regex_match.h"
 hr_list *HR_LIST;
 comp_list *COMP_LIST;
 
@@ -285,7 +286,7 @@ INLINE bool switch_to_hr_sys(Staff *staff)
 
 }
 
-INLINE void load_hr_file()
+INLINE void load_hr_file(const char *filename)
 {
 #ifdef UNIX
         int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
@@ -321,16 +322,48 @@ INLINE void load_hr_file()
         }
 }
 
-INLINE void hr_sys_init()
+
+INLINE void sys_init()
 {
-        //process_bar("loading hr system.");
-        load_hr_file();
+        InputBuffer *file_input = new_input_buffer();
+        label:
+        printf("filename > :");
+        read_input(file_input);
+        int flag = regex_match_with(file_input->buf, TXT_FILE_REG);
+        if(flag==-1){
+                fprintf(stderr,"Please input a correct xxx.txt file without any special characters.\n");
+                goto label;
+
+        }
+        char *relname = strtok(file_input->buf," ");
+        load_hr_file(relname);
         usleep(1000 * 1000);
         printf(BOLD"*----------------------------------------------------*\n"NONE
                BOLD"|  "BLINK UNDERLINE"Human resource system successfully initialized!"NONE"   |\n"NONE
                BOLD"*----------------------------------------------------*\n\n"NONE);
 }
 
+
+pthread_mutex_t REPL_LOCK = PTHREAD_MUTEX_INITIALIZER;
+extern INLINE void get_authority()
+{
+        sys_init();
+        int status;
+        pthread_mutex_lock(&REPL_LOCK);
+        if(!fork()){
+                 char * const argv[]={
+                        "login",
+                        NULL
+                };
+                execv("/tmp/tmp.pIdETgMIBR/cmake-build-debug-remote-host/../bin/login",argv);
+        }
+        wait(&status);
+        if(status==2){
+                exit_hr_sys();
+        }else {
+                pthread_mutex_unlock(&REPL_LOCK);
+        }
+}
 INLINE void print_worker_info(Staff *staff)
 {
         printf(""
@@ -354,15 +387,35 @@ Staff *query_by_wid(const char *id)
         Staff *head = get_head(HR_LIST);
         while (head != NULL) {
                 if (strcmp(head->wid, id) == 0) {
-                        printf("worker with id : %s found.\n", id);
+                        printf("Staff with id : "BOLD"%s"NONE" found.\n", id);
                         return head;
                 }
                 head = head->next;
         }
-        printf("worker with id : %s not found\n", id);
+        printf("Staff with id : "BOLD"%s"NONE" not found\n", id);
         return NULL;
 
 }
+Staff *query_by_pid (const char *pid)
+{
+        Staff *head = get_head(HR_LIST);
+        while (head != NULL) {
+                if (strcmp(head->pid, pid) == 0) {
+                        printf("Staff with pid : "BOLD"%s"NONE" found.\n", pid);
+                        return head;
+                }
+                head = head->next;
+        }
+        printf("Staff with pid : "BOLD"%s"NONE" not found\n", pid);
+        return NULL;
+}
+void show_a_query_info(Staff *staff)
+{
+        select_header_all();
+        print_f_select_all(staff);
+        printf("+----------+----------------+---------+--------------+-----------------+----------+--------------+\n");
+}
+
 
 Staff *query_by_name(const char *name)
 {
@@ -377,6 +430,8 @@ Staff *query_by_name(const char *name)
         printf("Staff with name : " BOLD "%s" NONE " not found.\n", name);
         return NULL;
 }
+
+
 
 INLINE void select_header_all()
 {
@@ -480,6 +535,66 @@ INLINE void select_gender()
                 head = head->next;
         }
         printf("+----------+---------+\n");
+}
+
+INLINE void select_pid()
+{
+        printf(""
+               "+----------+-----------------+\n"
+               "| Name     | Pid             |\n"
+               "+----------+-----------------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-16s|\n", head->name, get_pid(head));
+                head = head->next;
+        }
+        printf("+----------+-----------------+\n");
+}
+
+INLINE void select_wid()
+{
+        printf(""
+               "+----------+----------+\n"
+               "| Name     | Wid      |\n"
+               "+----------+----------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-9s|\n", head->name, get_wid(head));
+                head = head->next;
+        }
+        printf("+----------+----------+\n");
+}
+
+INLINE void select_date()
+{
+        printf(""
+               "+----------+----------------+\n"
+               "| Name     | Hire time      |\n"
+               "+----------+----------------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-15s|\n", head->name, get_time(head));
+                head = head->next;
+        }
+        printf("+----------+----------------+\n");
+}
+
+INLINE void select_rank()
+{
+        printf(""
+               "+----------+--------------+\n"
+               "| Name     | Rank         |\n"
+               "+----------+--------------+\n"
+        );
+        Staff *head = HR_LIST->head->next;
+        while (head != NULL) {
+                printf("| %-9s| %-13s|\n", head->name, get_rank(head));
+                head = head->next;
+        }
+        printf("+----------+--------------+\n");
 }
 
 INLINE void select_all()
@@ -746,6 +861,7 @@ void exit_hr_sys()
         printf(BOLD"*----------------------------------------------------*\n"NONE
                BOLD"|  "BLINK UNDERLINE"Human resource system successfully exited!       "NONE" |\n"NONE
                BOLD"*----------------------------------------------------*\n\n"NONE);
+        exit(0);
 }
 
 void sync_hr_sys()

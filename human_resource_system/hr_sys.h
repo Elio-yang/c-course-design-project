@@ -1,8 +1,9 @@
-/*
+/* declarations of hr system related
  * @author Yang Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/3/19
- * 酒吧人力资源信息模块
+
+  酒吧人力资源信息模块
   1. 【增加】增加一条员工信息，可以从文件读入职员表，也可以终端输入一条员工信息。
   2. 【修改】更改一条员工信息（即更改各个字段）。
   3. 【删除】删除一条员工信息。
@@ -27,15 +28,18 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "tools/print_color.h"
-#include "tools/process_bar.h"
-#include "tools/time_related.h"
-#include "tools/quick_sort.h"
+#include "../tools/print_color.h"
+#include "../tools/process_bar.h"
+#include "../tools/time_related.h"
+#include "../tools/quick_sort.h"
+#include "hr_repl.h"
+#include <pthread.h>
+#include <sys/wait.h>
 
 #define UNIX
 #define INLINE inline
-#define filename "hr.txt"
-// recd lenth in hr.txt
+//#define filename "hr.txt"
+// recd length in hr.txt
 #define infolen 71
 #define maxcomlen 255
 #define get_head(List) ((List)->head->next)
@@ -153,15 +157,24 @@ extern INLINE char *get_mpl(Staff *staff);
 /*-----------------------------------APIs----------------------------------------------*/
 extern INLINE bool switch_to_hr_sys(Staff *staff);
 
-extern INLINE void load_hr_file();
+extern INLINE void load_hr_file(const char*filename);
 
-extern INLINE void hr_sys_init();
+extern INLINE void sys_init();
+
+extern INLINE void get_authority();
 
 extern INLINE void print_worker_info(Staff *staff);
 
+extern INLINE bool passwd_check(const char *passwd);
+
 extern Staff *query_by_wid(const char *id);
 
+extern void show_a_query_info(Staff *staff);
+
+
 extern Staff *query_by_name(const char *name);
+
+extern Staff *query_by_pid (const char *pid);
 
 extern INLINE void select_header_all();
 
@@ -183,9 +196,17 @@ extern INLINE void select_name();
 
 extern INLINE void select_gender();
 
+extern INLINE void select_pid();
+
+extern INLINE void select_wid();
+
+extern INLINE void select_date();
+
+extern INLINE void select_rank();
+
 extern INLINE void select_all();
 
-void sort_by(Field field,int direction);
+extern void sort_by(Field field,int direction);
 
 extern void _insert_worker(Staff *staff);
 

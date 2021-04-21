@@ -17,11 +17,9 @@
 #define BLUE "\e[0;34m"
 #define RED "\e[0;31m"
 #define NONE "\e[0m"
-static void process_bar();
-
 static void process_bar(char *loding_info)
 {
-        printf(BLINK"\t\t%s\n"NONE,loding_info);
+        printf(BOLD"%s ...\n"NONE,loding_info);
         char string[4]={'-','/','|','\\'};
         char buf[101]={0};
         int i=0;
@@ -47,13 +45,20 @@ static void process_bar(char *loding_info)
                 else{
                         printf(RED"[%c]",string[i%4]);
                         printf(RED"[%s]\r",buf);
+                        if(i==100){
+                                printf(CLEARLINE);
+                        }
                 }
                 fflush(stdout);
                 usleep(50*1000);
         }
         printf(BLACK"\n"NONE);
-        printf("\t\tloading done!\n");
+        printf(BACKLINE);
+        printf(BACKLINE);
+        printf(BOLD"Loading done! Welcome using human resource system !\n"NONE);
+
         usleep(2000000);
+        memset(buf,0, sizeof(buf));
         //system("clear");
         fflush(stdout);
 }

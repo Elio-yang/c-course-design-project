@@ -12,22 +12,39 @@ SET (TOOL_HEADER
         tools/process_bar.h
         tools/time_related.h
         tools/quick_sort.h
+        tools/regex_match.h
         menu.h
         )
-
-
-SET(HEADER
-        hr_sys.h
+SET(HR_HEADER
+        human_resource_system/hr_repl.h
+        human_resource_system/hr_sys.h
+        human_resource_system/hr_run.h
         ${TOOL_HEADER}
+
         )
+
+SET(HR_SRC
+        human_resource_system/hr_sys.c
+        human_resource_system/hr_repl.c
+        human_resource_system/hr_run.c
+        Test/test_hr_sys_main.c
+)
+
+SET(TOOL_SRC
+        tools/quick_sort.c
+
+)
 add_definitions(-std=gnu99)
+link_libraries(pthread)
+
 add_executable(test_hr
 
-        ${HEADER}
-        hr_sys.c
-        tools/quick_sort.c
-        Test/test_hr_sys_main.c
+        ${HR_HEADER}
+        ${HR_SRC}
+        ${TOOL_SRC}
+
         )
+
 
 add_executable(test_time
         Test/test_time_related_main.c
@@ -36,3 +53,14 @@ add_executable(test_time
 add_executable(test_menu
         Test/test_menu.c
 )
+
+set(RSA_HEADER
+        tools/rsa.c
+        tools/rsa.h
+)
+add_executable(login
+        human_resource_system/hr_repl.h
+        ${RSA_HEADER}
+        Test/encryption.c
+        human_resource_system/hr_repl.c
+        )
