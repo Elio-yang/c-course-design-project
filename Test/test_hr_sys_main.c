@@ -24,7 +24,7 @@ int main()
                         "login",
                         NULL
                 };
-                execv("/tmp/tmp.pIdETgMIBR/cmake-build-debug-remote-host/../bin/login",argv);
+                execv("login",argv);
         }
         wait(&status);
         //be careful of the usage of status

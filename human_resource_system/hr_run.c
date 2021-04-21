@@ -58,16 +58,19 @@ void logic_repl()
                 read_input(input);
                 //meta command
                 char *real_cmd=nullptr;
+                //if the first blank exists throw it
                 if(input->buf[0]==' '){
                         real_cmd= strtok(input->buf," ");
                 }else{
+                        //blank spaces are delivered
                         real_cmd=input->buf;
                 }
 
                 if(*real_cmd==0){
+                        // empty cmd
                         continue;
                 }
-                // throw the first blank
+                //do meta cmd
                 if (real_cmd[0]=='.'){
                         switch (do_meta_command(input)) {
                                 case META_COMMAND_FAIL:
@@ -114,7 +117,7 @@ void logic_repl()
 //                                         [sample]: delete YangYang
 //  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
 //  insert comp <Wid>  <complaint message>
-
+        // real_cmd is like [xxx xxx xxx ...]
 
 
         }
