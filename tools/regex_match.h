@@ -20,16 +20,16 @@
 #define SELECT_GENDER_REG "^[ ]*select[ ]+GENDER[ ]+(MALE|FEMALE)[ ]*$"
 #define SELECT_RANK_REG   "^[ ]*select[ ]+RANK[ ]+(BOSS|MANAGER|BARTENDER|COOK|CLEANER|CASHIER|WAREHOUSEMAN|FINANCE|\\*)[ ]*$"
 #define SELECT_DATE_REG   "^[ ]*select[ ]+DATE[ ]*$"
-#define QUERY             "^[ ]*query[ ]+(\\d{6}|\\d{14}|[a-zA-Z]+)[ ]*$"
-#define SORT              "^[ ]*sort\s+by\s+(NAME|PID|WID|DATE|SALARY)[ ]*(-d|-i){0,1}$"
-#define DELETE            "^[ ]*delete[ ]+(\\d{6}|\\d{14}|[a-zA-Z]+)[ ]*$"
-#define INSERT_INFO
-#define INSERT_COM
+#define QUERY_REG         "^[ ]*query[ ]+(\\d{6}|\\d{14}|[a-zA-Z]+)[ ]*$"
+#define SORT_REG          "^[ ]*sort[ ]+by[ ]+(NAME|PID|WID|DATE|SALARY)[ ]+(-d|-i)[ ]*$"
+#define DELETE_REG        "^[ ]*delete[ ]+(\\d{6}|\\d{14}|[a-zA-Z]+)[ ]*$"
+#define INSERT_INFO_REG
+#define INSERT_COM_REG
 
 
 
 
-static int match_pattern(const char *target, const char *reg_pattern)
+static int regex_match_with(const char *target, const char *reg_pattern)
 {
         int status;
         const size_t nmatch = 1;

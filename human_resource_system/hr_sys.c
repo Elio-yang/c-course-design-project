@@ -329,7 +329,7 @@ INLINE void sys_init()
         label:
         printf("filename > :");
         read_input(file_input);
-        int flag = match_pattern(file_input->buf, TXT_FILE_REG);
+        int flag = regex_match_with(file_input->buf, TXT_FILE_REG);
         if(flag==-1){
                 fprintf(stderr,"Please input a correct xxx.txt file without any special characters.\n");
                 goto label;
