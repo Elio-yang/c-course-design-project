@@ -7,6 +7,7 @@
 
 #include "hr_sys.h"
 #include "../tools/regex_match.h"
+
 hr_list *HR_LIST;
 comp_list *COMP_LIST;
 
@@ -61,12 +62,12 @@ static int cmp_d_sal(const void *A, const void *B)
 }
 
 /* used to pass to sort */
-static int (*cmp_array[][2])(const void *, const void *) ={
-        cmp_up_name, cmp_d_name,
-        cmp_up_pid, cmp_d_pid,
-        cmp_up_wid, cmp_d_wid,
-        cmp_up_date, cmp_d_date,
-        cmp_up_sal, cmp_d_sal
+static int (*cmp_table[][2])(const void *, const void *) ={
+        {cmp_up_name, cmp_d_name},
+        {cmp_up_pid,  cmp_d_pid},
+        {cmp_up_wid,  cmp_d_wid},
+        {cmp_up_date, cmp_d_date},
+        {cmp_up_sal,  cmp_d_sal}
 };
 
 
@@ -163,17 +164,7 @@ INLINE int set_mpl(Staff *staff, const char *mpl)
         return 0;
 }
 
-INLINE Complaint_record *build_recd(FormatTime *ft, const char *info)
-{
-        Complaint_record *recd = (Complaint_record *) malloc(sizeof(*recd));
-        memcpy(&recd->time, ft, sizeof(*ft));
-        strcpy(recd->info, info);
-        recd->next = NULL;
-}
-
-INLINE void _add_complaint_recd(Staff *staff, Complaint_record *recd);
-
-INLINE Staff *staff_init(Staff *staff, char info[infolen])
+INLINE Staff *staff_init(Staff *staff, char info[hr_info_len])
 {
 
         char *name = strtok(info, " ");
@@ -198,6 +189,16 @@ INLINE Staff *staff_init(Staff *staff, char info[infolen])
 
 }
 
+INLINE Complaint_record *comp_init(Complaint_record *comp, char info[comp_info_len])
+{
+        char *name = strtok(info, " ");
+        char *time = strtok(NULL, " ");
+        char *mesg = strtok(NULL, " ");
+        strcpy(comp->name, name);
+        strcpy(comp->time.whole_time, time);
+        strcpy(comp->info, mesg);
+        return comp;
+}
 
 INLINE char *get_time(Staff *staff)
 {
@@ -274,7 +275,7 @@ INLINE char *get_mpl(Staff *staff)
 }
 
 /*-----------------------------------APIs----------------------------------------------*/
-INLINE bool switch_to_hr_sys(Staff *staff)
+INLINE __attribute__((unused))  bool switch_to_hr_sys(Staff *staff)
 {
         if (staff->MPL == USERS) {
                 fprintf(stderr, "privilege level not enough.\n");
@@ -307,10 +308,10 @@ INLINE void load_hr_file(const char *filename)
         Staff *ptr = HR_LIST->head;
         ptr->next = NULL;
 
-        char info[infolen];
+        char info[hr_info_len];
         // the last two ch is \0d \0a --->\r\n
-        while (read(fd, info, infolen)) {
-                info[infolen - 1] = '\0';
+        while (read(fd, info, hr_info_len)) {
+                info[hr_info_len - 1] = '\0';
                 Staff *staff = (Staff *) malloc(sizeof(*staff));
                 staff = staff_init(staff, info);
                 staff->next = NULL;
@@ -322,48 +323,100 @@ INLINE void load_hr_file(const char *filename)
         }
 }
 
+INLINE void load_comp_file(const char *filename)
+{
+#ifdef UNIX
+        int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
+#endif
+#ifdef MINGW
+        int fd = open(filename, O_RDWR | O_CREAT);
+#endif
+        if (fd == -1) {
+                fprintf(stderr, "File %s open failed.\n", filename);
+                exit(EXIT_FAILURE);
+        }
+        COMP_LIST = (comp_list *) malloc(sizeof(*COMP_LIST));
+        COMP_LIST->fd = fd;
+        COMP_LIST->head = (Complaint_record *) malloc(sizeof(Complaint_record));
+        COMP_LIST->cnt = 0;
+        COMP_LIST->dirty = 0;
+
+        Complaint_record *ptr = COMP_LIST->head;
+        ptr->next = NULL;
+
+        char info[comp_info_len];
+        // the last two ch is \0d \0a --->\r\n
+        while (read(fd, info, comp_info_len)) {
+                info[comp_info_len - 1] = '\0';
+                Complaint_record *comp = (Complaint_record *) malloc(sizeof(*comp));
+                comp = comp_init(comp, info);
+                comp->next = NULL;
+                Complaint_record *next = ptr->next;
+                ptr->next = comp;
+                comp->next = next;
+                ptr = COMP_LIST->head;
+                ++COMP_LIST->cnt;
+        }
+}
 
 INLINE void sys_init()
 {
         InputBuffer *file_input = new_input_buffer();
-        label:
-        printf("filename > :");
+
+        label1:
+        printf("hr_filename > :");
         read_input(file_input);
-        int flag = regex_match_with(file_input->buf, TXT_FILE_REG);
-        if(flag==-1){
-                fprintf(stderr,"Please input a correct xxx.txt file without any special characters.\n");
-                goto label;
+        int flag1 = regex_match_with(file_input->buf, TXT_FILE_REG);
+        int flag2;
+        char *relname2;
+        if (flag1 == -1) {
+                fprintf(stderr, "Please input a correct xxx.txt file without any special characters.\n");
+                goto label1;
 
         }
-        char *relname = strtok(file_input->buf," ");
-        load_hr_file(relname);
+        char *relname1 = strtok(file_input->buf, " ");
+        load_hr_file(relname1);
+
+        label2:
+        printf("comp_filename > :");
+        read_input(file_input);
+        flag2 = regex_match_with(file_input->buf, TXT_FILE_REG);
+        if (flag2 == -1) {
+                fprintf(stderr, "Please input a correct xxx.txt file without any special characters.\n");
+                goto label2;
+
+        }
+        relname2 = strtok(file_input->buf, " ");
+        load_comp_file(relname2);
+
         usleep(1000 * 1000);
         printf(BOLD"*----------------------------------------------------*\n"NONE
                BOLD"|  "BLINK UNDERLINE"Human resource system successfully initialized!"NONE"   |\n"NONE
                BOLD"*----------------------------------------------------*\n\n"NONE);
 }
 
-
 pthread_mutex_t REPL_LOCK = PTHREAD_MUTEX_INITIALIZER;
-extern INLINE void get_authority()
+
+__attribute__((unused)) extern INLINE void get_authority()
 {
         sys_init();
         int status;
         pthread_mutex_lock(&REPL_LOCK);
-        if(!fork()){
-                 char * const argv[]={
+        if (!fork()) {
+                char *const argv[] = {
                         "login",
                         NULL
                 };
-                execv("/tmp/tmp.pIdETgMIBR/cmake-build-debug-remote-host/../bin/login",argv);
+                execv("/tmp/tmp.pIdETgMIBR/cmake-build-debug-remote-host/../bin/login", argv);
         }
         wait(&status);
-        if(status==2){
+        if (status == 2) {
                 exit_hr_sys();
-        }else {
+        } else {
                 pthread_mutex_unlock(&REPL_LOCK);
         }
 }
+
 INLINE void print_worker_info(Staff *staff)
 {
         printf(""
@@ -396,7 +449,8 @@ Staff *query_by_wid(const char *id)
         return NULL;
 
 }
-Staff *query_by_pid (const char *pid)
+
+Staff *query_by_pid(const char *pid)
 {
         Staff *head = get_head(HR_LIST);
         while (head != NULL) {
@@ -409,13 +463,13 @@ Staff *query_by_pid (const char *pid)
         printf("Staff with pid : "BOLD"%s"NONE" not found\n", pid);
         return NULL;
 }
+
 void show_a_query_info(Staff *staff)
 {
         select_header_all();
         print_f_select_all(staff);
         printf("+----------+----------------+---------+--------------+-----------------+----------+--------------+\n");
 }
-
 
 Staff *query_by_name(const char *name)
 {
@@ -430,8 +484,6 @@ Staff *query_by_name(const char *name)
         printf("Staff with name : " BOLD "%s" NONE " not found.\n", name);
         return NULL;
 }
-
-
 
 INLINE void select_header_all()
 {
@@ -610,11 +662,11 @@ INLINE void select_all()
 
 /*
  * sort the information by field and print them
- * direction: 0 for an upper order
+ * direction: 0 for an increase order (-i)
  * */
 void sort_by(Field field, int direction)
 {
-        int (*cmp)(const void *, const void *) =cmp_array[field][direction];
+        int (*cmp)(const void *, const void *) =cmp_table[field][direction];
         select_header_all();
         Staff array[HR_LIST->cnt];
         Staff *pf = get_head(HR_LIST);
@@ -633,7 +685,6 @@ void sort_by(Field field, int direction)
         printf("+----------+----------------+---------+--------------+-----------------+----------+--------------+\n");
 }
 
-
 void _insert_worker(Staff *staff)
 {
         Staff *head = get_head(HR_LIST);
@@ -643,49 +694,36 @@ void _insert_worker(Staff *staff)
         HR_LIST->dirty = 1;
 }
 
-void insert_worker()
+void _insert_comp(Complaint_record *comp)
+{
+        Complaint_record *head = get_head(COMP_LIST);
+        comp->next = head->next;
+        head->next = comp;
+        ++COMP_LIST->cnt;
+        COMP_LIST->dirty = 1;
+}
+
+void insert_worker(
+        const char *name,
+        const char *date,
+        const char *gen,
+        const char *ran,
+        const char *mpl,
+        const char *pid,
+        const char *wid,
+        const char *salary
+)
 {
         Staff *staff = (Staff *) malloc(sizeof(*staff));
 
-        char name[32];
-        char hire_time[32];
-        char gen[10];
-        char ran[5];
-        char mpl[5];
         Gender gender;
-        Position rank;
-        char pid[15];
-        char wid[15];
-        char salary[15];
-
-        //TODO finish strict check way && improve input parser && exit way
-        printf("Please enter new worker information:\n");
-        printf("Name      > ");
-        scanf("%s", name);
-        fflush(stdin);
-
-        printf("Hire time > ");
-        scanf("%s", hire_time);
-        fflush(stdin);
-
-        GENDER:
-        printf("Gender    > ");
-        scanf("%s", gen);
-        fflush(stdin);
-
-
         if (strcmp(gen, "MALE") == 0) {
                 gender = MALE;
         } else if (strcmp(gen, "FEMALE") == 0) {
                 gender = FEMALE;
-        } else {
-                fprintf(stderr, "Gender error please re-input.\n");
-                goto GENDER;
         }
-        RANK:
-        printf("Rank      > ");
-        scanf("%s", ran);
-        fflush(stdin);
+
+
         if (strcmp(ran, "BOSS") == 0) {
                 staff->rank = BOSS;
         } else if (strcmp(ran, "MANAGER") == 0) {
@@ -702,14 +740,8 @@ void insert_worker()
                 staff->rank = WAREHOUSEMAN;
         } else if (strcmp(ran, "FINANCE") == 0) {
                 staff->rank = FINANCE;
-        } else {
-                fprintf(stderr, "rank error please re-input.\n");
-                goto RANK;
         }
-        MPL:
-        printf("MPL     > ");
-        scanf("%s", mpl);
-        fflush(stdin);
+
         int pl = atoi(mpl);
         switch (pl) {
                 case SUPERUSER: {
@@ -724,40 +756,23 @@ void insert_worker()
                         staff->MPL = USERS;
                         break;
                 }
-                default: {
-                        fprintf(stderr, "mpl error please re-input\n");
-                        goto MPL;
-                }
         }
-        PID:
-        printf("Pid       > ");
-        scanf("%s", pid);
-        fflush(stdin);
-        if (strlen(pid) != 14 || strncmp(pid, "4023", 4) != 0) {
-                fprintf(stderr, "pid error please re-input.\n");
-                goto PID;
-        }
-        WID:
-        printf("Wid       > ");
-        scanf("%s", wid);
-        fflush(stdin);
-        if (strlen(wid) != 6 || atoi(wid) <= 0) {
-                fprintf(stderr, "pid error please re-input.\n");
-                goto WID;
-        }
-
-        //TODO CHECK
-        printf("Salary    > ");
-        scanf("%s", salary);
 
 
         strcpy(staff->name, name);
-        strcpy(staff->hire_time, hire_time);
+        strcpy(staff->hire_time, date);
         staff->gender = gender;
         strcpy(staff->pid, pid);
         strcpy(staff->wid, wid);
         strcpy(staff->salary, salary);
-        _insert_worker(staff);
+        printf("inserted Staff information:");
+        show_a_query_info(staff);
+        int res = get_response("Sure to insert?");
+        if (res == -2) {
+                _insert_worker(staff);
+        } else if (res == -1) {
+                return;
+        }
 }
 
 void _remove_worker(Staff *staff)
@@ -783,7 +798,7 @@ void _remove_worker(Staff *staff)
         --HR_LIST->cnt;
 }
 
-bool remove_worker(const char *wid)
+__attribute__((unused)) bool remove_worker(const char *wid)
 {
         if (HR_LIST->cnt == 0 ||
             (HR_LIST->cnt == 1 && strcmp(wid, HR_LIST->head->next->wid) != 0)) {
@@ -800,19 +815,18 @@ bool remove_worker(const char *wid)
         }
 }
 
-
 void flush_disk()
 {
         // not modified
         if (HR_LIST->dirty == 0) {
                 return;
         }
-        int fd = HR_LIST->fd;
-        lseek(fd, 0, SEEK_SET);
+        int hr_fd = HR_LIST->fd;
+        lseek(hr_fd, 0, SEEK_SET);
         Staff *staff = get_head(HR_LIST);
         while (staff != NULL) {
                 int len = 0;
-                char info[infolen];
+                char info[hr_info_len];
                 char *name = get_name(staff);
                 char *hire_time = get_time(staff);
                 char *gender = get_gender(staff);
@@ -827,8 +841,8 @@ void flush_disk()
                 len += sprintf(info + len, "%s ", pid);
                 len += sprintf(info + len, "%s ", wid);
                 len += sprintf(info + len, "%s ", salary);
-                if (strlen(info) < (infolen - 1)) {
-                        int diff = infolen - 1 - strlen(info);
+                if (strlen(info) < (hr_info_len - 1)) {
+                        int diff = hr_info_len - 1 - strlen(info);
                         char buf[diff + 1];
                         for (int i = 0; i < diff + 1; i++) {
                                 buf[i] = ' ';
@@ -837,11 +851,46 @@ void flush_disk()
                         len += sprintf(info + len, "%s", buf);
                         len += sprintf(info + len, "\r");
                 }
-                write(fd, info, infolen);
+                write(hr_fd, info, hr_info_len);
                 staff = staff->next;
         }
         HR_LIST->fd = -1;
-        close(fd);
+        close(hr_fd);
+
+
+        if (COMP_LIST->dirty == 0) {
+                return;
+        }
+        int comp_fd = COMP_LIST->fd;
+        lseek(hr_fd, 0, SEEK_SET);
+        Complaint_record *rcd = get_head(COMP_LIST);
+        while (rcd != NULL) {
+                int len = 0;
+                char info_c[comp_info_len];
+                char *name = get_name(rcd);
+                char *time = rcd->time.whole_time;
+                char *mesg = rcd->info;
+                len+= sprintf(info_c+ len,"%s ",name);
+                len+= sprintf(info_c+len,"%s ",time);
+                len+= sprintf(info_c+len,"%s ",mesg);
+                if (strlen(info_c) < (comp_info_len - 1)) {
+                        int diff = comp_info_len - 1 - strlen(info_c);
+                        char buf[diff + 1];
+                        for (int i = 0; i < diff + 1; i++) {
+                                buf[i] = ' ';
+                        }
+                        buf[diff + 1] = '\0';
+                        len += sprintf(info_c + len, "%s", buf);
+                        len += sprintf(info_c + len, "\r");
+                }
+                write(hr_fd, info_c, comp_info_len);
+                rcd = rcd->next;
+        }
+        COMP_LIST->fd = -1;
+        close(comp_fd);
+
+
+
 }
 
 void free_hr_list()
@@ -869,5 +918,15 @@ void sync_hr_sys()
         flush_disk();
 }
 
-void add_complaint(Complaint_record *recd);
+void add_complaint(const char *wid, const char *info)
+{
+        Complaint_record *rcd=(Complaint_record*) malloc(sizeof(*rcd));
+        Staff *staff = query_by_wid(wid);
+        strcpy(rcd->name,staff->name);
+        FormatTime *ft=current_sys_time();
+        char *time_now = ft->whole_time;
+        strcpy(rcd->time.whole_time,time_now);
+        strcpy(rcd->info,info);
+        _insert_comp(rcd);
+}
 

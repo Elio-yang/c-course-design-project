@@ -34,7 +34,7 @@ SET(TOOL_SRC
         tools/quick_sort.c
 
 )
-add_definitions(-std=gnu99)
+add_definitions(-std=gnu99 )
 link_libraries(pthread)
 
 add_executable(test_hr

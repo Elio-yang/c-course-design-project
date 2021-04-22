@@ -23,6 +23,10 @@ anywhere.
    
     ``quick_sort.h`` used for a generic sort algorithm
 
+    ``rsa.c/h`` used for rsa method
+
+    ``regex_match.h`` used for regex expression 
+
    
     ``tools`` are welcomed to get contributed and adjusted,if you want to add 
    some small tools which are not system(the system you are developed) specified,just 

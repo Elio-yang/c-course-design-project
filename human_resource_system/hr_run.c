@@ -8,6 +8,24 @@
 #include "hr_run.h"
 #include "../tools/regex_match.h"
 
+long date_per_month[13][2]={
+        {0,0},
+        {31,31},
+        {29,28},
+        {31,31},
+        {30,30},
+        {31,31},
+        {30,30},
+        {31,31},
+        {31,31},
+        {30,30},
+        {31,31},
+        {30,30},
+        {31,31}
+};
+
+
+
 
 Meta_command_result do_meta_command(InputBuffer *inputBuffer)
 {
@@ -85,13 +103,22 @@ Cmd_type regex_match_cmd(const char *cmd)
         }
         //sort by (NAME|PID|WID|DATE|SALARY) (-d|-i)
         if(!regex_match_with(cmd,SORT_REG)){
-                return SELECT_PID;
+                return SORT;
+        }
+        //sort by (NAME|PID|WID|DATE|SALARY)
+        if(!regex_match_with(cmd,SORT_DEFAULT_REG)){
+                return SORT_DEAF;
         }
         //delete <wid/pid/name>
         if(!regex_match_with(cmd,DELETE_REG)){
                 return DELETE;
         }
-
+        if(!regex_match_with(cmd,INSERT_INFO_REG)){
+                return INSERT_INFO;
+        }
+        if(!regex_match_with(cmd,INSERT_COM_REG)){
+                return INSERT_COMP;
+        }
         return UNKOWN;
 
 
@@ -133,13 +160,63 @@ Gender char_gender(const char *gender)
         return g;
 }
 
-Execute_result do_command(InputBuffer *inputBuffer)
+
+Field char_field(const char *field)
 {
-        char *cp_in=(char*) malloc(sizeof(char)*(inputBuffer->input_len+1));
-        strcpy(cp_in,inputBuffer->buf);
-
-
+        Field f=-1;
+        if(!strcmp(field,"NAME")){
+                f=NAME;
+        }
+        else if(!strcmp(field,"PID")){
+                f=PID;
+        }
+        else if(!strcmp(field,"WID")){
+                f=WID;
+        }
+        else if(!strcmp(field,"DATE")){
+                f=DATE;
+        }
+        else if(!strcmp(field,"SALARY")){
+                f=SALARY;
+        }
+        return f;
 }
+
+int check_date(const char *date)
+{
+        long d = strtol(date,NULL,10);
+        long yy=d/10000;
+        if(yy>2021 ||yy<2018){
+                printf(RED"Incorrect year.Only 2018 to 2021 are permitted.\n"NONE);
+                return 1;
+        }
+        long mm=(d%10000)/100;
+        if(!(1<=mm&&mm<=12)){
+                printf(RED"Incorrect month.\n"NONE);
+                return 2;
+        }
+        long dd=d%100;
+        if(!(1<=dd&&dd<=31)){
+                printf(RED"Incorrect day.\n"NONE);
+                return 3;
+        }
+
+        //leap year
+        int idx;
+        if(__isleap(yy)){
+                idx=0;
+        }else{
+                idx=1;
+        }
+        if(dd!=date_per_month[mm][idx]){
+                printf("Incorrect day of this month.\n"NONE);
+                return 4;
+        }
+
+        return 0;
+}
+
+
 void logic_repl()
 {
         InputBuffer * input = new_input_buffer();
@@ -171,28 +248,21 @@ void logic_repl()
                                         continue;
                         }
                 }
-
-//                                         [sample]: query YangYang
-//  delete <index>                       : delete a staff with index
-//                                         [available index]: <Name>
-//                                                            <Pid>
-//                                                            <Wid>
-//                                         [sample]: delete YangYang
-//  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
-//  insert comp <Wid>  <complaint message>
-
                 // real_cmd is like [xxx xxx xxx ...]
                 switch (regex_match_cmd(input->buf)) {
 
-                        case SELECT_NAME:
+                        case SELECT_NAME: {
                                 select_name();
                                 continue;
-                        case SELECT_PID:
+                        }
+                        case SELECT_PID: {
                                 select_pid();
                                 continue;
-                        case SELECT_WID:
+                        }
+                        case SELECT_WID: {
                                 select_wid();
                                 continue;
+                        }
                         case SELECT_GENDER:{
                                 char *first = strtok(input->buf," ");
                                 char *secd = strtok(NULL," ");
@@ -219,16 +289,18 @@ void logic_repl()
                                 select_by_rank(r);
                                 continue;
                         }
-                        case SELECT_DATE:
+                        case SELECT_DATE: {
                                 select_date();
                                 continue;
-                        case SELECT_ALL:
+                        }
+                        case SELECT_ALL: {
                                 select_all();
                                 continue;
-//  query  <index>                       : query by index
-//                                         [available index]: <Name>
-//                                                            <Pid>
-//                                                            <Wid>
+                        }
+                        //  query  <index>                       : query by index
+                        //                                         [available index]: <Name>
+                        //                                                            <Pid>
+                        //                                                            <Wid>
                         case QUERY:{
                                 char *first = strtok(input->buf," ");
                                 char *index = strtok(NULL," ");
@@ -258,25 +330,113 @@ void logic_repl()
                                 continue;
 
                         }
-//  sort by <field> <-d>                 : sort information by field
-//                                         [available field]:  NAME
-//                                                             PID
-//                                                             WID
-//                                                             DATE
-//                                                             SALARY
-//                                         [available direction]: -i   increasing order
-//                                                                -d   decreasing order
-//                                         [sample]: sort by NAME -i
-//                                         [default]: -i specified
+                        //  sort by <field> <-d>                 : sort information by field
+                        //                                         [available field]:  NAME
+                        //                                                             PID
+                        //                                                             WID
+                        //                                                             DATE
+                        //                                                             SALARY
+                        //                                         [available direction]: -i   increasing order
+                        //                                                                -d   decreasing order
+                        //                                         [sample]: sort by NAME -i
+                        //                                         [default]: -i specified
                         case SORT:{
+                                char *first = strtok(input->buf," ");
+                                char *secd = strtok(NULL," ");
+                                char *field = strtok(NULL," ");
+                                char *direc = strtok(NULL," ");
+                                Field f= char_field(field);
+                                int d=0;
+                                if(direc[2]=='i'){
+                                        d=0;
+                                }
+                                else{
+                                        d=1;
+                                }
+                                sort_by(f,d);
+                                continue;
+                        }
+                        // -i specified
+                        case SORT_DEAF:{
+                                char *first = strtok(input->buf," ");
+                                char *secd = strtok(NULL," ");
+                                char *field = strtok(NULL," ");
+                                Field f= char_field(field);
+                                int d=0;
+                                sort_by(f,d);
+                                continue;
+                        }
+                        //                                         [sample]: query YangYang
+                        //  delete <index>                       : delete a staff with index
+                        //                                         [available index]: <Name>
+                        //                                                            <Pid>
+                        //                                                            <Wid>
+                        //                                         [sample]: delete YangYang
+                        case DELETE:{
+                                char *first = strtok(input->buf," ");
+                                char *index = strtok(NULL," ");
+                                Staff *target;
+                                if(isdigit(index[0])){
+                                        size_t len = strlen(index);
+                                        //wid
+                                        if(len==6){
+                                                target = query_by_wid(index);
+                                                if(!target){
+                                                        _remove_worker(target);
+                                                }
+
+                                        }
+                                        //pid
+                                        else if(len == 14){
+                                                target = query_by_pid(index);
+                                                if(!target){
+                                                        _remove_worker(target);
+
+                                                }
+                                        }
+                                }
+                                //name
+                                else{
+                                        target= query_by_name(index);
+                                        if(!target){
+                                                _remove_worker(target);
+                                        }
+                                }
+                                continue;
+                        }
+                        //  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
+                        //  insert comp <Wid>  <complaint message>
+                        //TODO : check date and other field.
+                        case INSERT_INFO: {
+
+                                char *inset = strtok(input->buf, " ");
+                                char *info = strtok(NULL, " ");
+                                char *name = strtok(NULL, " ");
+                                char *date = strtok(NULL, " ");
+                                if (check_date(date) != 0) {
+                                        continue;
+                                }
+                                char *gender = strtok(NULL, " ");
+                                char *rank = strtok(NULL, " ");
+                                char *mpl = strtok(NULL, " ");
+                                char *pid = strtok(NULL, " ");
+                                char *wid = strtok(NULL, " ");
+                                char *salary = strtok(NULL, " ");
+                                if(salary[0]=='0'){
+                                        printf(RED"Incorrect salary.\n"NONE);
+                                        continue;
+                                }
+                                insert_worker(name,date,gender,rank,mpl,pid,wid,salary);
+                                continue;
+                        }
+                        case INSERT_COMP:{
+                                char *inset = strtok(input->buf, " ");
+                                char *comp = strtok(NULL, " ");
+                                char *wid = strtok(NULL, " ");
+                                char *info = strtok(NULL, " ");
+                                add_complaint(wid,info);
 
                         }
-                        case DELETE:
-                                break;
-                        case INSERT_INFO:
-                                break;
-                        case INSERT_COMP:
-                                break;
                         case UNKOWN:
                                 printf("Unrecognized command '%s'\n", input->buf);
                                 continue;

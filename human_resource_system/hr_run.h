@@ -29,6 +29,7 @@ typedef enum {
 
         QUERY,
         SORT,
+        SORT_DEAF,
         DELETE,
         INSERT_INFO,
         INSERT_COMP,
@@ -38,6 +39,16 @@ typedef enum {
 extern void logic_repl();
 
 extern Meta_command_result do_meta_command(InputBuffer *inputBuffer);
+
+extern Cmd_type regex_match_cmd(const char *cmd);
+
+extern Position char_rank(const char * rank);
+
+extern Gender char_gender(const char *gender);
+
+extern Field char_field(const char *field);
+
+extern int check_date(const char *date);
 
 
 #endif //CDESIGN_HR_RUN_H

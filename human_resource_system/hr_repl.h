@@ -35,7 +35,7 @@ extern void print_sign(void);
 extern void print_hrsys_info(void);
 extern void print_init(void);
 
-extern void set_tty_mode(HOW how);
+__attribute__((unused)) extern void set_tty_mode(HOW how);
 extern void set_no_echo();
 extern int get_response(const char *tips);
 extern void set_nodelay();

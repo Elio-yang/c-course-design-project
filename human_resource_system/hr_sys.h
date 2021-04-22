@@ -40,7 +40,8 @@
 #define INLINE inline
 //#define filename "hr.txt"
 // recd length in hr.txt
-#define infolen 71
+#define hr_info_len 71
+#define comp_info_len  301
 #define maxcomlen 255
 #define get_head(List) ((List)->head->next)
 #define get_pid(staff) ((staff)->pid)
@@ -145,7 +146,10 @@ extern INLINE Complaint_record *build_recd(FormatTime *ft, const char *info);
 
 extern INLINE void _add_complaint_recd(Staff *staff, Complaint_record *recd);
 
-extern INLINE Staff *staff_init(Staff *staff, char info[infolen]);
+extern INLINE Staff *staff_init(Staff *staff, char info[hr_info_len]);
+
+extern INLINE Complaint_record *comp_init(Complaint_record*comp,char info[comp_info_len]);
+
 
 extern INLINE char *get_time(Staff *staff);
 
@@ -155,13 +159,15 @@ extern INLINE char *get_rank(Staff *staff);
 
 extern INLINE char *get_mpl(Staff *staff);
 /*-----------------------------------APIs----------------------------------------------*/
-extern INLINE bool switch_to_hr_sys(Staff *staff);
+__attribute__((unused)) extern INLINE bool switch_to_hr_sys(Staff *staff);
 
 extern INLINE void load_hr_file(const char*filename);
 
+extern INLINE void load_comp_file(const char *filename);
+
 extern INLINE void sys_init();
 
-extern INLINE void get_authority();
+__attribute__((unused)) extern INLINE void get_authority();
 
 extern INLINE void print_worker_info(Staff *staff);
 
@@ -210,11 +216,20 @@ extern void sort_by(Field field,int direction);
 
 extern void _insert_worker(Staff *staff);
 
-extern void insert_worker();
+extern void insert_worker(
+        const char* name,
+        const char* date,
+        const char* gender,
+        const char* rank,
+        const char* mpl,
+        const char* pid,
+        const char* wid,
+        const char* salary
+);
 
 extern void _remove_worker(Staff *staff);
 
-extern bool remove_worker(const char *wid);
+__attribute__((unused)) extern bool remove_worker(const char *wid);
 
 extern void flush_disk();
 
@@ -224,6 +239,6 @@ extern void exit_hr_sys();
 
 extern void sync_hr_sys();
 
-extern void add_complaint(Complaint_record *recd);
+extern void add_complaint(const char*wid,const char *info);
 
 #endif
