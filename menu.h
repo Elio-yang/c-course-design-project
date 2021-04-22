@@ -7,7 +7,7 @@
 #define CDESIGN_MENU_H
 #include <stdbool.h>
 #include<stdio.h>
-#define UNIX
+#define WIN
 //if you want to compile under WIN10
 #ifdef UNIX
 #include "tools/print_color.h"
