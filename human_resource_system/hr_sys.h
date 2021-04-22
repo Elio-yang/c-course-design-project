@@ -155,7 +155,7 @@ extern INLINE char *get_rank(Staff *staff);
 
 extern INLINE char *get_mpl(Staff *staff);
 /*-----------------------------------APIs----------------------------------------------*/
-extern INLINE bool switch_to_hr_sys(Staff *staff);
+__attribute__((unused)) extern INLINE bool switch_to_hr_sys(Staff *staff);
 
 extern INLINE void load_hr_file(const char*filename);
 
@@ -210,7 +210,16 @@ extern void sort_by(Field field,int direction);
 
 extern void _insert_worker(Staff *staff);
 
-extern void insert_worker();
+extern void insert_worker(
+        const char* name,
+        const char* date,
+        const char* gender,
+        const char* rank,
+        const char* mpl,
+        const char* pid,
+        const char* wid,
+        const char* salary
+);
 
 extern void _remove_worker(Staff *staff);
 

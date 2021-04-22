@@ -102,4 +102,22 @@ static char *ordinary_time(void)
         return buf;
 }
 
+// 0 for leap year
+long date_per_month[13][2]={
+        {0,0},
+        {31,31},
+        {29,28},
+        {31,31},
+        {30,30},
+        {31,31},
+        {30,30},
+        {31,31},
+        {31,31},
+        {30,30},
+        {31,31},
+        {30,30},
+        {31,31}
+};
+
+
 #endif //CDESIGN_TIME_RELATED_H

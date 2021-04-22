@@ -61,12 +61,12 @@ static int cmp_d_sal(const void *A, const void *B)
 }
 
 /* used to pass to sort */
-static int (*cmp_array[][2])(const void *, const void *) ={
-        cmp_up_name, cmp_d_name,
-        cmp_up_pid, cmp_d_pid,
-        cmp_up_wid, cmp_d_wid,
-        cmp_up_date, cmp_d_date,
-        cmp_up_sal, cmp_d_sal
+static int (*cmp_table[][2])(const void *, const void *) ={
+        {cmp_up_name, cmp_d_name},
+        {cmp_up_pid, cmp_d_pid},
+        {cmp_up_wid, cmp_d_wid},
+        {cmp_up_date, cmp_d_date},
+        {cmp_up_sal, cmp_d_sal}
 };
 
 
@@ -274,7 +274,7 @@ INLINE char *get_mpl(Staff *staff)
 }
 
 /*-----------------------------------APIs----------------------------------------------*/
-INLINE bool switch_to_hr_sys(Staff *staff)
+INLINE __attribute__((unused))  bool switch_to_hr_sys(Staff *staff)
 {
         if (staff->MPL == USERS) {
                 fprintf(stderr, "privilege level not enough.\n");
@@ -614,7 +614,7 @@ INLINE void select_all()
  * */
 void sort_by(Field field, int direction)
 {
-        int (*cmp)(const void *, const void *) =cmp_array[field][direction];
+        int (*cmp)(const void *, const void *) =cmp_table[field][direction];
         select_header_all();
         Staff array[HR_LIST->cnt];
         Staff *pf = get_head(HR_LIST);
@@ -643,49 +643,27 @@ void _insert_worker(Staff *staff)
         HR_LIST->dirty = 1;
 }
 
-void insert_worker()
+void insert_worker(
+        const char* name,
+        const char* date,
+        const char* gen,
+        const char* ran,
+        const char* mpl,
+        const char* pid,
+        const char* wid,
+        const char* salary
+        )
 {
         Staff *staff = (Staff *) malloc(sizeof(*staff));
 
-        char name[32];
-        char hire_time[32];
-        char gen[10];
-        char ran[5];
-        char mpl[5];
         Gender gender;
-        Position rank;
-        char pid[15];
-        char wid[15];
-        char salary[15];
-
-        //TODO finish strict check way && improve input parser && exit way
-        printf("Please enter new worker information:\n");
-        printf("Name      > ");
-        scanf("%s", name);
-        fflush(stdin);
-
-        printf("Hire time > ");
-        scanf("%s", hire_time);
-        fflush(stdin);
-
-        GENDER:
-        printf("Gender    > ");
-        scanf("%s", gen);
-        fflush(stdin);
-
-
         if (strcmp(gen, "MALE") == 0) {
                 gender = MALE;
-        } else if (strcmp(gen, "FEMALE") == 0) {
+        }else if (strcmp(gen, "FEMALE") == 0) {
                 gender = FEMALE;
-        } else {
-                fprintf(stderr, "Gender error please re-input.\n");
-                goto GENDER;
         }
-        RANK:
-        printf("Rank      > ");
-        scanf("%s", ran);
-        fflush(stdin);
+
+
         if (strcmp(ran, "BOSS") == 0) {
                 staff->rank = BOSS;
         } else if (strcmp(ran, "MANAGER") == 0) {
@@ -702,14 +680,8 @@ void insert_worker()
                 staff->rank = WAREHOUSEMAN;
         } else if (strcmp(ran, "FINANCE") == 0) {
                 staff->rank = FINANCE;
-        } else {
-                fprintf(stderr, "rank error please re-input.\n");
-                goto RANK;
         }
-        MPL:
-        printf("MPL     > ");
-        scanf("%s", mpl);
-        fflush(stdin);
+
         int pl = atoi(mpl);
         switch (pl) {
                 case SUPERUSER: {
@@ -724,35 +696,11 @@ void insert_worker()
                         staff->MPL = USERS;
                         break;
                 }
-                default: {
-                        fprintf(stderr, "mpl error please re-input\n");
-                        goto MPL;
-                }
         }
-        PID:
-        printf("Pid       > ");
-        scanf("%s", pid);
-        fflush(stdin);
-        if (strlen(pid) != 14 || strncmp(pid, "4023", 4) != 0) {
-                fprintf(stderr, "pid error please re-input.\n");
-                goto PID;
-        }
-        WID:
-        printf("Wid       > ");
-        scanf("%s", wid);
-        fflush(stdin);
-        if (strlen(wid) != 6 || atoi(wid) <= 0) {
-                fprintf(stderr, "pid error please re-input.\n");
-                goto WID;
-        }
-
-        //TODO CHECK
-        printf("Salary    > ");
-        scanf("%s", salary);
 
 
         strcpy(staff->name, name);
-        strcpy(staff->hire_time, hire_time);
+        strcpy(staff->hire_time, date);
         staff->gender = gender;
         strcpy(staff->pid, pid);
         strcpy(staff->wid, wid);

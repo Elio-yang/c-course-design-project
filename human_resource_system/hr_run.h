@@ -48,4 +48,7 @@ extern Gender char_gender(const char *gender);
 
 extern Field char_field(const char *field);
 
+extern int check_date(const char *date);
+
+
 #endif //CDESIGN_HR_RUN_H

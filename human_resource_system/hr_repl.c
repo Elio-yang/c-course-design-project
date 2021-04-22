@@ -90,7 +90,7 @@ void print_help(void)
                "                                                            <Wid>                               \n"
                "                                         [sample]: delete YangYang                              \n"
                "  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>                     \n"
-               "  insert comp <Wid>  <complaint message>                                                        \n"
+               "  insert comp <Wid>  <\"complaint message\">                                                      \n"
                "  ps: All inputs are not case-sensitive                                                         \n"
                NONE
         );
@@ -102,7 +102,7 @@ void print_init(void)
 }
 
 
-void set_tty_mode(HOW how)
+__attribute__((unused)) void set_tty_mode(HOW how)
 {
         static struct termios ori_mode;
         static int ori_flag;

@@ -9,6 +9,9 @@
 #include "../tools/regex_match.h"
 
 
+
+
+
 Meta_command_result do_meta_command(InputBuffer *inputBuffer)
 {
         char *cp_in=(char *) malloc(sizeof(char)*(inputBuffer->input_len+1));
@@ -95,7 +98,12 @@ Cmd_type regex_match_cmd(const char *cmd)
         if(!regex_match_with(cmd,DELETE_REG)){
                 return DELETE;
         }
-
+        if(!regex_match_with(cmd,INSERT_INFO_REG)){
+                return INSERT_INFO;
+        }
+        if(!regex_match_with(cmd,INSERT_COM_REG)){
+                return INSERT_COMP;
+        }
         return UNKOWN;
 
 
@@ -137,13 +145,7 @@ Gender char_gender(const char *gender)
         return g;
 }
 
-//typedef enum {
-//        NAME=0,
-//        PID,
-//        WID,
-//        DATE,
-//        SALARY
-//}Field;
+
 Field char_field(const char *field)
 {
         Field f=-1;
@@ -165,6 +167,39 @@ Field char_field(const char *field)
         return f;
 }
 
+int check_date(const char *date)
+{
+        long d = strtol(date,NULL,10);
+        long yy=d/10000;
+        if(yy>2021 ||yy<2018){
+                printf(RED"Incorrect year.Only 2018 to 2021 are permitted.\n"NONE);
+                return 1;
+        }
+        long mm=(d%10000)/100;
+        if(!(1<=mm&&mm<=12)){
+                printf(RED"Incorrect month.\n"NONE);
+                return 2;
+        }
+        long dd=d%100;
+        if(!(1<=dd&&dd<=31)){
+                printf(RED"Incorrect day.\n"NONE);
+                return 3;
+        }
+
+        //leap year
+        int idx;
+        if(__isleap(yy)){
+                idx=0;
+        }else{
+                idx=1;
+        }
+        if(dd!=date_per_month[mm][idx]){
+                printf("Incorrect day of this month.\n"NONE);
+                return 4;
+        }
+
+        return 0;
+}
 
 
 void logic_repl()
@@ -356,8 +391,27 @@ void logic_repl()
                         }
                         //  insert info <Name> <Hire date> <Gender> <Rank> <MPL> <Pid> <Wid> <Salary>
                         //  insert comp <Wid>  <complaint message>
-                        case INSERT_INFO:{
-                                insert_worker();
+                        //TODO : check date and other field.
+                        case INSERT_INFO: {
+
+                                char *inset = strtok(input->buf, " ");
+                                char *info = strtok(NULL, " ");
+                                char *name = strtok(NULL, " ");
+                                char *date = strtok(NULL, " ");
+                                if (check_date(date) != 0) {
+                                        continue;
+                                }
+                                char *gender = strtok(NULL, " ");
+                                char *rank = strtok(NULL, " ");
+                                char *mpl = strtok(NULL, " ");
+                                char *pid = strtok(NULL, " ");
+                                char *wid = strtok(NULL, " ");
+                                char *salary = strtok(NULL, " ");
+                                if(salary[0]=='0'){
+                                        printf(RED"Incorrect salary.\n"NONE);
+                                        continue;
+                                }
+                                insert_worker(name,date,gender,rank,mpl,pid,wid,salary);
                                 continue;
                         }
 //                        case INSERT_COMP:
