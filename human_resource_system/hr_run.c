@@ -414,8 +414,14 @@ void logic_repl()
                                 insert_worker(name,date,gender,rank,mpl,pid,wid,salary);
                                 continue;
                         }
-//                        case INSERT_COMP:
-//                                break;
+                        case INSERT_COMP:{
+                                char *inset = strtok(input->buf, " ");
+                                char *comp = strtok(NULL, " ");
+                                char *wid = strtok(NULL, " ");
+                                char *info = strtok(NULL, " ");
+                                add_complaint(wid,info);
+
+                        }
                         case UNKOWN:
                                 printf("Unrecognized command '%s'\n", input->buf);
                                 continue;

@@ -40,7 +40,8 @@
 #define INLINE inline
 //#define filename "hr.txt"
 // recd length in hr.txt
-#define infolen 71
+#define hr_info_len 71
+#define comp_info_len  301
 #define maxcomlen 255
 #define get_head(List) ((List)->head->next)
 #define get_pid(staff) ((staff)->pid)
@@ -145,7 +146,10 @@ extern INLINE Complaint_record *build_recd(FormatTime *ft, const char *info);
 
 extern INLINE void _add_complaint_recd(Staff *staff, Complaint_record *recd);
 
-extern INLINE Staff *staff_init(Staff *staff, char info[infolen]);
+extern INLINE Staff *staff_init(Staff *staff, char info[hr_info_len]);
+
+extern INLINE Complaint_record *comp_init(Complaint_record*comp,char info[comp_info_len]);
+
 
 extern INLINE char *get_time(Staff *staff);
 
@@ -233,6 +237,6 @@ extern void exit_hr_sys();
 
 extern void sync_hr_sys();
 
-extern void add_complaint(Complaint_record *recd);
+extern void add_complaint(const char*wid,const char *info);
 
 #endif
