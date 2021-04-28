@@ -163,6 +163,8 @@ __attribute__((unused)) extern INLINE bool switch_to_hr_sys(Staff *staff);
 
 extern INLINE void load_hr_file(const char*filename);
 
+extern INLINE void load_comp_file(const char *filename);
+
 extern INLINE void sys_init();
 
 __attribute__((unused)) extern INLINE void get_authority();

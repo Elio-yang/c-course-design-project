@@ -230,9 +230,9 @@ INLINE char *get_time(Staff *staff)
 INLINE char *get_gender(Staff *staff)
 {
         if (staff->gender == MALE) {
-                return "Male";
+                return "MALE";
         } else {
-                return "Female";
+                return "FEMALE";
         }
 }
 
@@ -795,6 +795,7 @@ void _remove_worker(Staff *staff)
         prev->next = staff->next;
         staff->next = NULL;
         free(staff);
+        HR_LIST->dirty=1;
         --HR_LIST->cnt;
 }
 
@@ -828,28 +829,31 @@ void flush_disk()
                 int len = 0;
                 char info[hr_info_len];
                 char *name = get_name(staff);
-                char *hire_time = get_time(staff);
+                char *hire_time = staff->hire_time;
                 char *gender = get_gender(staff);
                 int rank = staff->rank;
+                int mpl = staff->MPL;
                 char *pid = get_pid(staff);
                 char *wid = get_wid(staff);
                 char *salary = get_salary(staff);
                 len += sprintf(info + len, "%s ", name);
                 len += sprintf(info + len, "%s ", hire_time);
                 len += sprintf(info + len, "%s ", gender);
+                len += sprintf(info + len, "%d ", mpl);
                 len += sprintf(info + len, "%d ", rank);
                 len += sprintf(info + len, "%s ", pid);
                 len += sprintf(info + len, "%s ", wid);
                 len += sprintf(info + len, "%s ", salary);
+                //TODO : bugs here array ended with wrong char(length problem)
                 if (strlen(info) < (hr_info_len - 1)) {
                         int diff = hr_info_len - 1 - strlen(info);
                         char buf[diff + 1];
-                        for (int i = 0; i < diff + 1; i++) {
+                        for (int i = 0; i < diff ; i++) {
                                 buf[i] = ' ';
                         }
-                        buf[diff + 1] = '\0';
+                        buf[diff] = '\0';
                         len += sprintf(info + len, "%s", buf);
-                        len += sprintf(info + len, "\r");
+                        info[hr_info_len-1]='\r';
                 }
                 write(hr_fd, info, hr_info_len);
                 staff = staff->next;
@@ -876,12 +880,12 @@ void flush_disk()
                 if (strlen(info_c) < (comp_info_len - 1)) {
                         int diff = comp_info_len - 1 - strlen(info_c);
                         char buf[diff + 1];
-                        for (int i = 0; i < diff + 1; i++) {
+                        for (int i = 0; i < diff; i++) {
                                 buf[i] = ' ';
                         }
-                        buf[diff + 1] = '\0';
+                        buf[diff] = '\0';
                         len += sprintf(info_c + len, "%s", buf);
-                        len += sprintf(info_c + len, "\r");
+                        info_c[comp_info_len-1]='\r';
                 }
                 write(hr_fd, info_c, comp_info_len);
                 rcd = rcd->next;
@@ -903,6 +907,7 @@ void free_hr_list()
 }
 
 // called when exit the hr sys
+// TODO : bugs ---> when restore the changed file \r\n get into trouble.
 void exit_hr_sys()
 {
         flush_disk();

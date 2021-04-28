@@ -8,6 +8,21 @@
 #include "hr_run.h"
 #include "../tools/regex_match.h"
 
+long date_per_month[13][2]={
+        {0,0},
+        {31,31},
+        {29,28},
+        {31,31},
+        {30,30},
+        {31,31},
+        {30,30},
+        {31,31},
+        {31,31},
+        {30,30},
+        {31,31},
+        {30,30},
+        {31,31}
+};
 
 
 
@@ -83,6 +98,7 @@ Cmd_type regex_match_cmd(const char *cmd)
                 return SELECT_DATE;
         }
         //query <wid/pid/name>
+        //TODO : bugs here--->can not match "query 000001" fix regex expression perhaps.
         if(!regex_match_with(cmd, QUERY_REG)){
                 return QUERY;
         }
@@ -294,21 +310,21 @@ void logic_repl()
                                         size_t len = strlen(index);
                                         if(len==6){
                                                 target = query_by_wid(index);
-                                                if(!target){
+                                                if(target){
                                                         show_a_query_info(target);
                                                 }
 
                                         }
                                         else if(len == 14){
                                                 target = query_by_pid(index);
-                                                if(!target){
+                                                if(target){
                                                         show_a_query_info(target);
                                                 }
                                         }
                                 }
                                 else{
                                         target= query_by_name(index);
-                                        if(!target){
+                                        if(target){
                                                 show_a_query_info(target);
                                         }
                                 }
@@ -366,7 +382,7 @@ void logic_repl()
                                         //wid
                                         if(len==6){
                                                 target = query_by_wid(index);
-                                                if(!target){
+                                                if(target){
                                                         _remove_worker(target);
                                                 }
 
@@ -374,7 +390,7 @@ void logic_repl()
                                         //pid
                                         else if(len == 14){
                                                 target = query_by_pid(index);
-                                                if(!target){
+                                                if(target){
                                                         _remove_worker(target);
 
                                                 }
@@ -383,7 +399,7 @@ void logic_repl()
                                 //name
                                 else{
                                         target= query_by_name(index);
-                                        if(!target){
+                                        if(target){
                                                 _remove_worker(target);
                                         }
                                 }
