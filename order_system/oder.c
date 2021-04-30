@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MENU_PATH "C:\\cprogramming\\C-Course-Design\\menu.TXT"
 int dishes_number; //the amount of the dishes
 typedef struct dish
 {
@@ -26,25 +27,29 @@ order *order_head; //the head of the order;
 void get_menu()
 {
     FILE *p;
-    if ((p = fopen("C:\\cprogramming\\C-Course-Design\\menu.TXT", "r")) == NULL)
+    if ((p = fopen(MENU_PATH, "r")) == NULL)
         {
             printf("fail to get the menu\n");
             return;
         }
     else
-        while (!feof(p))
+        while (1)
         {
-            fscanf(p, "%[^,],%f,%d", menu[dishes_number].name, &menu[dishes_number].price, &menu[dishes_number].personalization_availble);
+           fscanf(p,"%[^,],%f,%d",menu[dishes_number].name,&menu[dishes_number].price,&menu[dishes_number].personalization_availble);
             //menu[dishes_number].available_number = warehouse_check(menu[dishes_number].name);
             for(int i=0;i<menu[dishes_number].personalization_availble;i++)                                           //regular expression
                 fscanf(p,"%[^s]",menu[dishes_number].personalization[i]);
             dishes_number++;
+           if(feof(p))
+           break;
+           else
+           fgetc(p);             //diminish the \n in the end
         }
 }
 void print_menu()
 {
     for(int i=0;i<dishes_number;i++)
-        printf("%d.%s %d\n",i+1,menu[i].name,menu[i].price);
+        printf("%d.%s %.2f\n",i+1,menu[i].name,menu[i].price);
 }
 
 void print_order()

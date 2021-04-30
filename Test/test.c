@@ -12,15 +12,20 @@ typedef struct dish
 dish menu[100];
 int main(void)
 {   
-    FILE* p;
-    if ((p = fopen("C:\\cprogramming\\C-Course-Design\\menu.TXT", "r")) == NULL)
-        printf("fail to get the menu\n");
-    else
-        while (!feof(p))
-        {
-            fscanf(p,"%[^,],%f,%d",menu[dishes_number].name,&menu[dishes_number].price,&menu[dishes_number].personalization_availble);
-            printf("%s %.2f %d",menu[dishes_number].name,menu[dishes_number].price,menu[dishes_number].personalization_availble);
-            dishes_number++;
-        }
+    char a[100];
+    while(1){
+        scanf("%s",&a);
+        printf("%s",a);
+    }
+    //FILE* p;
+    //if ((p = fopen("C:\\cprogramming\\C-Course-Design\\menu.TXT", "r")) == NULL)
+    //    printf("fail to get the menu\n");
+    //else
+    //    while (!feof(p))
+    //    {
+    //        fscanf(p,"%[^,],%f,%d",menu[dishes_number].name,&menu[dishes_number].price,&menu[dishes_number].personalization_availble);
+    //        printf("%s %.2f %d",menu[dishes_number].name,menu[dishes_number].price,menu[dishes_number].personalization_availble);
+    //        dishes_number++;
+    //    }
     return 0;
 }
