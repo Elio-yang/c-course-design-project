@@ -1,13 +1,32 @@
-#include "order.h"
-int a;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int dishes_number; //the amount of the dishes
+typedef struct dish
+{
+    char name[50];
+    float price;
+    unsigned int available_number;
+    int personalization_availble; //how many persoalized choice do i have?
+    char personalization[20][100];
+} dish;
 
+typedef struct order
+{
+    unsigned int index;
+    char name[50];
+    unsigned int number;
+    float price;
+    char personlization[20][100]; //add space after each personlized choice
+    struct order *next;
+}order; 
 dish menu[200];
 order *order_head; //the head of the order;
 
 void get_menu()
 {
     FILE *p;
-    if (p = fopen("C:\\cprogramming\\C-Course-Design\\menu.TXT", "r") == NULL)
+    if ((p = fopen("C:\\cprogramming\\C-Course-Design\\menu.TXT", "r")) == NULL)
         {
             printf("fail to get the menu\n");
             return;
@@ -158,7 +177,6 @@ int add_dishes() //需要设计输入，考虑情况
                 if (i < menu[index - 1].personalization_availble)
                 {
                     strcat(taste, choice);
-                    strcat(taste, '\s');
                     char insturcution;
                     printf("continue(c) or quit(q)?\n");
                     scanf("%c", &insturcution);
@@ -193,12 +211,6 @@ int add_dishes() //需要设计输入，考虑情况
     return 1;
 }
 
-void check()
-{
-    print_order();
-    change();
-}
-
 void change()        //check or finish?
 {
     char instruction;
@@ -222,6 +234,12 @@ void change()        //check or finish?
             break;
         }
     }
+}
+
+void check()
+{
+    print_order();
+    change();
 }
 
 int finish()

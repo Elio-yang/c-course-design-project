@@ -21,10 +21,13 @@ typedef struct order
     char personlization[20][100]; //add space after each personlized choice
     struct order *next;
 }order; 
+extern void print_menu();
+extern void print_order();
 extern int delete_dishes();
 extern int change_order();
 extern void print_order_interface();
 extern int add_dishes();
 extern void check();
+extern void change();
 extern void get_menu();
 extern int finish()
