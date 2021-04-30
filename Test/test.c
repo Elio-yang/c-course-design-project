@@ -12,11 +12,15 @@ typedef struct dish
 dish menu[100];
 int main(void)
 {   
-    char a[100];
-    while(1){
-        scanf("%s",&a);
-        printf("%s",a);
-    }
+    char str[10][10];
+    for(int i=0;i<3;i++)
+    scanf("%s",str[i]);
+    printf("%s",str);
+    //char a[100];
+    //while(1){
+    //    scanf("%s",&a);
+      //  printf("%s",a);
+    //}
     //FILE* p;
     //if ((p = fopen("C:\\cprogramming\\C-Course-Design\\menu.TXT", "r")) == NULL)
     //    printf("fail to get the menu\n");
