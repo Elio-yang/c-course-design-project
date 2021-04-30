@@ -12,13 +12,16 @@ typedef struct dish
 dish menu[100];
 int main(void)
 {   
-    char str[10][10];
-    for(int i=0;i<3;i++)
-    scanf("%s",str[i]);
-    printf("%s",str);
+    int i=0,len;
+    char a[10][10];
+    for(i=0;i<3;i++)
+    scanf("%s",a[i]);
+    len=strlen(a);
+    for(i=0;i<len;i++)
+    printf("%s",a[i]);
     //char a[100];
     //while(1){
-    //    scanf("%s",&a);
+    //    getcharf("%s",&a);
       //  printf("%s",a);
     //}
     //FILE* p;
@@ -27,7 +30,7 @@ int main(void)
     //else
     //    while (!feof(p))
     //    {
-    //        fscanf(p,"%[^,],%f,%d",menu[dishes_number].name,&menu[dishes_number].price,&menu[dishes_number].personalization_availble);
+    //        fgetcharf(p,"%[^,],%f,%d",menu[dishes_number].name,&menu[dishes_number].price,&menu[dishes_number].personalization_availble);
     //        printf("%s %.2f %d",menu[dishes_number].name,menu[dishes_number].price,menu[dishes_number].personalization_availble);
     //        dishes_number++;
     //    }
