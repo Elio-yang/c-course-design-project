@@ -87,28 +87,26 @@ void print_order_interface()
 
 int delete_dishes() //success return 1,or return 0
 {
-    char name[50];
-    printf("Please input the dishes you don't want\n");
-    scanf("%s", name);
-
-    order *p = order_head, *q = order_head;
-    while (strcmp(p->name, name) != 0 && p != NULL) //find the corresponding dishes
+    int index;
+    printf("Please input the index of the dishes you don't want\n");
+    if (!input1(index))
+        return 0;
+    while (index <= 0 || index > order_number)
     {
-        q = p;
+        printf("Dishes doesn't exist,please input again\n");
+        if (!input1(index))
+            return 0;
+    }
+    order *p = order_head, *p_front = order_head;
+    for (int i = 0; i < index - 1; i++) //find the corresponding dishes
+    {
+        p_front = p;
         p = p->next;
     }
 
-    if (p == NULL) //if cannot find the dishes
-    {
-        printf("Dishes doesn't exist\n");
-        return 0;
-    }
-    else
-    {
-        q->next = p->next;
-        free(p);
-        return 1;
-    }
+    p_front->next = p->next;
+    free(p);
+    return 1;
 }
 
 int input1(int *instruction) //if input 0 then quit
@@ -194,12 +192,10 @@ int change_order()
         if (!input1(index))
             return 0;
     }
-    order *p = order_head, *q = order_head;
+    order *p = order_head;
     for (int i = 0; i < index - 1; i++) //find the corresponding dishes
-    {
-        q = p;
         p = p->next;
-    }
+        
     char instruction[10];
     while (1)
     {
@@ -259,7 +255,7 @@ void change() //check or finish?
 
         case 'q':
             return;
-            
+
         default:
             printf("Instruction doesn't exist, please input again\n");
             break;
