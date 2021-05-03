@@ -56,25 +56,32 @@ void print_menu()
         printf("*%2d.%-41s%.2fyuan\n", i + 1, menu[i].name, menu[i].price);
 }
 
-order *print_order()
+void print_order()
 {
     printf("**********************ODER_LIST***********************\n");
+
     int aggregate_price = 0;
     order *p = order_head->next;
-    while (p->next != NULL) //print the order
+    while (p != NULL) //print the order
     {
-        printf("%d.%s %d", p->index, p->name, p->number);
+        printf("*%2d.%-36s%-5d%.2fyuan\n", p->index, p->name,p->number,p->price);
         for (int i = 0; i < p->personalization_request; i++)
             printf(" %s", p->personlization[i]);
-        printf("%.2fyuan\n", p->price);
 
         aggregate_price += p->price;
         p = p->next;
     }
-    return p;
-    printf("The aggregate price is %d\n", aggregate_price);
+    printf("The aggregate price is %dyuan.\n", aggregate_price);
 }
-
+int input1(int *instruction) //if input 0 then quit
+{
+    printf("(input '0' to quit)\n");
+    scanf("%d", instruction);
+    if (*instruction == 0) //if quit
+        return 0;
+    else
+        return 1;
+}
 void print_order_interface()
 {
     printf("*********************INSTRUCTION**********************\n"
@@ -85,39 +92,52 @@ void print_order_interface()
            "*f:check confirm and finish your ordering            *\n");
 }
 
-int delete_dishes() //success return 1,or return 0
+void delete_dishes() //success return 1,or return 0
 {
     int index;
     printf("Please input the index of the dishes you don't want\n");
-    if (!input1(index))
-        return 0;
-    while (index <= 0 || index > order_number)
+    if (!input1(&index))
+        return;
+    while (index <= 0 || index > order_number)  //incorrect input
     {
         printf("Dishes doesn't exist,please input again\n");
-        if (!input1(index))
-            return 0;
+        if (!input1(&index))
+            return;
     }
     order *p = order_head, *p_front = order_head;
-    for (int i = 0; i < index - 1; i++) //find the corresponding dishes
+    for (int i = 0; i < index - 1; i++)     //find the corresponding dishes
     {
         p_front = p;
         p = p->next;
     }
-
-    p_front->next = p->next;
-    free(p);
-    return 1;
+    getchar();      //aborb the empty string from input1
+    char instruction[100];
+    while (1)
+    {
+        printf("Are youe sure you want to delete the dishes?(Y/N)\n");
+        gets(instruction);
+        if (strlen(instruction) > 1) //incorrect command
+        {
+            printf("Instruction doesn't exist,please input again\n");
+            continue;
+        }
+        switch (instruction[0])
+        {
+            case 'Y':
+                p_front->next = p->next;
+                printf("You hane successfully delete the %s!",p->name);
+                free(p);
+                return;
+            case 'N':
+                return;
+            default:
+                printf("Instruction dosen't exist, please input again\n");
+                break;
+        }
+    }
 }
 
-int input1(int *instruction) //if input 0 then quit
-{
-    printf("(input '0' to quit)\n");
-    scanf("%d", instruction);
-    if (*instruction == 0) //if quit
-        return 0;
-    else
-        return 1;
-}
+
 int add_dishes() //q:0
 {
     int i, num = 0, taste;
@@ -128,7 +148,6 @@ int add_dishes() //q:0
 
     if (!input1(&index))
         return 0; //return 0 to directly quit
-
     while (index < 1 || index > dishes_number) //find out if we have the dishes
     {
         printf("Dishes doesn't exist,Please input again\n");
@@ -177,29 +196,31 @@ int add_dishes() //q:0
         p = p->next;
     p->next = q; //add node at the end of the order list.
     q->next = NULL;
+    printf("Add %d %s into the order successfully!\n",number,menu[index-1].name);
     return 1;
 }
 
-int change_order()
+void change_order()
 {
     int index;
     printf("Please input the index of the dishes you want to change\n");
-    if (!input1(index))
-        return 0;
+    if (!input1(&index))
+        return;
     while (index <= 0 || index > order_number)
     {
         printf("Dishes doesn't exist,please input again\n");
-        if (!input1(index))
-            return 0;
+        if (!input1(&index))
+            return;
     }
     order *p = order_head;
     for (int i = 0; i < index - 1; i++) //find the corresponding dishes
         p = p->next;
-        
-    char instruction[10];
+    
+    getchar();      //aborb the empty string from input1
+    char instruction[100];
     while (1)
     {
-        printf("you can change the number or the personalization of the dishes by the command 'c' or 'p'\n");
+        printf("You can change the number or the personalization of the dishes by the command 'n' or 'p'\n");
         printf("Input q to quit\n");
         gets(instruction);
         if (strlen(instruction) > 1) //incorrect command
@@ -227,30 +248,38 @@ int change_order()
             break;
         }
     }
-    return 1;
+    return;
 }
 
-void change() //check or finish?
+void check()
 {
+    if (order_head->next == NULL)
+    {
+        printf("You don't have any dishes oreded\n");
+        return;
+    }
     char instruction[100];
     while (1)
     {
+        print_order();
         printf("You can change or delete dishes by 'c'(change) or 'd'(delete) command\n");
         printf("Input q to quit\n");
         gets(instruction);
         if (strlen(instruction) > 1) //incorrect command
         {
-            printf("instuction doesn't exist,please input again\n");
+            printf("Instuction doesn't exist,please input again\n");
             continue;
         }
         switch (instruction[0])
         {
         case 'c':
             change_order();
+            getchar();
             break;
 
         case 'd':
             delete_dishes();
+            getchar();
             break;
 
         case 'q':
@@ -263,36 +292,30 @@ void change() //check or finish?
     }
 }
 
-void check()
-{
-    if (order_head->next == NULL)
-    {
-        printf("You don't have any dishes oreded\n");
-        return;
-    }
-    print_order();
-    change();
-}
-
 int finish()
 {
-    char instruction;
-    print_order();
-    printf("are you going to confirm(q) your order or change(c) it?\n");
+   char instruction[100];
     while (1)
     {
-        scanf("%c", &instruction);
-        switch (instruction)
+        printf("Are you going to confirm(y) your order or change(c) it?\n");
+        printf("Input q to quit\n");
+        gets(instruction);
+        if (strlen(instruction) > 1) //incorrect command
         {
-        case 'q':
+            printf("Instuction doesn't exist,please input again\n");
+            continue;
+        }
+        switch (instruction[0])
+        {
+        case 'y':
             return 1;
-            break;
         case 'c':
-            change();
+            check();
             break;
+        case 'q':
+            return 0;
         default:
-            printf("instuction doesn't exist\n"
-                   "Please input again\n");
+            printf("Instuction doesn't existp please input again\n");
             break;
         }
     }
@@ -318,10 +341,12 @@ int main(void)
         switch (instruction[0])
         {
         case 'a':
-            add_dishes(); //add dishes
+            add_dishes(); //add dishes 
+            getchar();//??
             break;
         case 'c':
             check(); //check the whole order
+            getchar();//??
             break;
         case 'f':              //check,confrim the order and finish
             if (finish() == 1) //if user decides to finish then update the ware house and quit
