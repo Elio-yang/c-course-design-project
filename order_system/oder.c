@@ -1,4 +1,7 @@
 //All the input must be char and be analyzed later
+//使用序号来确定输入，使用strcmp也可以？但是考虑到使用系统的便捷，这里使用了序号来定位
+//结构体数组为定位结构体的元素提供了便利，如果需要结点的序号，最好用结构体
+//这里需要记录order的数量，修改，删除，order时都需要通过索引号来定位
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,8 +46,8 @@ void get_menu()
             fscanf(p, "%[^,],%f,%d", menu[dishes_number].name, &menu[dishes_number].price, &menu[dishes_number].personalization_availble);
             if (!warehouse_availble)
                 menu[dishes_number].available_number = 1;
-            else
-                menu[dishes_number].available_number = warehouse_check(menu[dishes_number].name);
+//            else
+//                menu[dishes_number].available_number = warehouse_check(menu[dishes_number].name);
             for (int i = 0; i < menu[dishes_number].personalization_availble; i++) //regular expression
                 fscanf(p, "%[^s]", menu[dishes_number].personalization[i]);
             dishes_number++;
@@ -68,7 +71,7 @@ void print_order()
     int aggregate_price = 0;
     for(int i=0;i<order_number;i++) //print the order
     {
-        printf("*%2d.%-36s%-5d%.2fyuan\n", order_list[i].index, order_list[i].name, order_list[i].number, order_list[i].price);
+        printf("*%2d.%-36s%-5d%.2fyuan\n", i+1, order_list[i].name, order_list[i].number, order_list[i].price);
         for (int j = 0; j < order_list[i].personalization_request; i++)
             printf(" %s", order_list[i].personlization[j]);
 
@@ -90,31 +93,31 @@ void print_order_interface()
 int input_int(int *instruction) //if input 0 then quit
 {
     char number[100];       //save the number
-    int flag=1;
-    int i,len=strlen(number);
+    int flag=0;
+    int i,len;
     int count=0;
     while(flag==0)
     {
         printf("(input '0' to quit)\n");
         scanf("%s", number);
+        len=strlen(number);
         for(i=0;i<len;i++)         //if has character not a number
             if(number[0]-'0'<0||number[0]-'0'>9)
             {
                 printf("Input error, please input again\n");
-                flag=0;
                 break;
             }
         if(i==len)
             flag=1;
     }
-    if(number[0]==0||len==1)
+    if(number[0]==0&&len==1)
         return 0;
-    else if(number[0]==0||len!=1)
+    else
     {
         for(int i=0;i<len;i++)      //analiyze the input
         {
             count*=10;
-            count+=number[i];
+            count+=number[i]-'0';
         }
     }
         *instruction = count;
@@ -473,8 +476,8 @@ int main(void)
         case 'f':              //check,confrim the order and finish
             if (finish() == 1) //if user decides to finish then update the ware house and quit
             {
-                if (warehouse_availble)
-                    warehouse_update(order_list);
+  //             if (warehouse_availble)
+  //                 warehouse_update(order_list);
                 return 1;
                 break;
             case 'q':
