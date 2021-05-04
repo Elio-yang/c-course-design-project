@@ -181,8 +181,8 @@ void add_dishes() //q:0
     getchar();
     if (menu[index].personalization_availble)
     {
-        printf("*******************************************\n"
-               "*The dishes has taste choice followed %s  *\n");
+        printf("******************************************************\n"
+               "*The dishes has taste choice followed %s             *\n");
         for (int i = 0; i < menu[index].personalization_availble; i++)
             printf("*%d.%s                                    *\n", i+1, menu[index].personalization[i]);
         while (1)
@@ -381,8 +381,8 @@ void change_order_personalization(int order)
         return;
     }
     
-    printf("*******************************************\n"
-           "*The dishes has taste choice followed %s  *\n");
+    printf("******************************************************\n"
+           "*The dishes has taste choice followed %s             *\n");
     for (int i = 0; i < menu[index].personalization_availble; i++)
         printf("*%d.%s                                    *\n", i+1, menu[index].personalization[i]);
     printf("Please input the number of the taste you want\n");
