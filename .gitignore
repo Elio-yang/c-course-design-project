@@ -15,5 +15,5 @@ _deps
 cmake-build-debug-remote-host
 cmake-build-debug
 .vscode
-.idea
+.idea/
 .clion.source.upload.marker
