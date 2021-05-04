@@ -61,7 +61,7 @@ int input_int(int *instruction) //if input 0 then quit
         scanf("%s", number);
         len=strlen(number);
         for(i=0;i<len;i++)         //if has character not a number
-            if(number[0]-'0'<0||number[0]-'0'>9)
+            if(number[i]-'0'<0||number[i]-'0'>9)
             {
                 printf("Input error, please input again\n");
                 break;
@@ -280,7 +280,7 @@ void delete_dishes() //success return 1,or return 0
     printf("Are youe sure you want to delete the dishes?(Y/N)\n");
     if(confirm())
     {
-        for(int i=index;i<order_number;i++)
+        for(int i=index;i<=order_number;i++)
             order_list[i-1]= order_list[i];
         printf("You have successfully delete the %s!\n",  order_list[index-1].name);
         order_number--;
@@ -477,7 +477,7 @@ int main(void)
         gets(instruction);
         if (strlen(instruction) > 1) //incorrect command
         {
-            printf("instuction doesn't exist,please input again\n");
+            printf("Instruction doesn't exist,please input again\n");
             continue;
         }
         switch (instruction[0])
