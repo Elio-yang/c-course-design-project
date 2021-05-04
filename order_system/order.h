@@ -34,3 +34,4 @@ extern void change_order(void);
 extern void change_order_number(int);
 extern void change_order_personalization(int);
 extern int finish(void);
+extern int confirm();
