@@ -9,10 +9,6 @@
 #include "../human_resource_system/hr_run.h"
 #include <pthread.h>
 
-
-
-
-
 int main()
 {
         print_hrsys_info();

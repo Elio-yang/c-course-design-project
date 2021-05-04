@@ -208,7 +208,7 @@ int check_date(const char *date)
         }else{
                 idx=1;
         }
-        if(dd!=date_per_month[mm][idx]){
+        if(dd>date_per_month[mm][idx]){
                 printf("Incorrect day of this month.\n"NONE);
                 return 4;
         }
@@ -222,6 +222,7 @@ void logic_repl()
         InputBuffer * input = new_input_buffer();
         while(input!=nullptr){
                 print_sign();
+                fflush(stdin);
                 read_input(input);
                 //meta command
                 char real_cmd[input->input_len+1];

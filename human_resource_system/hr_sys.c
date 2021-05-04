@@ -12,53 +12,43 @@ hr_list *HR_LIST;
 comp_list *COMP_LIST;
 uint32_t init_hr_cnt;
 
-static int cmp_up_name(const void *A, const void *B)
-{
+static int cmp_up_name(const void *A, const void *B) {
         return strcmp(((Staff *) A)->name, ((Staff *) B)->name);
 }
 
-static int cmp_d_name(const void *A, const void *B)
-{
+static int cmp_d_name(const void *A, const void *B) {
         return strcmp(((Staff *) B)->name, ((Staff *) A)->name);
 }
 
-static int cmp_up_pid(const void *A, const void *B)
-{
+static int cmp_up_pid(const void *A, const void *B) {
         return strcmp(((Staff *) A)->pid, ((Staff *) B)->pid);
 }
 
-static int cmp_d_pid(const void *A, const void *B)
-{
+static int cmp_d_pid(const void *A, const void *B) {
         return strcmp(((Staff *) B)->pid, ((Staff *) A)->pid);
 }
 
-static int cmp_up_wid(const void *A, const void *B)
-{
+static int cmp_up_wid(const void *A, const void *B) {
         return strcmp(((Staff *) A)->wid, ((Staff *) B)->wid);
 }
 
-static int cmp_d_wid(const void *A, const void *B)
-{
+static int cmp_d_wid(const void *A, const void *B) {
         return strcmp(((Staff *) B)->wid, ((Staff *) A)->wid);
 }
 
-static int cmp_up_date(const void *A, const void *B)
-{
+static int cmp_up_date(const void *A, const void *B) {
         return strcmp(((Staff *) A)->hire_time, ((Staff *) B)->hire_time);
 }
 
-static int cmp_d_date(const void *A, const void *B)
-{
+static int cmp_d_date(const void *A, const void *B) {
         return strcmp(((Staff *) B)->hire_time, ((Staff *) A)->hire_time);
 }
 
-static int cmp_up_sal(const void *A, const void *B)
-{
+static int cmp_up_sal(const void *A, const void *B) {
         return strcmp(((Staff *) A)->salary, ((Staff *) B)->salary);
 }
 
-static int cmp_d_sal(const void *A, const void *B)
-{
+static int cmp_d_sal(const void *A, const void *B) {
         return strcmp(((Staff *) B)->salary, ((Staff *) A)->salary);
 }
 
@@ -73,20 +63,17 @@ static int (*cmp_table[][2])(const void *, const void *) ={
 
 
 /*-----------------------------------setter & getter---------------------------------------*/
-void set_name(Staff *staff, const char *name)
-{
+void set_name(Staff *staff, const char *name) {
         memset(staff->name, 0, sizeof(staff->name));
         strcpy(staff->name, name);
 }
 
-void set_hire_time(Staff *staff, const char *time)
-{
+void set_hire_time(Staff *staff, const char *time) {
         memset(staff->hire_time, 0, sizeof(staff->hire_time));
         strcpy(staff->hire_time, time);
 }
 
-void set_gender(Staff *staff, const char *gender)
-{
+void set_gender(Staff *staff, const char *gender) {
         if (strcmp(gender, "MALE") == 0) {
                 staff->gender = MALE;
         } else if (strcmp(gender, "FEMALE") == 0) {
@@ -98,8 +85,7 @@ void set_gender(Staff *staff, const char *gender)
 
 }
 
-void set_rank(Staff *staff, const char *rank)
-{
+void set_rank(Staff *staff, const char *rank) {
         if (strcmp(rank, "0") == 0) {
                 staff->rank = BOSS;
         } else if (strcmp(rank, "1") == 0) {
@@ -122,27 +108,23 @@ void set_rank(Staff *staff, const char *rank)
         }
 }
 
-void set_pid(Staff *staff, const char *pid)
-{
+void set_pid(Staff *staff, const char *pid) {
         memset(staff->pid, 0, sizeof(staff->pid));
         strcpy(staff->pid, pid);
 }
 
-void set_wid(Staff *staff, const char *wid)
-{
+void set_wid(Staff *staff, const char *wid) {
         memset(staff->wid, 0, sizeof(staff->wid));
         strcpy(staff->wid, wid);
 }
 
-void set_salary(Staff *staff, const char *salary)
-{
+void set_salary(Staff *staff, const char *salary) {
         memset(staff->salary, 0, sizeof(staff->salary));
         strcpy(staff->salary, salary);
 }
 
 /* 0 for success &-1 for failure */
-int set_mpl(Staff *staff, const char *mpl)
-{
+int set_mpl(Staff *staff, const char *mpl) {
         uint pl = atoi(mpl);
         switch (pl) {
                 case 0: {
@@ -165,8 +147,7 @@ int set_mpl(Staff *staff, const char *mpl)
         return 0;
 }
 
-Staff *staff_init(Staff *staff, char info[hr_info_len])
-{
+Staff *staff_init(Staff *staff, char info[hr_info_len]) {
 
         char *name = strtok(info, " ");
         char *hire_time = strtok(NULL, " ");
@@ -190,8 +171,7 @@ Staff *staff_init(Staff *staff, char info[hr_info_len])
 
 }
 
-Complaint_record *comp_init(Complaint_record *comp, char info[comp_info_len])
-{
+Complaint_record *comp_init(Complaint_record *comp, char info[comp_info_len]) {
         char *name = strtok(info, " ");
         char *time = strtok(NULL, " ");
         char *mesg = strtok(NULL, " ");
@@ -201,8 +181,7 @@ Complaint_record *comp_init(Complaint_record *comp, char info[comp_info_len])
         return comp;
 }
 
-char *get_time(Staff *staff)
-{
+char *get_time(Staff *staff) {
         char *t = (char *) malloc(sizeof(char) * 32);
         int time = atoi(staff->hire_time);
         int year = time / 10000;
@@ -228,8 +207,7 @@ char *get_time(Staff *staff)
 
 }
 
-char *get_gender(Staff *staff)
-{
+char *get_gender(Staff *staff) {
         if (staff->gender == MALE) {
                 return "MALE";
         } else {
@@ -237,8 +215,7 @@ char *get_gender(Staff *staff)
         }
 }
 
-char *get_rank(Staff *staff)
-{
+char *get_rank(Staff *staff) {
         switch (staff->rank) {
 
                 case BOSS:
@@ -260,8 +237,7 @@ char *get_rank(Staff *staff)
         }
 }
 
-char *get_mpl(Staff *staff)
-{
+char *get_mpl(Staff *staff) {
         switch (staff->MPL) {
                 case SUPERUSER: {
                         return "SUPERUSER";
@@ -276,8 +252,7 @@ char *get_mpl(Staff *staff)
 }
 
 /*-----------------------------------APIs----------------------------------------------*/
-__attribute__((unused))  bool switch_to_hr_sys(Staff *staff)
-{
+__attribute__((unused))  bool switch_to_hr_sys(Staff *staff) {
         if (staff->MPL == USERS) {
                 fprintf(stderr, "privilege level not enough.\n");
                 return false;
@@ -288,8 +263,7 @@ __attribute__((unused))  bool switch_to_hr_sys(Staff *staff)
 
 }
 
-void load_hr_file(const char *filename)
-{
+void load_hr_file(const char *filename) {
 #ifdef UNIX
         int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
 #endif
@@ -306,7 +280,7 @@ void load_hr_file(const char *filename)
         HR_LIST->head = (Staff *) malloc(sizeof(Staff));
         HR_LIST->cnt = 0;
         HR_LIST->dirty = 0;
-        strcpy(HR_LIST->filename,filename);
+        strcpy(HR_LIST->filename, filename);
 
         Staff *ptr = HR_LIST->head;
         ptr->next = NULL;
@@ -327,8 +301,7 @@ void load_hr_file(const char *filename)
         init_hr_cnt = HR_LIST->cnt;
 }
 
-void load_comp_file(const char *filename)
-{
+void load_comp_file(const char *filename) {
 #ifdef UNIX
         int fd = open(filename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
 #endif
@@ -345,7 +318,7 @@ void load_comp_file(const char *filename)
         COMP_LIST->head = (Complaint_record *) malloc(sizeof(Complaint_record));
         COMP_LIST->cnt = 0;
         COMP_LIST->dirty = 0;
-        strcpy(COMP_LIST->filename,filename);
+        strcpy(COMP_LIST->filename, filename);
         Complaint_record *ptr = COMP_LIST->head;
         ptr->next = NULL;
 
@@ -364,8 +337,7 @@ void load_comp_file(const char *filename)
         }
 }
 
-void sys_init()
-{
+void sys_init() {
         InputBuffer *file_input = new_input_buffer();
 
         label1:
@@ -402,8 +374,7 @@ void sys_init()
 
 pthread_mutex_t REPL_LOCK = PTHREAD_MUTEX_INITIALIZER;
 
-__attribute__((unused)) extern void get_authority()
-{
+__attribute__((unused)) extern void get_authority() {
         sys_init();
         int status;
         pthread_mutex_lock(&REPL_LOCK);
@@ -422,8 +393,7 @@ __attribute__((unused)) extern void get_authority()
         }
 }
 
-void print_worker_info(Staff *staff)
-{
+void print_worker_info(Staff *staff) {
         printf(""
                "+----------------------------------------------------+\n"
                "|  NAME      :\t%-20s                 |\n"
@@ -439,8 +409,7 @@ void print_worker_info(Staff *staff)
                get_wid(staff), get_salary(staff));
 }
 
-Staff *query_by_wid(const char *id)
-{
+Staff *query_by_wid(const char *id) {
 
         Staff *head = get_head(HR_LIST);
         while (head != NULL) {
@@ -455,8 +424,7 @@ Staff *query_by_wid(const char *id)
 
 }
 
-Staff *query_by_pid(const char *pid)
-{
+Staff *query_by_pid(const char *pid) {
         Staff *head = get_head(HR_LIST);
         while (head != NULL) {
                 if (strcmp(head->pid, pid) == 0) {
@@ -469,15 +437,13 @@ Staff *query_by_pid(const char *pid)
         return NULL;
 }
 
-void show_a_query_info(Staff *staff)
-{
+void show_a_query_info(Staff *staff) {
         select_header_all();
         print_f_select_all(staff);
         printf("+----------+----------------+---------+--------------+-----------------+----------+--------------+\n");
 }
 
-Staff *query_by_name(const char *name)
-{
+Staff *query_by_name(const char *name) {
         Staff *head = get_head(HR_LIST);
         while (head != NULL) {
                 if (strcmp(name, head->name) == 0) {
@@ -490,8 +456,7 @@ Staff *query_by_name(const char *name)
         return NULL;
 }
 
-void select_header_all()
-{
+void select_header_all() {
         printf(""
                "+----------+----------------+---------+--------------+-----------------+----------+--------------+\n"
                "| Name     | Hire time      | Gender  | Rank         | Pid             | Wid      | Salary       |\n"
@@ -500,16 +465,20 @@ void select_header_all()
 
 }
 
-void print_f_select_all(Staff *staff)
-{
+void print_f_select_all(Staff *staff) {
+        char *name = staff->name;
+        char *time = get_time(staff);
+        char *gender = get_gender(staff);
+        char *rank = get_rank(staff);
+        char *pid = get_pid(staff);
+        char *wid = get_wid(staff);
+        char *salary = get_salary(staff);
         printf(""
                "| %-9s| %-15s| %-8s| %-13s| %-16s| %-9s| %-13s|\n",
-               staff->name, get_time(staff), get_gender(staff), get_rank(staff), get_pid(staff),
-               get_wid(staff), get_salary(staff));
+               name, time, gender, rank, pid, wid, salary);
 }
 
-void select_header_gender()
-{
+void select_header_gender() {
         printf(""
                "+----------+---------+\n"
                "| Name     | Gender  |\n"
@@ -517,14 +486,12 @@ void select_header_gender()
         );
 }
 
-void print_f_select_gender(Staff *staff)
-{
+void print_f_select_gender(Staff *staff) {
         printf("| %-9s| %-8s|\n",
                staff->name, get_gender(staff));
 }
 
-void select_header_rank()
-{
+void select_header_rank() {
         printf(""
                "+----------+--------------+\n"
                "| Name     | Rank         |\n"
@@ -532,14 +499,12 @@ void select_header_rank()
         );
 }
 
-void print_f_select_rank(Staff *staff)
-{
+void print_f_select_rank(Staff *staff) {
         printf("| %-9s| %-13s|\n",
                staff->name, get_rank(staff));
 }
 
-void select_by_gender(Gender gender)
-{
+void select_by_gender(Gender gender) {
         Staff *head = HR_LIST->head->next;
         select_header_gender();
         while (head != NULL) {
@@ -551,8 +516,7 @@ void select_by_gender(Gender gender)
         printf("+----------+---------+\n");
 }
 
-void select_by_rank(Position rank)
-{
+void select_by_rank(Position rank) {
         Staff *head = HR_LIST->head->next;
         select_header_rank();
         while (head != NULL) {
@@ -564,8 +528,7 @@ void select_by_rank(Position rank)
         printf("+----------+--------------+\n");
 }
 
-void select_name()
-{
+void select_name() {
         printf(""
                "+----------+\n"
                "| Name     |\n"
@@ -579,8 +542,7 @@ void select_name()
         printf("+----------+\n");
 }
 
-void select_gender()
-{
+void select_gender() {
         printf(""
                "+----------+---------+\n"
                "| Name     | Gender  |\n"
@@ -594,8 +556,7 @@ void select_gender()
         printf("+----------+---------+\n");
 }
 
-void select_pid()
-{
+void select_pid() {
         printf(""
                "+----------+-----------------+\n"
                "| Name     | Pid             |\n"
@@ -609,8 +570,7 @@ void select_pid()
         printf("+----------+-----------------+\n");
 }
 
-void select_wid()
-{
+void select_wid() {
         printf(""
                "+----------+----------+\n"
                "| Name     | Wid      |\n"
@@ -624,8 +584,7 @@ void select_wid()
         printf("+----------+----------+\n");
 }
 
-void select_date()
-{
+void select_date() {
         printf(""
                "+----------+----------------+\n"
                "| Name     | Hire time      |\n"
@@ -639,8 +598,7 @@ void select_date()
         printf("+----------+----------------+\n");
 }
 
-void select_rank()
-{
+void select_rank() {
         printf(""
                "+----------+--------------+\n"
                "| Name     | Rank         |\n"
@@ -654,8 +612,7 @@ void select_rank()
         printf("+----------+--------------+\n");
 }
 
-void select_all()
-{
+void select_all() {
         Staff *head = HR_LIST->head->next;
         select_header_all();
         while (head != NULL) {
@@ -669,8 +626,7 @@ void select_all()
  * sort the information by field and print them
  * direction: 0 for an increase order (-i)
  * */
-void sort_by(Field field, int direction)
-{
+void sort_by(Field field, int direction) {
         int (*cmp)(const void *, const void *) =cmp_table[field][direction];
         select_header_all();
         Staff array[HR_LIST->cnt];
@@ -690,8 +646,7 @@ void sort_by(Field field, int direction)
         printf("+----------+----------------+---------+--------------+-----------------+----------+--------------+\n");
 }
 
-void _insert_worker(Staff *staff)
-{
+void _insert_worker(Staff *staff) {
         Staff *head = get_head(HR_LIST);
         staff->next = head->next;
         head->next = staff;
@@ -699,8 +654,7 @@ void _insert_worker(Staff *staff)
         HR_LIST->dirty = 1;
 }
 
-void _insert_comp(Complaint_record *comp)
-{
+void _insert_comp(Complaint_record *comp) {
         Complaint_record *head = get_head(COMP_LIST);
         comp->next = head->next;
         head->next = comp;
@@ -717,8 +671,7 @@ void insert_worker(
         const char *pid,
         const char *wid,
         const char *salary
-)
-{
+) {
         Staff *staff = (Staff *) malloc(sizeof(*staff));
 
         Gender gender;
@@ -770,18 +723,13 @@ void insert_worker(
         strcpy(staff->pid, pid);
         strcpy(staff->wid, wid);
         strcpy(staff->salary, salary);
-        printf("inserted Staff information:");
+        printf("inserted Staff information:\n");
         show_a_query_info(staff);
-        int res = get_response("Sure to insert?");
-        if (res == -2) {
-                _insert_worker(staff);
-        } else if (res == -1) {
-                return;
-        }
+        _insert_worker(staff);
+
 }
 
-void _remove_worker(Staff *staff)
-{
+void _remove_worker(Staff *staff) {
         if (staff == NULL) {
                 return;
         }
@@ -803,8 +751,7 @@ void _remove_worker(Staff *staff)
         --HR_LIST->cnt;
 }
 
-__attribute__((unused)) bool remove_worker(const char *wid)
-{
+__attribute__((unused)) bool remove_worker(const char *wid) {
         if (HR_LIST->cnt == 0 ||
             (HR_LIST->cnt == 1 && strcmp(wid, HR_LIST->head->next->wid) != 0)) {
                 fprintf(stderr, "Remove error no worker.\n");
@@ -820,8 +767,7 @@ __attribute__((unused)) bool remove_worker(const char *wid)
         }
 }
 
-void flush_disk()
-{
+void flush_disk() {
 
         // not modified
         if (HR_LIST->dirty == 0) {
@@ -832,10 +778,10 @@ void flush_disk()
         HR_LIST->fd = -1;
 
         char cmd[100];
-        int l=0;
-        char *hrfilename=HR_LIST->filename;
-        l+=sprintf(cmd+l,"%s ","rm");
-        l+= sprintf(cmd+l,"%s",hrfilename);
+        int l = 0;
+        char *hrfilename = HR_LIST->filename;
+        l += sprintf(cmd + l, "%s ", "rm");
+        l += sprintf(cmd + l, "%s", hrfilename);
         system(cmd);
 #ifdef UNIX
         hr_fd = open(hrfilename, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR);
@@ -886,10 +832,10 @@ void flush_disk()
         }
         int comp_fd = COMP_LIST->fd;
         close(comp_fd);
-        char *compfilename=COMP_LIST->filename;
-        l=0;
-        l+=sprintf(cmd+l,"%s ","rm");
-        l+= sprintf(cmd+l,"%s",compfilename);
+        char *compfilename = COMP_LIST->filename;
+        l = 0;
+        l += sprintf(cmd + l, "%s ", "rm");
+        l += sprintf(cmd + l, "%s", compfilename);
         system(cmd);
 
 #ifdef UNIX
@@ -930,8 +876,7 @@ void flush_disk()
 
 }
 
-void free_hr_list()
-{
+void free_hr_list() {
         Staff *ptr = HR_LIST->head;
         while (ptr->next != NULL) {
                 Staff *staff = ptr->next;
@@ -940,8 +885,7 @@ void free_hr_list()
 }
 
 // called when exit the hr sys
-void exit_hr_sys()
-{
+void exit_hr_sys() {
         flush_disk();
         free_hr_list();
         printf(BOLD"*----------------------------------------------------*\n"NONE
@@ -950,13 +894,11 @@ void exit_hr_sys()
         exit(0);
 }
 
-void sync_hr_sys()
-{
+void sync_hr_sys() {
         flush_disk();
 }
 
-void add_complaint(const char *wid, const char *info)
-{
+void add_complaint(const char *wid, const char *info) {
         Complaint_record *rcd = (Complaint_record *) malloc(sizeof(*rcd));
         Staff *staff = query_by_wid(wid);
         strcpy(rcd->name, staff->name);
