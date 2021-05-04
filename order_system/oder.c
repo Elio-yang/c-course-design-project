@@ -2,28 +2,12 @@
 //使用序号来确定输入，使用strcmp也可以？但是考虑到使用系统的便捷，这里使用了序号来定位
 //结构体数组为定位结构体的元素提供了便利，如果需要结点的序号，最好用结构体
 //这里需要记录order的数量，修改，删除，order时都需要通过索引号来定位
-//非void类型函数的返回值需要被某个变量或者标准输入吸收？？？？？？？
+//非void类型函数的返回值需要被某个变量或者标准输入吸收？？？？？？，为什么input_int会加入缓冲区，而confirm则不会？？？
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define MENU_PATH "C:\\cprogramming\\C-Course-Design\\menu.TXT"
 #define warehouse_availble 0
-int warehouse_check(dish);   //warehouse interface1:give a name return the number of the dishes available
-int warehouse_update(order); //warehouse interface2:give the order message then update the warehouse return true or false
-int finance_record(order);   //finance interface:update the order record
-int input_int(int *);        //analize the int input
-void get_menu(void);
-void print_menu(void);
-void print_order(void);
-void print_order_interface(void);
-void add_dishes(void);                  //add a dishes into the oderlist
-void check(void);                       //check the ordered dishes and conduct some operation
-void delete_dishes(void);               //delete a dishews
-void change_order(void);                //change the number or personalization
-void change_order_number(int);          //change the number of a dishes
-void change_order_personalization(int); //change the personalization of a dishes
-int finish(void);                       //quit the system
-int confirm();                          //confirm user's change delete or exit
 
 typedef struct dish
 {
@@ -50,6 +34,24 @@ int dishes_number; //the amount of the dishes in the menu
 int order_number;  //the amount of the dishes of the order list
 dish menu[200];
 order order_list[200];
+int warehouse_check(dish);   //warehouse interface1:give a name return the number of the dishes available
+int warehouse_update(order); //warehouse interface2:give the order message then update the warehouse return true or false
+int finance_record(order);   //finance interface:update the order record
+int input_int(int *);        //analize the int input
+void get_menu(void);
+void print_menu(void);
+void print_order(void);
+void print_order_interface(void);
+void add_dishes(void);                  //add a dishes into the oderlist
+void check(void);                       //check the ordered dishes and conduct some operation
+void delete_dishes(void);               //delete a dishews
+void change_order(void);                //change the number or personalization
+void change_order_number(int);          //change the number of a dishes
+void change_order_personalization(int); //change the personalization of a dishes
+int finish(void);                       //quit the system
+int confirm();                          //confirm user's change delete or exit
+
+
 
 int input_int(int *instruction) //if input 0 then quit
 {
@@ -125,7 +127,7 @@ void print_order()
     for (int i = 0; i < order_number; i++) //print the order
     {
         printf("*%2d.%-36s%-5d%.2fyuan\n", i + 1, order_list[i].name, order_list[i].number, order_list[i].price);
-        for (int j = 0; j < order_list[i].personalization_request; i++)
+        for (int j = 0; j < order_list[i].personalization_request; j++)
             printf(" %s\n", order_list[i].personlization[j]);
 
         aggregate_price += order_list[i].price;
@@ -152,7 +154,7 @@ void add_dishes() //q:0
 
     if (!input_int(&index))
     {
-        getchar();
+        getchar();                  //这里注释掉不可以？？？
         return; //return 0 to directly quit
     }
     while (index < 1 || index > dishes_number) //find out if we have the dishes
@@ -180,13 +182,13 @@ void add_dishes() //q:0
             return;
         }
     }
-    getchar();
+   // getchar();            //加入confirm后不用getchar？？？
     if (menu[index].personalization_availble) //choose the taste
     {
         printf("******************************************************\n"
                "*The dishes has taste choice followed %s             *\n");
         for (int i = 0; i < menu[index].personalization_availble; i++)
-            printf("*%d.%s                                    *\n", i + 1, menu[index].personalization[i]);
+        printf("*%d.%s                                               *\n", i + 1, menu[index].personalization[i]);
         while (1)
         {
             printf("Please input the number of the taste you want\n");
@@ -218,7 +220,7 @@ void add_dishes() //q:0
     order_list[order_number].number = number;
     order_list[order_number].price = menu[index].price * number;
     order_number++;
-    printf("Add %d %s into the order successfully!\n", number, menu[index].name);
+    printf("Adding %d %s into the order successfully!\n", number, menu[index].name);
     return;
 }
 void check()                  
@@ -385,7 +387,7 @@ void change_order_personalization(int order)
     printf("******************************************************\n"
            "*The dishes has taste choice followed %s             *\n");
     for (int i = 0; i < menu[index].personalization_availble; i++)
-        printf("*%d.%s                                    *\n", i + 1, menu[index].personalization[i]);
+        printf("*%d.%s                                               *\n", i + 1, menu[index].personalization[i]);
     printf("Please input the number of the taste you want\n");
     while (1)
     {
@@ -472,7 +474,6 @@ int main(void)
 {
     get_menu();
     print_menu();
-
     char instruction[100]; //the command
     while (1)
     {
