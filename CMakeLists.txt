@@ -64,3 +64,7 @@ add_executable(login
         Test/encryption.c
         human_resource_system/hr_repl.c
         )
+
+add_executable(order
+        order_system/oder.c
+)

@@ -780,7 +780,6 @@ void _remove_worker(Staff *staff)
         if (staff == NULL) {
                 return;
         }
-        //TODO change to double link list
         Staff *head = HR_LIST->head;
         Staff *prev = head;
         Staff *pfirst = head->next;
