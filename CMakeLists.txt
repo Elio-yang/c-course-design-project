@@ -67,4 +67,5 @@ add_executable(login
 
 add_executable(order
         order_system/oder.c
+        Test/test_order_sys.c
 )

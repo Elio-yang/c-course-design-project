@@ -11,7 +11,7 @@ Edinger,35.00,0
 Corona,20.00,0
 Heineken,20.00,0
 Carlsberg,18.00,0
-Qingdao,15.00,0
+Qingdao,15.00,1 ice
 Bosss,20.00,0
 LongIslandIcedTea,30.00,0
 GinandTonic,25.00,0
@@ -37,12 +37,11 @@ Icedlemontea,15.00,0
 WestLakeLongjing,20.00,0
 Biluochun,25.00,0
 TieGuanYin,25.00,0
-Driedgingerwater,16.00,0
-Freshmilk,25.00,0
-pineapplejuice,27.00,0
-Grapefruitjuice,34.00,0
-OrangeJuice,26.00,0
-Mineralwater,8.00,0
-Coke,12.00,0
-Sprite,12.00,0
-Mineralwater,12.00,0
+Driedgingerwater,16.00,1 ice
+Freshmilk,25.00,2 hot ice
+pineapplejuice,27.00,1 ice
+Grapefruitjuice,34.00,1 ice
+OrangeJuice,26.00,1 ice
+Coke,12.00,1 ice
+Sprite,12.00,1 ice
+Mineralwater,12.00,1 ice
