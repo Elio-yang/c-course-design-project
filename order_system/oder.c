@@ -100,7 +100,7 @@ void get_menu()
 //            else
 //                menu[dishes_number].available_number = warehouse_check(menu[dishes_number].name);
             for (int i = 0; i < menu[dishes_number].personalization_availble; i++) //regular expression
-                fscanf(p, "%[^s]", menu[dishes_number].personalization[i]);
+                fscanf(p, "%s", menu[dishes_number].personalization[i]);
             dishes_number++;
             if (feof(p))
                 break;
@@ -124,7 +124,7 @@ void print_order()
     {
         printf("*%2d.%-36s%-5d%.2fyuan\n", i+1, order_list[i].name, order_list[i].number, order_list[i].price);
         for (int j = 0; j < order_list[i].personalization_request; i++)
-            printf(" %s", order_list[i].personlization[j]);
+            printf(" %s\n", order_list[i].personlization[j]);
 
         aggregate_price += order_list[i].price;
     }
@@ -184,23 +184,24 @@ void add_dishes() //q:0
         printf("*******************************************\n"
                "*The dishes has taste choice followed %s  *\n");
         for (int i = 0; i < menu[index].personalization_availble; i++)
-            printf("*%d.%s                                    *\n", i, menu[index].personalization[i]);
-        printf("Please input the number of the taste you want\n");
+            printf("*%d.%s                                    *\n", i+1, menu[index].personalization[i]);
         while (1)
         {
+            printf("Please input the number of the taste you want\n");
             if (!input_int(&taste))
             {
-                printf("Fail to change the personalization\n");
+                printf("Fail to get the personalization\n");
                 getchar();
                 return;
             }
             getchar();
-            if (taste < 0 || taste > menu[index].personalization_availble)
+            if (taste < 1 || taste > menu[index].personalization_availble)
+            {
                 printf("Taste doesn't exist,Please input again\n");
-            continue;
-            individual[num++] = taste;
-            char instruction[100];
-            printf("continue or not?(Y/N)\n");
+                continue;
+            }
+            individual[num++] = taste - 1;
+            printf("Continue or not?(Y/N)\n");
             
             if(!confirm())
                 break;
@@ -209,6 +210,7 @@ void add_dishes() //q:0
 
     for (int i = 0; i < num; i++)
         strcpy(order_list[order_number].personlization[i], menu[index].personalization[individual[i]]);
+    order_list[order_number].personalization_request=num;
     order_list[order_number].menu = index;
     strcpy(order_list[order_number].name, menu[index].name);
     order_list[order_number].number = number;
@@ -321,11 +323,11 @@ void change_order()
         switch (instruction[0])
         {
         case 'n':
-            change_order_number(index);
+            change_order_number(index-1);
             break;
 
         case 'p':
-            change_order_personalization(index);
+            change_order_personalization(index-1);
             break;
         case 'q':
             return;
@@ -382,31 +384,33 @@ void change_order_personalization(int order)
     printf("*******************************************\n"
            "*The dishes has taste choice followed %s  *\n");
     for (int i = 0; i < menu[index].personalization_availble; i++)
-        printf("*%d.%s                                    *\n", i, menu[index].personalization[i]);
+        printf("*%d.%s                                    *\n", i+1, menu[index].personalization[i]);
     printf("Please input the number of the taste you want\n");
     while (1)
     {
         int flag = 0;
         if (!input_int(&taste))
         {
-            printf("fail to change the personalization\n");
+            printf("Fail to change the personalization\n");
             return;
         }
         if (taste < 0 || taste > menu[index].personalization_availble)
-            printf("taste doesn't exist,Please input again\n");
-        continue;
-        individual[num++] = taste;
+        {
+            printf("Taste doesn't exist,Please input again\n");
+            continue;
+        }
+        individual[num++] = taste-1;
         char instruction[100];
-        printf("continue or not?(Y/N)\n");
+        printf("Continue or not?(Y/N)\n");
         
         if(!confirm())
                 break;
     }
     printf("Are you sure you want?\n");
     for(int i=0;i<num;i++)
-    printf(" %s",menu[index].personalization[individual[i]]);
+    printf("%s ",menu[index].personalization[individual[i]]);
     printf("(Y/N)\n");
-    if(confirm)
+    if(confirm())
     for (int i = 0; i < num; i++)
         strcpy(order_list[order].personlization[i], menu[index].personalization[individual[i]]);
 }
