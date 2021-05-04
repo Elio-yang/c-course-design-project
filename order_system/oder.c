@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 //TODO : mention path
-#define MENU_PATH "C:\\cprogramming\\C-Course-Design\\menu.TXT"
+#define MENU_PATH "menu.txt"
 #define warehouse_availble 0
 #include "order.h"
 

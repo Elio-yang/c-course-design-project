@@ -35,6 +35,7 @@
 #include "hr_repl.h"
 #include <pthread.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 #define UNIX
 #define INLINE inline
@@ -88,7 +89,7 @@ typedef struct COMP_INFO {
         uint32_t cnt;
         int dirty;
         Complaint_record *head;
-
+        char filename[255];
 } comp_list;
 /* privilege level*/
 typedef enum {
@@ -120,6 +121,7 @@ typedef struct HR_INFO {
         uint32_t cnt;
         /* dirty bit */
         int dirty;
+        char filename[255];
 } hr_list;
 //all human resource information
 extern hr_list *HR_LIST;

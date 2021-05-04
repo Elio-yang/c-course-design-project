@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="remote_ubuntu" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Remote Host (04aa87c4-5ac8-4176-ae2e-aeefd5825d0f)" remoteFilesAllowedToDisappearOnAutoupload="false" showAutoUploadSettingsWarning="false">
     <serverData>
       <paths name="Remote Host (04aa87c4-5ac8-4176-ae2e-aeefd5825d0f)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.Pjn3PpNIdt" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/tmp.Pjn3PpNIdt" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
           </excludedPaths>
-        </serverdata>
-      </paths>
-      <paths name="remote_ubuntu">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/tmp/tmp.pIdETgMIBR" local="$PROJECT_DIR$" web="/" />
-          </mappings>
         </serverdata>
       </paths>
     </serverData>

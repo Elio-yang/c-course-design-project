@@ -98,7 +98,6 @@ Cmd_type regex_match_cmd(const char *cmd)
                 return SELECT_DATE;
         }
         //query <wid/pid/name>
-        //TODO : bugs here--->can not match "query 000001" fix regex expression perhaps.
         if(!regex_match_with(cmd, QUERY_REG)){
                 return QUERY;
         }
@@ -348,7 +347,7 @@ void logic_repl()
                                 char *direc = strtok(NULL," ");
                                 Field f= char_field(field);
                                 int d=0;
-                                if(direc[2]=='i'){
+                                if(direc[1]=='i'){
                                         d=0;
                                 }
                                 else{
@@ -384,6 +383,7 @@ void logic_repl()
                                                 target = query_by_wid(index);
                                                 if(target){
                                                         _remove_worker(target);
+                                                        printf("Staff with wid :%s deleted.\n",index);
                                                 }
 
                                         }
@@ -392,6 +392,7 @@ void logic_repl()
                                                 target = query_by_pid(index);
                                                 if(target){
                                                         _remove_worker(target);
+                                                        printf("Staff with pid :%s deleted.\n",index);
 
                                                 }
                                         }
@@ -401,6 +402,7 @@ void logic_repl()
                                         target= query_by_name(index);
                                         if(target){
                                                 _remove_worker(target);
+                                                printf("Staff with name :%s deleted.\n",index);
                                         }
                                 }
                                 continue;
