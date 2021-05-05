@@ -13,6 +13,7 @@
 typedef struct dish
 {
     char name[50];
+    char type[100];
     float price;
     int available_number;
     int personalization_availble; //how many persoalized choice do i have?
@@ -22,8 +23,9 @@ typedef struct dish
 typedef struct order
 {
     int index;
-    int menu;
+    int menu;               //correspond
     char name[50];
+    char type[100];
     int number;
     float price;
     int personalization_request;
@@ -35,7 +37,7 @@ int dishes_number; //the amount of the dishes in the menu
 int order_number;  //the amount of the dishes of the order list
 dish menu[200];
 order order_list[200];
-int warehouse_check(dish);   //warehouse interface1:give a name return the number of the dishes available
+int warehouse_check(char);   //warehouse interface1:give a name return the number of the dishes available
 int warehouse_update(order*); //warehouse interface2:give the order message then update the warehouse return true or false
 int finance_record(order);   //finance interface:update the order record
 int input_int(int *);        //analize the int input
@@ -100,10 +102,19 @@ void get_menu()
             fscanf(p, "%[^,],%f,%d", menu[dishes_number].name, &menu[dishes_number].price, &menu[dishes_number].personalization_availble);
             if (!warehouse_availble) //warehouseinterface1
                 menu[dishes_number].available_number = 2;
-            //            else
-            //                menu[dishes_number].available_number = warehouse_check(menu[dishes_number].name);
+            else
+                menu[dishes_number].available_number = warehouse_check(menu[dishes_number].name);
             for (int i = 0; i < menu[dishes_number].personalization_availble; i++) //get the personalization message
                 fscanf(p, "%s", menu[dishes_number].personalization[i]);
+            if(dishes_number<20)
+               memcpy(menu[dishes_number].type,"Wine",sizeof("Wine"));
+            else if(dishes_number<33)
+                memcpy(menu[dishes_number].type,"Snacks",sizeof("Snacks"));
+            else if(dishes_number<39)
+                memcpy(menu[dishes_number].type,"Tea",sizeof("Tea"));
+            else if(dishes_number<47)
+                memcpy(menu[dishes_number].type,"Drinks",sizeof("Drinks"));
+                
             dishes_number++;
             if (feof(p))
                 break;
@@ -220,6 +231,7 @@ void add_dishes() //q:0
     strcpy(order_list[order_number].name, menu[index].name);
     order_list[order_number].number = number;
     order_list[order_number].price = menu[index].price * number;
+    strcpy(order_list[order_number].type,menu[index].type);
     order_number++;
     printf("Adding %d %s into the order successfully!\n", number, menu[index].name);
     return;
