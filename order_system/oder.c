@@ -35,7 +35,7 @@ int order_number;  //the amount of the dishes of the order list
 dish menu[200];
 order order_list[200];
 int warehouse_check(dish);   //warehouse interface1:give a name return the number of the dishes available
-int warehouse_update(order); //warehouse interface2:give the order message then update the warehouse return true or false
+int warehouse_update(order*); //warehouse interface2:give the order message then update the warehouse return true or false
 int finance_record(order);   //finance interface:update the order record
 int input_int(int *);        //analize the int input
 void get_menu(void);
@@ -498,8 +498,8 @@ int main(void)
         case 'f':              //check,confrim the order and finish
             if (finish() == 1) //if user decides to finish then update the ware house and quit
             {
-                //             if (warehouse_availble)
-                //                 warehouse_update(order_list);
+                if (warehouse_availble)
+                    warehouse_update(order_list);
                 return 1;
             }
             break;
