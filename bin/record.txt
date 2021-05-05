@@ -1,0 +1,7 @@
+2021.05.03.12.01 wine_a zhangyue 8
+2021.05.04.12.02 wine_b zhangyue 5
+2021.04.05.12.03 wine_c zhangyue 10
+2021.03.05.12.04 wine_c yue 100
+2021.05.05.12.05 wine_d yue 100
+2021.05.05.12.06 wine_c zhangyue 10
+2021.05.05.12.07 wine_e zhangyue 10

@@ -7,9 +7,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "store.c"
 #define MENU_PATH "C:\\cprogramming\\C-Course-Design\\menu.TXT"
-#define warehouse_availble 0
+#define warehouse_availble 1
 
+GoodList gl;      
+MaterialList ml;
+GoodList* GL=&gl; 
+MaterialList* ML=&ml;
+RecordList rl;
+RecordList* RL=&rl;
+RecordList_arr rla;
+RecordList_arr* RLa=&rla;
 typedef struct dish
 {
     char name[50];
@@ -32,14 +41,16 @@ typedef struct order
     char personlization[20][100]; //add space after each personlized choice
     struct order *next;
 } order;
-
+typedef enum{
+    ORDER,
+    STORE,
+    HR
+}DealType;
 int dishes_number; //the amount of the dishes in the menu
 int order_number;  //the amount of the dishes of the order list
 dish menu[200];
 order order_list[200];
-int warehouse_check(char);   //warehouse interface1:give a name return the number of the dishes available
-int warehouse_update(order*); //warehouse interface2:give the order message then update the warehouse return true or false
-int finance_record(order);   //finance interface:update the order record
+void update_finance_record(const char,const char,DealType);   //finance interface:update the order record
 int input_int(int *);        //analize the int input
 void get_menu(void);
 void print_menu(void);
@@ -100,10 +111,6 @@ void get_menu()
         while (1)
         {
             fscanf(p, "%[^,],%f,%d", menu[dishes_number].name, &menu[dishes_number].price, &menu[dishes_number].personalization_availble);
-            if (!warehouse_availble) //warehouseinterface1
-                menu[dishes_number].available_number = 2;
-            else
-                menu[dishes_number].available_number = warehouse_check(menu[dishes_number].name);
             for (int i = 0; i < menu[dishes_number].personalization_availble; i++) //get the personalization message
                 fscanf(p, "%s", menu[dishes_number].personalization[i]);
             if(dishes_number<20)
@@ -114,7 +121,10 @@ void get_menu()
                 memcpy(menu[dishes_number].type,"Tea",sizeof("Tea"));
             else if(dishes_number<47)
                 memcpy(menu[dishes_number].type,"Drinks",sizeof("Drinks"));
-                
+            if (!warehouse_availble) //warehouseinterface1
+                menu[dishes_number].available_number = 2;
+            else
+                menu[dishes_number].available_number = available_num(menu[dishes_number].type,menu[dishes_number].name,GL,ML);
             dishes_number++;
             if (feof(p))
                 break;
@@ -488,6 +498,43 @@ int confirm() //Y/N?
 }
 int main(void)
 {
+
+    //!1.将文件读入结构体并将结构体读入链表
+    read_struct_file(GL,ML,RLa);
+    arr_list(RL,RLa);
+
+    //2.从文件读入进货记录并更新仓库
+    add_record_file(RL,ML);
+    
+    //3.根据时间 不知道原来是多少改为新的数量 并更新仓库(要求根据原来的数量和新的数量更新)
+    //char time[30]; int new_num;
+    //printf("请要修改记录的时间和改后数量:");
+    //scanf("%s %d",time,&new_num);
+    //change_time_record_material(RL,ML,time,new_num);
+
+    //4.根据时间删除一条记录 并更新仓库
+    //printf("请要删除记录的时间:");
+    //scanf("%s",time);
+    //delete_time_record_material(RL,ML,time);
+
+    //5.给我一个货物名字 返回能做几杯
+    //int num=available_num("Wine","Baileys",GL,ML);
+    //printf("还可以做%d杯\n",num);
+
+    //6.生成订单并更新仓库
+
+    //7.根据各种字段查询进货记录
+    //query_record_time(RL,"2021.05.05.12.04");
+    //query_record_time_to_time(RL,"2021.04.05","2021.10.05");
+    //query_record_material_name(RL,"wine_c");
+    //query_record_wholesaler_name(RL,"yue");
+
+    //8.根据各种字段排序并输出进货记录
+    //sort_record_time(RL);
+    //sort_record_material_name(RL);
+    //sort_record_wholesaler_name(RL);
+
+
     get_menu();
     print_menu();
     char instruction[100]; //the command
@@ -511,8 +558,18 @@ int main(void)
         case 'f':              //check,confrim the order and finish
             if (finish() == 1) //if user decides to finish then update the ware house and quit
             {
-                if (warehouse_availble)
-                    warehouse_update(order_list);
+                    if (warehouse_availble)
+                    for(int i=0;i<order_number;i++)
+                    {
+                        order_material(order_list[i].type,order_list[i].name,GL,ML,3);
+                        char price[100];
+                        sprintf(price,"%f",order_list[i].price);
+                        //finance_record(order_list[i].name,price,ORDER);
+                    }
+                //!7.程序结束将链表写回结构体并写回dat文件
+                list_arr(RL,RLa);
+                write_dat(GL,ML,RLa);
+                printf("Order finish successfully!\n");
                 return 1;
             }
             break;
