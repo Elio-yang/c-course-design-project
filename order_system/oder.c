@@ -2,6 +2,7 @@
 //使用序号来确定输入，使用strcmp也可以？但是考虑到使用系统的便捷，这里使用了序号来定位
 //结构体数组为定位结构体的元素提供了便利，如果需要结点的序号，最好用结构体
 //这里需要记录order的数量，修改，删除，order时都需要通过索引号来定位
+//gets输入回车时系统会默认是0
 //非void类型函数的返回值需要被某个变量或者标准输入吸收？？？？？？，为什么input_int会加入缓冲区，而confirm则不会？？？
 #include <stdio.h>
 #include <stdlib.h>
@@ -276,7 +277,7 @@ void delete_dishes() //success return 1,or return 0
         printf("Dishes doesn't exist,please input again\n");
         if (!input_int(&index))
         {
-            printf("Fail to delete dishes");
+            printf("Fail to delete dishes\n");
             return;
         }
     }
@@ -347,7 +348,7 @@ void change_order_number(int order)
         printf("Fail to change the number\n");
         return;
     } //fail to get number
-    while (number > menu[index].available_number)
+    while (number < 1||number > menu[index].available_number)
     {
         printf("Sorry, we only have %d %s left, Please input again\n", menu[index].available_number, menu[index].name);
         if (!input_int(&number))
