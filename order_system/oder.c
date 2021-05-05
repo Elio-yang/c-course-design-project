@@ -152,7 +152,7 @@ void add_dishes() //q:0
 
     if (!input_int(&index))
     {
-        return;    //return 0 to directly quit
+        return; //return 0 to directly quit
     }
     while (index < 1 || index > dishes_number) //find out if we have the dishes
     {
@@ -168,7 +168,7 @@ void add_dishes() //q:0
     {
         return;
     }
-    while (number <1 ||number > menu[index].available_number)
+    while (number < 1 || number > menu[index].available_number)
     {
         printf("Sorry, we only have %d %s left, Please input again\n", menu[index].available_number, menu[index].name);
         if (!input_int(&number))
@@ -415,7 +415,7 @@ void change_order_personalization(int order)
     {
         for (int i = 0; i < num; i++)
             strcpy(order_list[order].personlization[i], menu[index].personalization[individual[i]]);
-        order_list[order].personalization_request=num;
+        order_list[order].personalization_request = num;
         printf("You have changed the taste of %s successfully!", order_list[order].name);
     }
 }
@@ -501,16 +501,16 @@ int main(void)
                 //             if (warehouse_availble)
                 //                 warehouse_update(order_list);
                 return 1;
-                break;
-            case 'q':
-                printf("Confirm to exit the ordering function(Y/N)?\n");
-                if (confirm())
-                    return 0; //quit the order interface directly
-                break;
-            default:
-                printf("Instruction doesn't exist,please input again\n");
-                break;
             }
+            break;
+        case 'q':
+            printf("Confirm to exit the ordering function(Y/N)?\n");
+            if (confirm())
+                return 0; //quit the order interface directly
+            break;
+        default:
+            printf("Instruction doesn't exist,please input again\n");
+            break;
         }
     }
 }
