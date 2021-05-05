@@ -4,66 +4,13 @@
 //这里需要记录order的数量，修改，删除，order时都需要通过索引号来定位
 //gets输入回车时系统会默认是0
 //非void类型函数的返回值需要被某个变量或者标准输入吸收？？？？？？，为什么input_int会加入缓冲区，而confirm则不会？？？
+#define MENU_PATH "C:\\cprogramming\\C-Course-Design\\menu.TXT"
+#define warehouse_availble 1
+#include "order.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "store.c"
-#define MENU_PATH "C:\\cprogramming\\C-Course-Design\\menu.TXT"
-#define warehouse_availble 1
-
-GoodList gl;      
-MaterialList ml;
-GoodList* GL=&gl; 
-MaterialList* ML=&ml;
-RecordList rl;
-RecordList* RL=&rl;
-RecordList_arr rla;
-RecordList_arr* RLa=&rla;
-typedef struct dish
-{
-    char name[50];
-    char type[100];
-    float price;
-    int available_number;
-    int personalization_availble; //how many persoalized choice do i have?
-    char personalization[20][100];
-} dish;
-
-typedef struct order
-{
-    int index;
-    int menu;               //correspond
-    char name[50];
-    char type[100];
-    int number;
-    float price;
-    int personalization_request;
-    char personlization[20][100]; //add space after each personlized choice
-    struct order *next;
-} order;
-typedef enum{
-    ORDER,
-    STORE,
-    HR
-}DealType;
-int dishes_number; //the amount of the dishes in the menu
-int order_number;  //the amount of the dishes of the order list
-dish menu[200];
-order order_list[200];
-void update_finance_record(const char,const char,DealType);   //finance interface:update the order record
-int input_int(int *);        //analize the int input
-void get_menu(void);
-void print_menu(void);
-void print_order(void);
-void print_order_interface(void);
-void add_dishes(void);                  //add a dishes into the oderlist
-void check(void);                       //check the ordered dishes and conduct some operation
-void delete_dishes(void);               //delete a dishews
-void change_order(void);                //change the number or personalization
-void change_order_number(int);          //change the number of a dishes
-void change_order_personalization(int); //change the personalization of a dishes
-int finish(void);                       //quit the system
-int confirm();                          //confirm user's change delete or exit
 
 int input_int(int *instruction) //if input 0 then quit
 {
@@ -492,94 +439,6 @@ int confirm() //Y/N?
             return 0;
         default:
             printf("Instruction dosen't exist, please input again\n");
-            break;
-        }
-    }
-}
-int main(void)
-{
-
-    //!1.将文件读入结构体并将结构体读入链表
-    read_struct_file(GL,ML,RLa);
-    arr_list(RL,RLa);
-
-    //2.从文件读入进货记录并更新仓库
-    add_record_file(RL,ML);
-    
-    //3.根据时间 不知道原来是多少改为新的数量 并更新仓库(要求根据原来的数量和新的数量更新)
-    //char time[30]; int new_num;
-    //printf("请要修改记录的时间和改后数量:");
-    //scanf("%s %d",time,&new_num);
-    //change_time_record_material(RL,ML,time,new_num);
-
-    //4.根据时间删除一条记录 并更新仓库
-    //printf("请要删除记录的时间:");
-    //scanf("%s",time);
-    //delete_time_record_material(RL,ML,time);
-
-    //5.给我一个货物名字 返回能做几杯
-    //int num=available_num("Wine","Baileys",GL,ML);
-    //printf("还可以做%d杯\n",num);
-
-    //6.生成订单并更新仓库
-
-    //7.根据各种字段查询进货记录
-    //query_record_time(RL,"2021.05.05.12.04");
-    //query_record_time_to_time(RL,"2021.04.05","2021.10.05");
-    //query_record_material_name(RL,"wine_c");
-    //query_record_wholesaler_name(RL,"yue");
-
-    //8.根据各种字段排序并输出进货记录
-    //sort_record_time(RL);
-    //sort_record_material_name(RL);
-    //sort_record_wholesaler_name(RL);
-
-
-    get_menu();
-    print_menu();
-    char instruction[100]; //the command
-    while (1)
-    {
-        print_order_interface();
-        gets(instruction);
-        if (strlen(instruction) > 1) //incorrect command
-        {
-            printf("Instruction doesn't exist,please input again\n");
-            continue;
-        }
-        switch (instruction[0])
-        {
-        case 'a':
-            add_dishes(); //add dishes
-            break;
-        case 'c':
-            check(); //check the whole order
-            break;
-        case 'f':              //check,confrim the order and finish
-            if (finish() == 1) //if user decides to finish then update the ware house and quit
-            {
-                    if (warehouse_availble)
-                    for(int i=0;i<order_number;i++)
-                    {
-                        order_material(order_list[i].type,order_list[i].name,GL,ML,3);
-                        char price[100];
-                        sprintf(price,"%f",order_list[i].price);
-                        //finance_record(order_list[i].name,price,ORDER);
-                    }
-                //!7.程序结束将链表写回结构体并写回dat文件
-                list_arr(RL,RLa);
-                write_dat(GL,ML,RLa);
-                printf("Order finish successfully!\n");
-                return 1;
-            }
-            break;
-        case 'q':
-            printf("Confirm to exit the ordering function(Y/N)?\n");
-            if (confirm())
-                return 0; //quit the order interface directly
-            break;
-        default:
-            printf("Instruction doesn't exist,please input again\n");
             break;
         }
     }

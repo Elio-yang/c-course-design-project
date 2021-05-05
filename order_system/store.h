@@ -4,8 +4,6 @@
  * @Author: alone_yue
  * @Date: 2021-04-22 16:46:19
  */
-#include<stdio.h>
-
 //!进货记录结构体及链表
 typedef struct RE{
     char time[30];
@@ -58,6 +56,10 @@ typedef struct{
     int num;
 }MaterialList;
 
+GoodList* GL;
+MaterialList* ML;
+RecordList* RL;
+RecordList_arr* RLa;
 extern void arr_list(RecordList* RL,RecordList_arr* RLa); //!从链表写到结构体数组
 extern void list_arr(RecordList* RL,RecordList_arr* RLa);  //!从结构体数组读到链表
 
