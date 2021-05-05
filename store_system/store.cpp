@@ -5,7 +5,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include"store.h"
+#include"store.hpp"
 
 void arr_list(RecordList* RL,RecordList_arr* RLa){ //!从结构体数组读到链表
     for(int i=0;i<RLa->num;i++){
@@ -68,9 +68,9 @@ void list_arr(RecordList* RL,RecordList_arr* RLa){  //!从链表读到结构体�
 }
 
 void write_dat(GoodList* GL,MaterialList* ML,RecordList_arr* RLa){
-    FILE* goodfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\GoodList.dat","wb");
-    FILE* materialfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\MaterialList.dat","wb");
-    FILE* recordListfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\RecordList.dat","wb");
+    FILE* goodfile=fopen("GoodList.dat","wb");
+    FILE* materialfile=fopen("MaterialList.dat","wb");
+    FILE* recordListfile=fopen("RecordList.dat","wb");
 
     //!写GL到文件
     fwrite(&GL->wine_num,sizeof(int),1,goodfile);
@@ -108,9 +108,9 @@ void write_dat(GoodList* GL,MaterialList* ML,RecordList_arr* RLa){
     fclose(recordListfile);
 }
 void read_struct_file(GoodList* GL,MaterialList* ML,RecordList_arr* RLa){
-    FILE* goodfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\GoodList.dat","rb");
-    FILE* materialfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\MaterialList.dat","rb");
-    FILE* recordListfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\RecordList.dat","rb");
+    FILE* goodfile=fopen("GoodList.dat","rb");
+    FILE* materialfile=fopen("MaterialList.dat","rb");
+    FILE* recordListfile=fopen("RecordList.dat","rb");
 
     //!读文件到GL
     fread(&GL->wine_num,sizeof(int),1,goodfile);
@@ -156,7 +156,7 @@ void update_material(RecordNode* Node,MaterialList* ML){ //!被调用函数
     }
 }
 void add_record_file(RecordList* RL,MaterialList* ML){ //!从文件读取进货信息
-    FILE* file=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\record.txt","r");
+    FILE* file=fopen("record.txt","r");
 
     //!读入节点
     RecordNode* Node=(RecordNode*)malloc(sizeof(RecordNode));

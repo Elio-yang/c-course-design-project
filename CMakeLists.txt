@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(CDesign C)
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 11)
 #=========================================================
 #可执行文件放在目录 bin下
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
@@ -60,4 +61,10 @@ add_executable(login
 add_executable(order
         order_system/oder.c
         Test/test_order_sys.c
+)
+add_executable(store
+        store_system/main.cpp
+        store_system/store.cpp
+        store_system/store.hpp
+        store_system/create_file.cpp
 )

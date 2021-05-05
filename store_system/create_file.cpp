@@ -46,10 +46,10 @@ typedef struct{
 }RecordList;
 
 void create_good_name(GoodList* GL){
-    FILE* Winefile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\Wine.txt","r");
-    FILE* Snacksfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\Snacks.txt","r");
-    FILE* Teafile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\Tea.txt","r");
-    FILE* Drinksfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\Drinks.txt","r");
+    FILE* Winefile=fopen("Wine.txt","r");
+    FILE* Snacksfile=fopen("Snacks.txt","r");
+    FILE* Teafile=fopen("Tea.txt","r");
+    FILE* Drinksfile=fopen("Drinks.txt","r");
 
     char temp[30];
     while(fgets(temp,30,Winefile)!=NULL){
@@ -92,7 +92,7 @@ void create_good_name(GoodList* GL){
 }
 
 void create_material(MaterialList* ML){
-    FILE* file=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\material.txt","r");
+    FILE* file=fopen("material.txt","r");
 
     char temp[30];
     while(fgets(temp,30,file)!=NULL){
@@ -109,7 +109,7 @@ void create_material(MaterialList* ML){
 }
 
 void create_good_material(GoodList* GL){
-    FILE* file=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\1-20_21-33_34-39_40-48.txt","r");
+    FILE* file=fopen("1-20_21-33_34-39_40-48.txt","r");
     char temp[30]; int i;
 
     i=0;
@@ -165,8 +165,8 @@ void create_good_material(GoodList* GL){
 }
 
 void write_dat(GoodList* GL,MaterialList* ML){
-    FILE* goodfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\GoodList.dat","wb");
-    FILE* materialfile=fopen("F:\\PROJECT\\all_code\\zzzzzzzz_txt\\MaterialList.dat","wb");
+    FILE* goodfile=fopen("GoodList.dat","wb");
+    FILE* materialfile=fopen("MaterialList.dat","wb");
 
     //!写GL到文件
     fwrite(&GL->wine_num,sizeof(int),1,goodfile);

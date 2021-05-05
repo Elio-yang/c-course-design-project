@@ -4,7 +4,7 @@
  */
 #include<stdio.h>
 #include<stdlib.h>
-#include"store.h"
+#include"store.hpp"
 
 //!    使用说明
 //!    1.ML和GL由createfile执行后再由main执行后会进行初始化,
