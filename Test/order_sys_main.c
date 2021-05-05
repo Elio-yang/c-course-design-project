@@ -9,7 +9,6 @@ int main(void)
 {
         get_menu();
         print_menu();
-
         char instruction[100]; //the command
         while (1)
         {
@@ -36,7 +35,7 @@ int main(void)
                                         return 1;
                                         break;
                                         case 'q':
-                                                printf("Confirm to exit the ordering function(Y/N)\n");
+                                                printf("Confirm to exit the ordering function(Y/N)?\n");
                                         if (confirm())
                                                 return 0; //quit the order interface directly
                                         break;

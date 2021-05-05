@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(CDesign C)
+project(CDesign)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 #=========================================================
@@ -25,7 +25,7 @@ SET(HR_SRC
         human_resource_system/hr_sys.c
         human_resource_system/hr_repl.c
         human_resource_system/hr_run.c
-        Test/test_hr_sys_main.c
+        Test/hr_sys_main.c
 )
 
 SET(TOOL_SRC
@@ -41,30 +41,31 @@ add_definitions(-std=gnu99 )
 link_libraries(pthread)
 #=========================================================
 
-add_executable(test_hr
+add_executable(hr_sys
         ${HR_HEADER}
         ${HR_SRC}
         ${TOOL_SRC}
         )
 add_executable(test_time
-        Test/test_time_related_main.c
+        tools/test_time_related_main.c
         )
-add_executable(test_menu
-        Test/test_menu.c
-)
+
 add_executable(login
         human_resource_system/hr_repl.h
         ${RSA_HEADER}
-        Test/encryption.c
+        Test/login_sys_main.c
         human_resource_system/hr_repl.c
         )
-add_executable(order
+add_executable(order_sys
+        order_system/order.h
         order_system/oder.c
-        Test/test_order_sys.c
+        Test/order_sys_main.c
 )
-add_executable(store
-        store_system/main.cpp
+add_executable(store_sys
+        Test/store_sys_main.cpp
         store_system/store.cpp
         store_system/store.hpp
+)
+add_executable(creat
         store_system/create_file.cpp
 )

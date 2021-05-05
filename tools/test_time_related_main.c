@@ -2,7 +2,7 @@
 // Created by elio on 2021/4/4.
 //
 
-#include "../tools/time_related.h"
+#include "time_related.h"
 #include <stdio.h>
 int main()
 {

@@ -13,8 +13,8 @@
 #include "tools/print_color.h"
 #endif
 
-void print_menu();
-void print_menu()
+void menu_print();
+void menu_print()
 {
 #ifdef UNIX
         printf( REVERSE L_BLUE  "***************************************************************************************\n"NONE

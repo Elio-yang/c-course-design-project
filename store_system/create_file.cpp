@@ -2,9 +2,8 @@
  * @Author: alone_yue
  * @Date: 2021-04-23 09:53:24
  */
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include<cstdio>
+#include<cstring>
 
 //商品结构体及数组
 typedef struct{
@@ -211,6 +210,5 @@ int main(){
     
     
     write_dat(GL,ML);
-    system("pause");
     return 0;
 }

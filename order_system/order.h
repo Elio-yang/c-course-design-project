@@ -8,7 +8,7 @@ typedef struct dish
         char name[50];
         float price;
         int available_number;
-        int personalization_availble; //how many persoalized choice do i have?
+        int personalization_availble; //how many personalized choice do i have?
         char personalization[20][100];
 } dish;
 
@@ -23,14 +23,15 @@ typedef struct order
         char personlization[20][100]; //add space after each personlized choice
         struct order *next;
 } order;
-extern int input_int(int *);                   //analize the int input
+
+extern int input_int(int *);                   //analyze the int input
 extern void get_menu(void);
 extern void print_menu(void);
 extern void print_order(void);
 extern void print_order_interface(void);
 extern void add_dishes(void);                  //add a dishes into the oderlist
 extern void check(void);                       //check the ordered dishes and conduct some operation
-extern void delete_dishes(void);               //delete a dishews
+extern void delete_dishes(void);               //delete a dishes
 extern void change_order(void);                //change the number or personalization
 extern void change_order_number(int);          //change the number of a dishes
 extern void change_order_personalization(int); //change the personalization of a dishes
