@@ -1,47 +1,47 @@
-Cointreau,25.00,0
-Martini,20.00,0
-Baileys,25.00,0
-Malibu,20.00,0
-JackDanny,35.00,0
-BKD,25.00,0
-GordonGold,20.00,0
-Black,30.00,0
-SwedishVodka,25.00,0
-Edinger,35.00,0
-Corona,20.00,0
-Heineken,20.00,0
-Carlsberg,18.00,0
-Qingdao,15.00,1 ice
-Bosss,20.00,0
-LongIslandIcedTea,30.00,0
-GinandTonic,25.00,0
-BeautyinPink,30.00,0
-BlackRussia,35.00,0
-BlueHawaii,33.00,0
-TunaBongo,15.00,0
-PearsinRedWine,25.00,0
-RoastedChickenWings,20.00,0
-GarlicMincedCharmer,10.00,0
-Vegetablecheeseballs,15.00,0
+Cointreau,25.00,2 ice normal_tempreture
+Martini,20.00,2 ice normal_tempreture
+Baileys,25.00,2 ice normal_tempreture
+Malibu,20.00,2 ice normal_tempreture
+JackDanny,35.00,2 ice normal_tempreture
+BKD,25.00,2 ice normal_tempreture
+GordonGold,20.00,2 ice normal_tempreture
+Black,30.00,2 ice normal_tempreture
+SwedishVodka,25.00,2 ice normal_tempreture
+Edinger,35.00,2 ice normal_tempreture
+Corona,20.00,2 ice normal_tempreture
+Heineken,20.00,2 ice normal_tempreture
+Carlsberg,18.00,2 ice normal_tempreture
+Qingdao,15.00,2 ice normal_tempreture
+Bosss,20.00,2 ice normal_tempreture
+LongIslandIcedTea,30.00,2 ice normal_tempreture
+GinandTonic,25.00,2 ice normal_tempreture
+BeautyinPink,30.00,2 ice normal_tempreture
+BlackRussia,35.00,2 ice normal_tempreture
+BlueHawaii,33.00,2 ice normal_tempreture
+TunaBongo,15.00,2 ice normal_tempreture
+PearsinRedWine,25.00,2 bottle cup
+RoastedChickenWings,20.00,2 ice normal_tempreture
+GarlicMincedCharmer,10.00,2 ice normal_tempreture
+Vegetablecheeseballs,15.00,5 none mayonnaise salad_dressing ketchup mustard
 Popcorn,25.00,0
 Shrimppizza,45.00,0
 SausagePizza,38.00,0
-Vegetablecheeseballs,15.00,0
+Vegetablecheeseballs,15.00,2 hot cold
 CrispySpicyPotatoCart,18.00,0
 Coffeeicecream,15.00,0
 Bananaboat,25.00,0
 Bananamilkshake,16.00,0
-LiptonBlackTea,45.00,0
-Rosemilktea,58.00,0
-Icedlemontea,15.00,0
-WestLakeLongjing,20.00,0
-Biluochun,25.00,0
-TieGuanYin,25.00,0
+LiptonBlackTea,45.00,5 total_sugar half_suagr low_sugar hot ice
+Rosemilktea,58.00,5 total_sugar half_suagr low_sugar hot ice
+Icedlemontea,15.00,3 ice cold normal_tempreture
+WestLakeLongjing,20.00,2 pot cup
+Biluochun,25.00,2 pot cup
+TieGuanYin,25.00,2 pot cup
 Driedgingerwater,16.00,1 ice
-Freshmilk,25.00,2 hot ice
-pineapplejuice,27.00,1 ice
-Grapefruitjuice,34.00,1 ice
-OrangeJuice,26.00,1 ice
-Coke,12.00,1 ice
-Sprite,12.00,1 ice
+Freshmilk,25.00,5 hot ice total_sugar half_suagr low_sugar
+pineapplejuice,27.00,2 ice hot
+Grapefruitjuice,34.00,2 ice hot
+OrangeJuice,26.00,2 ice hot
+Coke,12.00,3 ice bottle cup
+Sprite,12.00,3 ice bottle cup
 Mineralwater,12.00,1 ice
