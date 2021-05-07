@@ -1,10 +1,11 @@
 /*
+ * Test/hr_sys_main.c
  * @author Elio Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/3/19
  */
 
-// testing part
+
 #include "../human_resource_system/hr_sys.h"
 #include "../human_resource_system/hr_run.h"
 #include <pthread.h>
@@ -16,10 +17,10 @@ int main()
         int status;
         if(!fork()){
                 char * const argv[]={
-                        "login",
+                        "aLOGIN",
                         NULL
                 };
-                execv("login",argv);
+                execv("aLOGIN",argv);
         }
         wait(&status);
         if(WIFEXITED(status)&&((status & 0x000000ff) != 0)){

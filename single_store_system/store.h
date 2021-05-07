@@ -1,10 +1,11 @@
 #ifndef _STORE_
 #define _STORE_
 /*
+ * single_store_system/store.h
  * @Author: alone_yue
  * @Date: 2021-04-22 16:46:19
  */
-#include<stdio.h>
+#include<cstdio>
 
 //!进货记录结构体及链表
 typedef struct RE{
@@ -81,5 +82,5 @@ extern void sort_record_wholesaler_name(RecordList* RL);
 
 extern int available_num(char type[30],char goods[30],GoodList* GL,MaterialList* ML);
 extern void order_material(char type[30],char goods[30],GoodList* GL,MaterialList* ML,int count);
-
+extern void print_material(MaterialList* ML);
 #endif

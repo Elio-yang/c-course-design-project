@@ -1,66 +1,91 @@
 /*
+ * Test/store_sys_main.cpp
  * @Author: alone_yue
  * @Date: 2021-04-23 09:18:42
  */
 #include<cstdio>
 #include<cstdlib>
-#include"../store_system/store.hpp"
+#include "../for_cpp/financial.h"
+#include"../single_store_system/store.h"
+#include "../tools/process_bar.h"
 
-//!    使用说明
-//!    1.ML和GL由createfile执行后再由main执行后会进行初始化,
-//!      但是由于程序执行后进货记录会改变ML和GL下一次GL和ML就是更新过后的了，如果想重新开始再执行一次createfile即可
-//!    2.arr_list(RL,RLa)函数可以将之前的进货记录重新放到进货链表,如果想完全重新开始记录即可注释掉
 int main(){
-    GoodList gl;      
-    MaterialList ml;
-    GoodList* GL=&gl; 
-    MaterialList* ML=&ml;
-    RecordList rl;
-    RecordList* RL=&rl;
-    RecordList_arr rla;
-    RecordList_arr* RLa=&rla;
 
-    //!1.将文件读入结构体并将结构体读入链表
-    read_struct_file(GL,ML,RLa);
-    arr_list(RL,RLa);
+        GoodList gl;
+        MaterialList ml;
+        GoodList* GL=&gl;
+        MaterialList* ML=&ml;
+        RecordList rl;
+        RecordList* RL=&rl;
+        RecordList_arr rla;
+        RecordList_arr* RLa=&rla;
 
-    //2.从文件读入进货记录并更新仓库
-    add_record_file(RL,ML);
-    
-    //3.根据时间 不知道原来是多少改为新的数量 并更新仓库(要求根据原来的数量和新的数量更新)
-    char time[30]; int new_num;
-    printf("请要修改记录的时间和改后数量:");
-    scanf("%s %d",time,&new_num);
-    change_time_record_material(RL,ML,time,new_num);
+        init_fi_sys();
+        //!1.将文件读入结构体并将结构体读入链表
+        read_struct_file(GL,ML,RLa);
+        //arr_list(RL,RLa);
 
-    //4.根据时间删除一条记录 并更新仓库
-    printf("请要删除记录的时间:");
-    scanf("%s",time);
-    delete_time_record_material(RL,ML,time);
+        process_bar("Start loading files and testing");
+        //2.从文件读入进货记录并更新仓库
+        add_record_file(RL,ML);
+        printf("-----------------------------------------------------------------------------------------\n\n");
 
-    //5.给我一个货物名字 返回能做几杯
-    int num=available_num("Wine","Baileys",GL,ML);
-    printf("还可以做%d杯\n",num);
+        //3.根据时间 不知道原来是多少改为新的数量 并更新仓库(要求根据原来的数量和新的数量更新)
+        change_time_record_material(RL,ML,"2021.05.05.12.28",100);
+        printf("-----------------------------------------------------------------------------------------\n\n");
 
-    //6.生成订单并更新仓库
-    order_material("Wine","Baileys",GL,ML,3);
-    order_material("Wine","Baileys",GL,ML,3);
+        //4.根据时间删除一条记录 并更新仓库
+        delete_time_record_material(RL,ML,"2021.05.05.12.28");
+        printf("-----------------------------------------------------------------------------------------\n\n");
 
-    //7.根据各种字段查询进货记录
-    query_record_time(RL,"2021.05.05.12.04");
-    query_record_time_to_time(RL,"2021.04.05","2021.10.05");
-    query_record_material_name(RL,"wine_c");
-    query_record_wholesaler_name(RL,"yue");
 
-    //8.根据各种字段排序并输出进货记录
-    sort_record_time(RL);
-    sort_record_material_name(RL);
-    sort_record_wholesaler_name(RL);
+        //5.输出原料及数量
+        print_material(ML);
+        printf("-----------------------------------------------------------------------------------------\n\n");
 
-    //!7.程序结束将链表谢晖结构体并写回dat文件
-    list_arr(RL,RLa);
-    write_dat(GL,ML,RLa);
 
-    system("pause");
-    return 0;
+
+        //6.给我一个货物名字 返回能做几杯
+        int num;
+        num=available_num("Wine","Baileys",GL,ML);
+        printf("还可以做%d杯\n",num);
+        num=available_num("Wine","Malibu",GL,ML);
+        printf("还可以做%d杯\n",num);
+        num=available_num("Snacks","PearsinRedWine",GL,ML);
+        printf("还可以做%d杯\n",num);
+        num=available_num("Snacks","zzzzzz",GL,ML);
+        printf("还可以做%d杯\n",num);
+        num=available_num("Sack","zzzzzz",GL,ML);
+        printf("还可以做%d杯\n",num);
+        printf("-----------------------------------------------------------------------------------------\n\n");
+
+        //7.生成订单并更新仓库
+        order_material("Wine","Baileys",GL,ML,3);
+        order_material("Wine","Malibu",GL,ML,2);
+        order_material("Snacks","PearsinRedWine",GL,ML,2);
+        order_material("Snacs","PearsinRedWine",GL,ML,2);
+        order_material("Snacks","Pead!!!!! Wine",GL,ML,2);
+        printf("-----------------------------------------------------------------------------------------\n\n");
+
+        //8.根据各种字段查询进货记录
+        query_record_time(RL,"2021.05.05.12.04");
+        query_record_time_to_time(RL,"2021.04.05","2021.10.05");
+        query_record_material_name(RL,"wine_c");
+        query_record_wholesaler_name(RL,"yue");
+        printf("-----------------------------------------------------------------------------------------\n\n");
+
+        //9.根据各种字段排序并输出进货记录
+        sort_record_time(RL);
+        sort_record_material_name(RL);
+        sort_record_wholesaler_name(RL);
+        printf("-----------------------------------------------------------------------------------------\n\n");
+
+
+
+        //!10.程序结束将链表谢晖结构体并写回dat文件
+        list_arr(RL,RLa);
+        write_dat(GL,ML,RLa);
+
+        flush_fi_disk();
+        exit(0);
 }

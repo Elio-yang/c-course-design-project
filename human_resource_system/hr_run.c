@@ -1,4 +1,5 @@
 /*
+ * human_resource_system/hr_run.c
  * @author Elio Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/4/13
@@ -119,6 +120,42 @@ Cmd_type regex_match_cmd(const char *cmd)
         if(!regex_match_with(cmd,INSERT_COM_REG)){
                 return INSERT_COMP;
         }
+
+        if(!regex_match_with(cmd,HR_EXE_REG)){
+                return HR_E;
+        }
+        if(!regex_match_with(cmd,MAIN_EXE_REG)){
+                return MAIN_E;
+        }
+        if(!regex_match_with(cmd,STORE_EXE_REG)){
+                return STORE_E;
+        }
+        if(!regex_match_with(cmd,FI_EXE_REG)){
+                return FI_E;
+        }
+        if(!regex_match_with(cmd,QUIT_REG)){
+                return QUIT;
+        }
+
+        if(!regex_match_with(cmd,NUM_ONE)){
+                return ONE;
+        }
+        if(!regex_match_with(cmd,NUM_TWO)){
+                return TWO;
+        }
+        if(!regex_match_with(cmd,NUM_THREE)){
+                return THREE;
+        }
+        if(!regex_match_with(cmd,NUM_FOUR)){
+                return FOUR;
+        }
+        if(!regex_match_with(cmd,NUM_FIVE)){
+                return FIVE;
+        }
+        if(!regex_match_with(cmd,NUM_SIX)){
+                return SIX;
+        }
+
         return UNKOWN;
 
 
@@ -215,6 +252,7 @@ int check_date(const char *date)
 
         return 0;
 }
+
 
 
 void logic_repl()
@@ -439,7 +477,7 @@ void logic_repl()
                                 char *wid = strtok(NULL, " ");
                                 char *info = strtok(NULL, " ");
                                 add_complaint(wid,info);
-
+                                continue;
                         }
                         case UNKOWN:
                                 printf("Unrecognized command '%s'\n", input->buf);

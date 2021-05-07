@@ -1,6 +1,6 @@
-Lipton Black Tea
-Rose milk tea
-Iced lemon tea
-West Lake Longjing
+LiptonBlackTea
+Rosemilktea
+Icedlemontea
+WestLakeLongjing
 Biluochun
-Tie Guan Yin
+TieGuanYin

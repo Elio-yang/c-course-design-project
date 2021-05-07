@@ -1,4 +1,5 @@
 /*
+ * human_resource_system/hr_repl.c
  * @author Elio Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/4/13
@@ -74,7 +75,7 @@ void print_help(void)
                "                                                            <Pid>                               \n"
                "                                                            <Wid>                               \n"
                "                                         [sample]: query YangYang                               \n"
-               "  sort by <field> <-d>                 : sort information by field                              \n"
+               "  sort by <field> [-d]                 : sort information by field                              \n"
                "                                         [available field]:  NAME                               \n"
                "                                                             PID                                \n"
                "                                                             WID                                \n"

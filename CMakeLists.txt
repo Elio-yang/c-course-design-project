@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(CDesign)
+project( CDesign)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 #=========================================================
@@ -12,7 +12,6 @@ SET (TOOL_HEADER
         tools/time_related.h
         tools/quick_sort.h
         tools/regex_match.h
-        menu.h
         )
 SET(HR_HEADER
         human_resource_system/hr_repl.h
@@ -41,7 +40,7 @@ add_definitions(-std=gnu99 )
 link_libraries(pthread)
 #=========================================================
 
-add_executable(hr_sys
+add_executable(aHR_SYS
         ${HR_HEADER}
         ${HR_SRC}
         ${TOOL_SRC}
@@ -50,22 +49,42 @@ add_executable(test_time
         tools/test_time_related_main.c
         )
 
-add_executable(login
+add_executable(aLOGIN
         human_resource_system/hr_repl.h
         ${RSA_HEADER}
         Test/login_sys_main.c
         human_resource_system/hr_repl.c
         )
-add_executable(order_sys
-        order_system/order.h
-        order_system/oder.c
-        Test/order_sys_main.c
+
+add_executable(aMAIN_SYS
+        Test/main_sys_main.cpp
+        for_cpp/quick_sort.cpp
+        for_cpp/financial.cpp
 )
-add_executable(store_sys
+
+add_executable(aFI_SYS
+        financial_system/financial.c
+        Test/financial_sys_main.c
+        tools/quick_sort.c
+        tools/regex_match.h
+        human_resource_system/hr_repl.c
+        human_resource_system/hr_run.c
+        human_resource_system/hr_sys.c
+)
+add_executable(aFILE_CREAT
+        Test/create_file.cpp
+)
+add_executable(aSTORE_SYS
+        single_store_system/store.cpp
         Test/store_sys_main.cpp
-        store_system/store.cpp
-        store_system/store.hpp
+        for_cpp/financial.cpp
+        for_cpp/quick_sort.cpp
 )
-add_executable(creat
-        store_system/create_file.cpp
+add_executable(DISPATCH
+        Test/main.c
+        human_resource_system/hr_repl.c
+        human_resource_system/hr_run.c
+        human_resource_system/hr_sys.c
+        ${TOOL_SRC}
+
 )

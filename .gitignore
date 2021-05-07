@@ -17,3 +17,4 @@ cmake-build-debug
 .vscode
 .idea/
 .clion.source.upload.marker
+build/

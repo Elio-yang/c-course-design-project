@@ -1,5 +1,6 @@
 /*
  * implementation of hr system
+ * human_resource_system/hr_sys.c
  * @author Elio Yang
  * @email  jluelioyang2001@gamil.com
  * @date 2021/4/12
@@ -647,7 +648,7 @@ void sort_by(Field field, int direction) {
 }
 
 void _insert_worker(Staff *staff) {
-        Staff *head = get_head(HR_LIST);
+        Staff *head = HR_LIST->head;
         staff->next = head->next;
         head->next = staff;
         ++HR_LIST->cnt;
@@ -655,7 +656,7 @@ void _insert_worker(Staff *staff) {
 }
 
 void _insert_comp(Complaint_record *comp) {
-        Complaint_record *head = get_head(COMP_LIST);
+        Complaint_record *head = COMP_LIST->head;
         comp->next = head->next;
         head->next = comp;
         ++COMP_LIST->cnt;
@@ -771,7 +772,7 @@ void flush_disk() {
 
         // not modified
         if (HR_LIST->dirty == 0) {
-                return;
+                goto COMP;
         }
         int hr_fd = HR_LIST->fd;
         close(hr_fd);
@@ -826,7 +827,7 @@ void flush_disk() {
                 write(hr_fd, info, hr_info_len);
                 staff = staff->next;
         }
-
+        COMP:
         if (COMP_LIST->dirty == 0) {
                 return;
         }
@@ -868,12 +869,11 @@ void flush_disk() {
                         len += sprintf(info_c + len, "%s", buf);
                         info_c[comp_info_len - 1] = '\n';
                 }
-                write(hr_fd, info_c, comp_info_len);
+                write(comp_fd, info_c, comp_info_len);
                 rcd = rcd->next;
         }
         COMP_LIST->fd = -1;
-
-
+        close(comp_fd);
 }
 
 void free_hr_list() {
